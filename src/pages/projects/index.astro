@@ -1,0 +1,52 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionTitle from "@/components/SectionTitle.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import { getPublishedProjects } from "@/lib/content";
+
+const projects = await getPublishedProjects();
+const allTags = [...new Set<string>(projects.flatMap((project) => (project.data.tags as string[]).map((tag) => tag.trim()).filter(Boolean)))].sort();
+---
+
+<BaseLayout title="Проекты | MS Promotion" description="Архив и актуальные кейсы MS Promotion с фильтрацией по тегам и отраслям.">
+  <section class="section-wrap mt-12">
+    <SectionTitle title="Проекты и кейсы" description="Легко фильтруйте кейсы по тегам, чтобы быстро найти релевантные примеры для брифа." />
+
+    <div class="mt-6 flex flex-wrap gap-2" id="tag-filter" aria-label="Фильтр по тегам">
+      <button class="focus-outline tag-button rounded-full border border-line bg-surface-soft px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-text" data-tag="all" type="button">Все</button>
+      {allTags.map((tag) => (
+        <button class="focus-outline tag-button rounded-full border border-line px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-muted" data-tag={tag.toLowerCase()} type="button">
+          {tag}
+        </button>
+      ))}
+    </div>
+
+    <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3" id="projects-grid">
+      {projects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </section>
+
+  <script is:inline>
+    const buttons = document.querySelectorAll(".tag-button");
+    const cards = document.querySelectorAll(".project-card");
+
+    const setActive = (activeTag) => {
+      buttons.forEach((button) => {
+        const isActive = button.dataset.tag === activeTag;
+        button.classList.toggle("bg-surface-soft", isActive);
+        button.classList.toggle("text-text", isActive);
+        button.classList.toggle("text-muted", !isActive);
+      });
+
+      cards.forEach((card) => {
+        const tags = card.dataset.tags || "";
+        const show = activeTag === "all" || tags.includes(activeTag);
+        card.classList.toggle("hidden", !show);
+      });
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => setActive(button.dataset.tag));
+    });
+  </script>
+</BaseLayout>

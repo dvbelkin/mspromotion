@@ -1,0 +1,17 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionTitle from "@/components/SectionTitle.astro";
+import EventCard from "@/components/EventCard.astro";
+import { getPublishedEvents } from "@/lib/content";
+
+const events = await getPublishedEvents();
+---
+
+<BaseLayout title="События | MS Promotion" description="Календарь ближайших мероприятий MS Promotion и архив событийных форматов.">
+  <section class="section-wrap mt-12">
+    <SectionTitle title="События" description="Деловые и клиентские события, форумные форматы и запусковые презентации." />
+    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      {events.map((event) => <EventCard event={event} />)}
+    </div>
+  </section>
+</BaseLayout>

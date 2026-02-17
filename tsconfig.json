@@ -1,0 +1,12 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "noImplicitAny": false,
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src", "astro.config.mjs", "scripts"],
+  "exclude": ["node_modules", "dist", "app", "js", "lightSlider", "slider", "legacy"]
+}

@@ -1,0 +1,14 @@
+---
+const logos = ["SONY", "Ростелеком", "Lenovo", "Hansa", "JACOBS", "Пятёрочка"];
+---
+
+<section class="section-wrap mt-14">
+  <p class="eyebrow">Клиенты и бренды</p>
+  <div class="mt-5 grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
+    {logos.map((logo) => (
+      <div class="card-surface flex min-h-[68px] items-center justify-center rounded-xl px-4 text-sm font-semibold uppercase tracking-[0.12em] text-muted">
+        {logo}
+      </div>
+    ))}
+  </div>
+</section>

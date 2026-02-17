@@ -1,0 +1,27 @@
+{
+  "name": "ms-promotion-replatform",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "migrate:legacy": "node scripts/import-legacy-json.mjs"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "^6.0.0",
+    "astro": "^5.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@tailwindcss/typography": "^0.5.15",
+    "tailwindcss": "^3.4.16",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

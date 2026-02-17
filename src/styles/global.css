@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --surface: #070b16;
+  --surface-soft: #10182f;
+  --text: #eef3ff;
+  --muted: #9eabcf;
+  --line: rgba(158, 171, 207, 0.2);
+  --accent: #5f7dff;
+  --accent-2: #31d0c6;
+  --hero-grad-1: radial-gradient(circle at 20% -10%, rgba(95, 125, 255, 0.34), transparent 44%);
+  --hero-grad-2: radial-gradient(circle at 80% 0%, rgba(49, 208, 198, 0.22), transparent 48%);
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  --surface: #f4f7ff;
+  --surface-soft: #ffffff;
+  --text: #10162a;
+  --muted: #536080;
+  --line: rgba(16, 22, 42, 0.15);
+  --accent: #2447d8;
+  --accent-2: #1ea39b;
+  --hero-grad-1: radial-gradient(circle at 20% -10%, rgba(36, 71, 216, 0.19), transparent 44%);
+  --hero-grad-2: radial-gradient(circle at 80% 0%, rgba(30, 163, 155, 0.18), transparent 48%);
+  color-scheme: light;
+}
+
+body {
+  @apply bg-surface text-text font-body antialiased;
+  min-height: 100vh;
+}
+
+.hero-glow {
+  background: var(--hero-grad-1), var(--hero-grad-2);
+}
+
+.card-surface {
+  background: color-mix(in srgb, var(--surface-soft) 94%, transparent);
+  border: 1px solid var(--line);
+}
+
+.section-wrap {
+  @apply mx-auto w-full max-w-[1200px] px-4 md:px-8;
+}
+
+.eyebrow {
+  @apply text-xs uppercase tracking-[0.16em] text-muted;
+}
+
+.focus-outline:focus-visible {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

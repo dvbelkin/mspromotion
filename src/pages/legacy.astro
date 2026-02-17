@@ -1,0 +1,17 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Легаси-архив | MS Promotion" description="Сохраненные страницы и материалы старого сайта MS Promotion.">
+  <section class="section-wrap mt-12">
+    <h1 class="font-display text-4xl font-semibold md:text-5xl">Легаси-архив</h1>
+    <p class="mt-4 max-w-3xl text-sm text-muted md:text-base">
+      Исторические материалы сохранены в репозитории. Для совместимости URL добавлены редиректы на актуальные разделы.
+    </p>
+
+    <div class="mt-8 grid gap-4 md:grid-cols-2">
+      <a href="/legacy/index-legacy.html" class="focus-outline card-surface rounded-2xl p-5 text-sm font-semibold text-text transition hover:border-accent2/50">Архивная главная</a>
+      <a href="/legacy/cases-legacy.html" class="focus-outline card-surface rounded-2xl p-5 text-sm font-semibold text-text transition hover:border-accent2/50">Архивные кейсы</a>
+    </div>
+  </section>
+</BaseLayout>

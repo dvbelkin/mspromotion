@@ -1,0 +1,124 @@
+backend:
+  name: github
+  repo: dvbel/mspromotion
+  branch: main
+  auth_scope: repo
+
+local_backend: true
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+site_url: "https://www.ms-promotion.ru"
+display_url: "https://www.ms-promotion.ru"
+
+collections:
+  - name: "events"
+    label: "Events"
+    folder: "src/content/events"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date Start", name: "dateStart", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Date End", name: "dateEnd", widget: "datetime", required: false, date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "City", name: "city", widget: "string", required: false }
+      - { label: "Place", name: "place", widget: "string", required: false }
+      - { label: "Short Description", name: "descriptionShort", widget: "text" }
+      - { label: "Cover Image", name: "coverImage", widget: "image" }
+      - { label: "Slug", name: "slug", widget: "string", required: false }
+      - { label: "CTA Text", name: "ctaText", widget: "string", required: false }
+      - { label: "CTA URL", name: "ctaUrl", widget: "string", required: false }
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        options: ["draft", "published"]
+        default: "draft"
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "promos"
+    label: "Promos"
+    folder: "src/content/promos"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date To", name: "dateTo", widget: "datetime", required: false, date_format: "YYYY-MM-DD", time_format: false }
+      - { label: "Discount Text", name: "discountText", widget: "string", required: false }
+      - { label: "Short Description", name: "descriptionShort", widget: "text" }
+      - { label: "Cover Image", name: "coverImage", widget: "image" }
+      - { label: "Slug", name: "slug", widget: "string", required: false }
+      - { label: "CTA URL", name: "ctaUrl", widget: "string" }
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        options: ["draft", "published"]
+        default: "draft"
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "projects"
+    label: "Projects"
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Industry", name: "industry", widget: "string", required: false }
+      - { label: "Tags", name: "tags", widget: "list", default: [] }
+      - { label: "Year", name: "year", widget: "number", required: false, value_type: "int" }
+      - { label: "Short Description", name: "descriptionShort", widget: "text" }
+      - { label: "Cover Image", name: "coverImage", widget: "image" }
+      - { label: "Slug", name: "slug", widget: "string", required: false }
+      - { label: "Gallery", name: "gallery", widget: "list", field: { label: "Image", name: "image", widget: "image" }, required: false }
+      - label: "Status"
+        name: "status"
+        widget: "select"
+        options: ["draft", "published"]
+        default: "draft"
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "pages"
+    label: "Pages"
+    files:
+      - label: "History"
+        name: "history"
+        file: "src/content/pages/history.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Short Description", name: "descriptionShort", widget: "text" }
+          - label: "Status"
+            name: "status"
+            widget: "select"
+            options: ["draft", "published"]
+            default: "published"
+          - { label: "Body", name: "body", widget: "markdown" }
+      - label: "Services"
+        name: "services"
+        file: "src/content/pages/services.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Short Description", name: "descriptionShort", widget: "text" }
+          - label: "Status"
+            name: "status"
+            widget: "select"
+            options: ["draft", "published"]
+            default: "published"
+          - { label: "Body", name: "body", widget: "markdown" }
+      - label: "Contact"
+        name: "contact"
+        file: "src/content/pages/contact.md"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Short Description", name: "descriptionShort", widget: "text" }
+          - label: "Status"
+            name: "status"
+            widget: "select"
+            options: ["draft", "published"]
+            default: "published"
+          - { label: "Body", name: "body", widget: "markdown" }

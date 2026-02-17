@@ -1,0 +1,17 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SectionTitle from "@/components/SectionTitle.astro";
+import PromoCard from "@/components/PromoCard.astro";
+import { getPublishedPromos } from "@/lib/content";
+
+const promos = await getPublishedPromos();
+---
+
+<BaseLayout title="Акции | MS Promotion" description="Актуальные магазинные акции и механики продвижения брендов в ритейле.">
+  <section class="section-wrap mt-12">
+    <SectionTitle title="Акции" description="Текущие механики стимулирования продаж, бренд-активации и сезонные кампании." />
+    <div class="grid gap-5 md:grid-cols-2">
+      {promos.map((promo) => <PromoCard promo={promo} />)}
+    </div>
+  </section>
+</BaseLayout>

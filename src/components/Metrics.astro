@@ -1,0 +1,26 @@
+---
+interface MetricItem {
+  label: string;
+  value: string;
+  note?: string;
+}
+
+const metrics: MetricItem[] = [
+  { label: "лет в индустрии", value: "20+" },
+  { label: "городов покрытия", value: "18", note: "TODO: уточнить" },
+  { label: "проектов в год", value: "120+", note: "TODO: обновить" },
+  { label: "NPS клиентов", value: "74", note: "TODO: проверить" }
+];
+---
+
+<section class="section-wrap mt-16">
+  <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+    {metrics.map((metric) => (
+      <article class="card-surface rounded-2xl p-5">
+        <p class="text-xs uppercase tracking-[0.14em] text-muted">{metric.label}</p>
+        <p class="mt-3 font-display text-4xl font-semibold">{metric.value}</p>
+        {metric.note && <p class="mt-1 text-xs text-muted">{metric.note}</p>}
+      </article>
+    ))}
+  </div>
+</section>
