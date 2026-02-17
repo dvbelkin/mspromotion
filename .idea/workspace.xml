@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="6cc703d8-3845-4b68-8b18-a207b7205067" name="Default" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="mspromotion" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1YHmiNti0HtvTM2kNCfDRLiqaNJ" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../mediasoft.ru" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\belden\WebstormProjects\mspromotion\css" />
+      <recent name="C:\Users\belden\WebstormProjects\mspromotion\img" />
+      <recent name="C:\Users\belden.MS\WebstormProjects\mspromotion\app" />
+      <recent name="C:\Users\belden.MS\WebstormProjects\mspromotion" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\belden.MS\WebstormProjects\mspromotion\app" />
+      <recent name="C:\Users\belden.MS\WebstormProjects\mspromotion\app\event.html" />
+    </key>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6cc703d8-3845-4b68-8b18-a207b7205067" name="Default" comment="" />
+      <created>1468480201160</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1468480201160</updated>
+      <workItem from="1468480202239" duration="1386000" />
+      <workItem from="1541048478842" duration="10774000" />
+      <workItem from="1541136063634" duration="62000" />
+      <workItem from="1544179183484" duration="18000" />
+      <workItem from="1575619031703" duration="51112000" />
+      <workItem from="1576554370575" duration="837000" />
+      <workItem from="1576641991859" duration="4295000" />
+      <workItem from="1582608023471" duration="624000" />
+      <workItem from="1584337451363" duration="4028000" />
+      <workItem from="1584357025347" duration="14000" />
+      <workItem from="1611636175933" duration="41503000" />
+      <workItem from="1612335414739" duration="18000" />
+      <workItem from="1612335574690" duration="1096000" />
+      <workItem from="1613379236658" duration="48000" />
+      <workItem from="1634109122465" duration="516000" />
+      <workItem from="1639130811545" duration="3283000" />
+      <workItem from="1643693587817" duration="6753000" />
+      <workItem from="1643794427513" duration="5934000" />
+      <workItem from="1644381958452" duration="32000" />
+      <workItem from="1649752434341" duration="722000" />
+      <workItem from="1653628564422" duration="1106000" />
+      <workItem from="1660800929818" duration="248000" />
+      <workItem from="1664868854705" duration="17116000" />
+      <workItem from="1710140430902" duration="15892000" />
+      <workItem from="1711352283608" duration="91000" />
+      <workItem from="1723006775826" duration="1288000" />
+      <workItem from="1724318116435" duration="297000" />
+      <workItem from="1724995507650" duration="1625000" />
+      <workItem from="1724997597391" duration="1980000" />
+      <workItem from="1725434288350" duration="4114000" />
+      <workItem from="1726731595507" duration="50000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/../new promotion/index.js" />
+      </list>
+    </option>
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.php" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="552" y="238" key="#Deployment" timestamp="1724998258837">
+      <screen x="0" y="0" width="1920" height="1152" />
+    </state>
+    <state x="552" y="238" key="#Deployment/0.0.1920.1152@0.0.1920.1152" timestamp="1724998258837" />
+    <state x="552" y="238" key="#Notifications" timestamp="1723007838055">
+      <screen x="0" y="0" width="1920" height="1152" />
+    </state>
+    <state x="552" y="238" key="#Notifications/0.0.1920.1152@0.0.1920.1152" timestamp="1723007838055" />
+    <state x="740" y="335" key="FileChooserDialogImpl" timestamp="1726731642696">
+      <screen x="0" y="0" width="1920" height="1152" />
+    </state>
+    <state x="740" y="335" key="FileChooserDialogImpl/0.0.1920.1152@0.0.1920.1152" timestamp="1726731642696" />
+    <state x="463" y="222" key="SettingsEditor" timestamp="1724995630858">
+      <screen x="0" y="0" width="1920" height="1152" />
+    </state>
+    <state x="463" y="222" key="SettingsEditor/0.0.1920.1152@0.0.1920.1152" timestamp="1724995630858" />
+    <state x="830" y="494" key="publish.login" timestamp="1725434971123">
+      <screen x="0" y="0" width="1920" height="1152" />
+    </state>
+    <state x="830" y="494" key="publish.login/0.0.1920.1152@0.0.1920.1152" timestamp="1725434971123" />
+  </component>
+</project>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="web.ms">
+    <serverData>
+      <paths name="web.ms">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/mspromotion" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>
