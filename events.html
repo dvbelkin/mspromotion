@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Кейсы - MS Promotion</title>
-  <meta name="description" content="Обновлённая внутренняя страница кейсов на новом шаблоне с сохранением legacy-архива.">
+  <title>События - MS Promotion</title>
+  <meta name="description" content="Календарь ближайших событий MS Promotion: деловые форматы, клиентские встречи и event-проекты.">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/theme-light.css">
   <link rel="stylesheet" href="css/theme-dark.css">
   <link rel="stylesheet" href="css/theme-minimal.css">
 </head>
-<body data-page="cases" data-default-theme="light">
+<body data-page="events" data-default-theme="light">
   <a class="skip-link" href="#main">Перейти к содержанию</a>
   <header class="site-header">
     <div class="container topbar">
@@ -28,7 +28,7 @@
         </ul>
       </nav>
       <div class="header-actions">
-        <a class="btn btn-primary" href="legacy/cases-legacy.html">Старые кейсы</a>
+        <a class="btn btn-primary" href="promos.html">Смотреть акции</a>
         <div>
           <div class="theme-switcher" role="group" aria-label="Переключить тему">
             <button type="button" data-theme-option="light" aria-pressed="false">A</button>
@@ -44,28 +44,22 @@
   <main id="main" class="section">
     <div class="container">
       <div class="page-intro">
-        <h1>Кейсы (обновлённая внутренняя страница)</h1>
-        <p>Это пример того, как внутренние страницы переводятся на новый шаблон: та же семантика раздела, новые стили и связь с архивом.</p>
+        <h1>Все события</h1>
+        <p>Раздел сфокусирован на ближайших мероприятиях. Исторические события и визуальные материалы сохранены в legacy-архиве.</p>
       </div>
-
-      <div class="notice notice-spaced-bottom">
-        <p><strong>Паттерн миграции:</strong> единый header/footer + общий CSS + рендер карточек из JSON + ссылка на legacy, если у страницы есть историческая версия.</p>
-      </div>
-
-      <div class="grid projects" id="projects-list" data-limit="8" aria-live="polite"></div>
-
+      <div class="grid events" id="events-list" data-limit="99" aria-live="polite"></div>
       <div class="notice notice-spaced-top">
-        <p><strong>Оригинальные материалы доступны:</strong></p>
-        <p><a class="text-link" href="legacy/cases-legacy.html">legacy/cases-legacy.html</a></p>
-        <p><a class="text-link" href="app/bussinessevent.html">app/bussinessevent.html</a></p>
-        <p><a class="text-link" href="app/eventmarketing.html">app/eventmarketing.html</a></p>
+        <p><strong>Исторические страницы:</strong> <a class="text-link" href="app/bussinessevent.html">app/bussinessevent.html</a> <a class="text-link" href="app/event.html">app/event.html</a></p>
       </div>
     </div>
   </main>
 
   <footer class="site-footer">
     <div class="container footer-grid">
-      <div><h2>Контакты</h2><p>promotion@mediasoft.ru</p></div>
+      <div>
+        <h2>Контакты</h2>
+        <p>promotion@mediasoft.ru</p>
+      </div>
       <div>
         <ul class="footer-links"><li><a href="index.html">Главная</a></li><li><a href="projects.html">Проекты</a></li><li><a href="history.html">История</a></li></ul>
         <p class="footer-copy">© <span data-year></span> MS Promotion</p>

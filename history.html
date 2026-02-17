@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Кейсы - MS Promotion</title>
-  <meta name="description" content="Обновлённая внутренняя страница кейсов на новом шаблоне с сохранением legacy-архива.">
+  <title>История - MS Promotion</title>
+  <meta name="description" content="История MS Promotion, ключевые этапы развития и ссылки на сохранённые архивные страницы.">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/theme-light.css">
   <link rel="stylesheet" href="css/theme-dark.css">
   <link rel="stylesheet" href="css/theme-minimal.css">
 </head>
-<body data-page="cases" data-default-theme="light">
+<body data-page="history" data-default-theme="light">
   <a class="skip-link" href="#main">Перейти к содержанию</a>
   <header class="site-header">
     <div class="container topbar">
@@ -28,7 +28,7 @@
         </ul>
       </nav>
       <div class="header-actions">
-        <a class="btn btn-primary" href="legacy/cases-legacy.html">Старые кейсы</a>
+        <a class="btn btn-primary" href="legacy/index-legacy.html">Открыть legacy</a>
         <div>
           <div class="theme-switcher" role="group" aria-label="Переключить тему">
             <button type="button" data-theme-option="light" aria-pressed="false">A</button>
@@ -42,24 +42,27 @@
   </header>
 
   <main id="main" class="section">
-    <div class="container">
-      <div class="page-intro">
-        <h1>Кейсы (обновлённая внутренняя страница)</h1>
-        <p>Это пример того, как внутренние страницы переводятся на новый шаблон: та же семантика раздела, новые стили и связь с архивом.</p>
+    <div class="container story-grid">
+      <div>
+        <div class="page-intro page-intro-no-top">
+          <h1>История организации</h1>
+          <p>Новый интерфейс не заменяет старые материалы: все ключевые страницы и визуальный архив сохранены и доступны по отдельным ссылкам.</p>
+        </div>
+        <ul class="timeline">
+          <li><strong>2000+:</strong> Формируется экспертиза в организации событий и промо-активностей.</li>
+          <li><strong>2010+:</strong> Расширение портфеля кейсов: конференции, выставки, клиентские мероприятия.</li>
+          <li><strong>2018-2024:</strong> Масштабные retail-акции и регулярные проекты с федеральными брендами.</li>
+          <li><strong>2026:</strong> Обновление сайта с единой дизайн-системой и JSON-управлением проектами.</li>
+        </ul>
       </div>
-
-      <div class="notice notice-spaced-bottom">
-        <p><strong>Паттерн миграции:</strong> единый header/footer + общий CSS + рендер карточек из JSON + ссылка на legacy, если у страницы есть историческая версия.</p>
-      </div>
-
-      <div class="grid projects" id="projects-list" data-limit="8" aria-live="polite"></div>
-
-      <div class="notice notice-spaced-top">
-        <p><strong>Оригинальные материалы доступны:</strong></p>
-        <p><a class="text-link" href="legacy/cases-legacy.html">legacy/cases-legacy.html</a></p>
-        <p><a class="text-link" href="app/bussinessevent.html">app/bussinessevent.html</a></p>
-        <p><a class="text-link" href="app/eventmarketing.html">app/eventmarketing.html</a></p>
-      </div>
+      <aside class="notice">
+        <p><strong>Сохранённые страницы</strong></p>
+        <p><a class="text-link" href="legacy/index-legacy.html">Архивная главная</a></p>
+        <p><a class="text-link" href="legacy/cases-legacy.html">Архивный раздел кейсов</a></p>
+        <p><a class="text-link" href="app/bussinessevent.html">Старый раздел деловых мероприятий</a></p>
+        <p><a class="text-link" href="app/eventmarketing.html">Старый раздел event marketing</a></p>
+        <p><a class="text-link" href="app/check.html">Чековое промо / Telegram Bot</a></p>
+      </aside>
     </div>
   </main>
 
@@ -67,13 +70,12 @@
     <div class="container footer-grid">
       <div><h2>Контакты</h2><p>promotion@mediasoft.ru</p></div>
       <div>
-        <ul class="footer-links"><li><a href="index.html">Главная</a></li><li><a href="projects.html">Проекты</a></li><li><a href="history.html">История</a></li></ul>
+        <ul class="footer-links"><li><a href="index.html">Главная</a></li><li><a href="projects.html">Проекты</a></li><li><a href="cases.html">Кейсы</a></li></ul>
         <p class="footer-copy">© <span data-year></span> MS Promotion</p>
       </div>
     </div>
   </footer>
 
   <script src="js/main.js"></script>
-  <script src="js/render.js"></script>
 </body>
 </html>

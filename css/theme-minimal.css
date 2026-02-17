@@ -1,0 +1,40 @@
+﻿:root[data-theme="minimal"] {
+  --bg: #f4f4f2;
+  --bg-elevated: #ffffff;
+  --text: #151515;
+  --text-muted: #555555;
+  --line: #d7d7d3;
+  --accent: #202020;
+  --accent-contrast: #ffffff;
+  --surface-soft: #ededea;
+  --focus: #025ccf;
+  --hero-glow: linear-gradient(180deg, rgba(0, 0, 0, 0.04), transparent 48%);
+  --shadow: none;
+}
+
+:root[data-theme="minimal"] .hero,
+:root[data-theme="minimal"] .section,
+:root[data-theme="minimal"] .site-footer {
+  border-top: 1px solid var(--line);
+}
+
+:root[data-theme="minimal"] .hero::before {
+  opacity: 0.65;
+}
+
+:root[data-theme="minimal"] .card,
+:root[data-theme="minimal"] .hero-panel,
+:root[data-theme="minimal"] .admin-panel,
+:root[data-theme="minimal"] .main-nav,
+:root[data-theme="minimal"] .theme-switcher {
+  border-radius: 0;
+}
+
+:root[data-theme="minimal"] .btn {
+  border-radius: 0;
+}
+
+:root[data-theme="minimal"] .pill,
+:root[data-theme="minimal"] .tag {
+  border-radius: 0;
+}
