@@ -1,60 +1,14 @@
 ﻿(function () {
   "use strict";
 
-  var THEME_KEY = "mspromotion-theme";
-  var DEFAULT_THEME = "light";
-
-  function setTheme(themeName) {
-    var html = document.documentElement;
-    html.setAttribute("data-theme", themeName);
-
-    var options = document.querySelectorAll("[data-theme-option]");
-    options.forEach(function (button) {
-      var isActive = button.getAttribute("data-theme-option") === themeName;
-      button.setAttribute("aria-pressed", String(isActive));
-      button.classList.toggle("is-active", isActive);
-    });
-
-    var label = document.querySelector("[data-theme-label]");
-    if (label) {
-      var map = {
-        light: "Вариант A: Светлый",
-        dark: "Вариант B: Темный",
-        minimal: "Вариант C: Минимализм"
-      };
-      label.textContent = map[themeName] || map.light;
-    }
+  function applyDarkTheme() {
+    document.documentElement.setAttribute("data-theme", "dark");
 
     try {
-      localStorage.setItem(THEME_KEY, themeName);
+      localStorage.removeItem("mspromotion-theme");
     } catch (error) {
       // localStorage can be blocked by browser policy.
     }
-  }
-
-  function getStoredTheme() {
-    try {
-      return localStorage.getItem(THEME_KEY);
-    } catch (error) {
-      return null;
-    }
-  }
-
-  function initThemeSwitcher() {
-    var stored = getStoredTheme();
-    var initial = stored || document.body.getAttribute("data-default-theme") || DEFAULT_THEME;
-
-    setTheme(initial);
-
-    var options = document.querySelectorAll("[data-theme-option]");
-    options.forEach(function (button) {
-      button.addEventListener("click", function () {
-        var theme = button.getAttribute("data-theme-option");
-        if (theme) {
-          setTheme(theme);
-        }
-      });
-    });
   }
 
   function initNavigation() {
@@ -93,7 +47,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    initThemeSwitcher();
+    applyDarkTheme();
     initNavigation();
     setYear();
   });

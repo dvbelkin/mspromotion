@@ -5,11 +5,8 @@
 ## Что обновлено
 
 - Новый главный экран с приоритетом для разделов «События» и «Магазинные акции».
-- Единая дизайн-система на `css/base.css` + темы:
-  - `css/theme-light.css` (Вариант A: светлый редакционный)
-  - `css/theme-dark.css` (Вариант B: темный контрастный)
-  - `css/theme-minimal.css` (Вариант C: минимализм и строгая сетка)
-- Переключатель темы на страницах (сохранение выбора в `localStorage`).
+- Единая дизайн-система на `css/base.css` + `css/theme-dark.css` (Вариант B: темный контрастный).
+- Фиксированная тема: вариант B на всех страницах.
 - Данные для рендера:
   - `data/events.json`
   - `data/promos.json`
@@ -36,9 +33,7 @@
 - `admin.html`
 - `assets/img`
 - `css/base.css`
-- `css/theme-light.css`
 - `css/theme-dark.css`
-- `css/theme-minimal.css`
 - `js/main.js`
 - `js/render.js`
 - `js/admin.js`
@@ -86,7 +81,7 @@
 
 На примере `cases.html`:
 
-1. Подключить единые `css/base.css` + `theme-*.css`.
+1. Подключить единые `css/base.css` + `css/theme-dark.css`.
 2. Использовать общий header/footer как на `index.html`.
 3. Перенести контент в секции нового каркаса.
 4. При необходимости выводить карточки через `js/render.js`.
