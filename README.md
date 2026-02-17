@@ -181,6 +181,6 @@ dist
 2. Set callback URL to your Decap auth endpoint (for Netlify: `https://<your-site>.netlify.app/admin/`).
 3. In Decap config set:
    - `backend.name: github`
-   - `backend.repo: dvbel/mspromotion`
-   - `backend.branch: main`
+   - `backend.repo: dvbelkin/mspromotion`
+   - `backend.branch: redesign-modern-ui` (switch to `main` after merge)
 4. If you are not using Netlify Auth Provider, set up an OAuth proxy and configure `base_url` + `auth_endpoint` in `public/admin/config.yml`.

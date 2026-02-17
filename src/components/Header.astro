@@ -20,9 +20,9 @@ const isActive = (href: string) => (href === "/" ? currentPath === "/" : current
 
 <header class="sticky top-0 z-50 border-b border-line/80 bg-surface/85 backdrop-blur-lg">
   <div class="section-wrap flex min-h-[78px] items-center justify-between gap-4">
-    <a href="/" class="focus-outline inline-flex items-center gap-3 font-display text-lg font-semibold tracking-wide">
-      <span class="inline-flex size-9 items-center justify-center rounded-full border border-line bg-surface-soft text-sm text-accent2">MS</span>
-      <span>MS Promotion</span>
+    <a href="/" class="focus-outline inline-flex items-center gap-3" aria-label="MS Promotion">
+      <img src="/uploads/logo.png" alt="Mediasoft" class="brand-logo brand-logo--dark" width="175" height="64" loading="eager" decoding="async" />
+      <img src="/uploads/logo-blue.png" alt="" aria-hidden="true" class="brand-logo brand-logo--light" width="175" height="64" loading="eager" decoding="async" />
     </a>
 
     <button

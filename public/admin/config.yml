@@ -1,7 +1,7 @@
 backend:
   name: github
-  repo: dvbel/mspromotion
-  branch: main
+  repo: dvbelkin/mspromotion
+  branch: redesign-modern-ui
   auth_scope: repo
 
 local_backend: true
@@ -122,3 +122,4 @@ collections:
             options: ["draft", "published"]
             default: "published"
           - { label: "Body", name: "body", widget: "markdown" }
+
