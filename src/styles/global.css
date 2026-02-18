@@ -147,11 +147,11 @@ body::after {
 
 .logo-tile {
   display: flex;
-  min-height: 92px;
+  min-height: 74px;
   align-items: center;
   justify-content: center;
-  border-radius: 18px;
-  padding: 0.75rem;
+  border-radius: 14px;
+  padding: 0.55rem;
   background: linear-gradient(180deg, #ffffff 0%, #f6f8fc 100%);
   border-color: rgba(18, 28, 56, 0.12);
   box-shadow: 0 10px 24px rgba(7, 11, 22, 0.12);
@@ -163,9 +163,9 @@ body::after {
 }
 
 .logo-tile__image {
-  height: 42px;
+  height: 34px;
   width: 100%;
-  max-width: 190px;
+  max-width: 150px;
   object-fit: contain;
   filter: none;
   opacity: 1;
@@ -179,6 +179,19 @@ body::after {
 html[data-theme="light"] .logo-tile {
   background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
   border-color: rgba(18, 28, 56, 0.1);
+}
+
+@media (min-width: 640px) {
+  .logo-tile {
+    min-height: 92px;
+    border-radius: 18px;
+    padding: 0.75rem;
+  }
+
+  .logo-tile__image {
+    height: 42px;
+    max-width: 190px;
+  }
 }
 
 .section-wrap {
