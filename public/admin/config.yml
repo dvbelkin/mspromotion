@@ -2,7 +2,10 @@ backend:
   name: github
   repo: dvbelkin/mspromotion
   branch: redesign-modern-ui
+  base_url: https://auth.ms-promotion.ru
+  auth_endpoint: auth
   auth_scope: repo
+
 
 local_backend: true
 

@@ -1,7 +1,8 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)]
-    [string]$Host,
+    [Alias("Host")]
+    [string]$Server,
 
     [Parameter(Mandatory = $true)]
     [string]$User,
@@ -9,12 +10,15 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$TargetDir,
 
-    [int]$Port = 22,
+    [int]$Port = 2222,
     [string]$SshKeyPath = "",
+    [string]$SshConfigPath = "",
+    [switch]$IgnoreLocalSshConfig,
     [string]$BuildCommand = "npm run build",
     [string]$ArtifactDir = "dist",
     [int]$KeepReleases = 5,
     [string]$RemotePostCommand = "",
+    [switch]$AllocateTty,
     [switch]$SkipBuild
 )
 
@@ -91,12 +95,22 @@ finally {
 
 $sshArgs = @("-p", "$Port")
 $scpArgs = @("-P", "$Port")
+
+if ($IgnoreLocalSshConfig) {
+    $SshConfigPath = "NUL"
+}
+
+if (-not [string]::IsNullOrWhiteSpace($SshConfigPath)) {
+    $sshArgs += @("-F", $SshConfigPath)
+    $scpArgs += @("-F", $SshConfigPath)
+}
+
 if (-not [string]::IsNullOrWhiteSpace($SshKeyPath)) {
     $sshArgs += @("-i", $SshKeyPath)
     $scpArgs += @("-i", $SshKeyPath)
 }
 
-$remote = "$User@$Host"
+$remote = "$User@$Server"
 
 Write-Host "Uploading archive to ${remote}:$remoteArchive"
 & scp @scpArgs $localArchive "$remote`:$remoteArchive"
@@ -128,15 +142,17 @@ ln -sfn "`$RELEASE_DIR" "`$CURRENT_LINK"
 $postCommandBlock
 
 rm -f "`$REMOTE_ARCHIVE"
-
-old_releases=`$(ls -1dt "`$RELEASES_DIR"/* 2>/dev/null | tail -n +`$((KEEP_RELEASES + 1)) || true)
-if [ -n "`$old_releases" ]; then
-  echo "`$old_releases" | xargs -r rm -rf
-fi
 "@
+$remoteScript = $remoteScript -replace "`r`n", "`n"
 
 Write-Host "Deploying release $release on server"
-$remoteScript | & ssh @sshArgs $remote "bash -s"
+$sshDeployArgs = @($sshArgs)
+$autoNeedsTty = -not [string]::IsNullOrWhiteSpace($RemotePostCommand) -and ($RemotePostCommand -match '(^|\s)sudo(\s|$)')
+if ($AllocateTty -or $autoNeedsTty) {
+    $sshDeployArgs += "-tt"
+}
+
+$remoteScript | & ssh @sshDeployArgs $remote "bash -s"
 if ($LASTEXITCODE -ne 0) {
     throw "Remote deploy script failed"
 }

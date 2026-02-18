@@ -191,3 +191,11 @@ dist
 - public/robots.txt disallows /events and /promos.
 - src/pages/sitemap.xml.ts excludes events and promos URLs.
 - Decap CMS now manages only projects and static pages (services/contact).
+
+## Dedploy на сервер 
+.\deploy.ps1 `
+   -Server 192.168.1.6 `
+   -User tahradm `
+   -TargetDir /var/www/mspromotion `
+   -Port 2222 `
+   -IgnoreLocalSshConfig
