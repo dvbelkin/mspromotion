@@ -1,14 +1,46 @@
 ---
-const logos = ["SONY", "Ростелеком", "Lenovo", "Hansa", "JACOBS", "Пятёрочка"];
+const logos = [
+  { name: "Пятёрочка", src: "/uploads/brands/pyaterochka.jpg" },
+  { name: "SONY", src: "/uploads/brands/sony.gif" },
+  { name: "Ростелеком", src: "/uploads/brands/rostelecom.gif" },
+  { name: "Lenovo", src: "/uploads/brands/lenovo.jpg" },
+  { name: "Mondelez International", src: "/uploads/brands/mondelez.jpg" },
+  { name: "Global Functional Drinks", src: "/uploads/brands/global-functional-drinks.jpg" },
+  { name: "Hochland", src: "/uploads/brands/hochland.jpg" },
+  { name: "EFES", src: "/uploads/brands/efes.jpg" },
+  { name: "Ford", src: "/uploads/brands/ford.jpg" },
+  { name: "Johnson & Johnson", src: "/uploads/brands/johnson-johnson.jpg" },
+  { name: "PepsiCo", src: "/uploads/brands/pepsico.jpg" },
+  { name: "MAC", src: "/uploads/brands/mac.jpg" },
+  { name: "Nestle", src: "/uploads/brands/nestle-blue.jpg" },
+  { name: "Mars", src: "/uploads/brands/mars.jpg" },
+  { name: "Heineken", src: "/uploads/brands/heineken.jpg" },
+  { name: "Levi's", src: "/uploads/brands/levis.jpg" },
+  { name: "SCA", src: "/uploads/brands/sca.jpg" },
+  { name: "Мегафон", src: "/uploads/brands/megafon.jpg" },
+  { name: "Эльдорадо", src: "/uploads/brands/eldorado.jpg" },
+  { name: "BBOSW", src: "/uploads/brands/bbosw.jpg" },
+  { name: "Unilever", src: "/uploads/brands/unilever.jpg" },
+  { name: "KIA", src: "/uploads/brands/kia.jpg" },
+  { name: "Danone", src: "/uploads/brands/danone.jpg" }
+];
 ---
 
-<section class="section-wrap mt-14">
-  <p class="eyebrow">Клиенты и бренды</p>
-  <div class="mt-5 grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
+<section class="section-wrap mt-14" aria-labelledby="client-logos-title">
+  <p class="eyebrow" id="client-logos-title">Клиенты и бренды</p>
+  <div class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
     {logos.map((logo) => (
-      <div class="card-surface flex min-h-[68px] items-center justify-center rounded-xl px-4 text-sm font-semibold uppercase tracking-[0.12em] text-muted">
-        {logo}
-      </div>
+      <article class="card-surface logo-tile">
+        <img
+          src={logo.src}
+          alt={logo.name}
+          loading="lazy"
+          decoding="async"
+          width="220"
+          height="96"
+          class="logo-tile__image"
+        />
+      </article>
     ))}
   </div>
 </section>

@@ -5,22 +5,31 @@ import { formatDateRange } from "@/lib/content";
 const { event } = Astro.props as { event: CollectionEntry<"events"> };
 ---
 
-<article class="card-surface group rounded-2xl p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-accent2/40">
-  <img
-    src={event.data.coverImage}
-    alt={event.data.title}
-    loading="lazy"
-    class="h-44 w-full rounded-xl object-cover"
-    width="640"
-    height="352"
-  />
-  <p class="mt-4 text-xs uppercase tracking-[0.14em] text-muted">
-    {formatDateRange(event.data.dateStart, event.data.dateEnd)}
-    {event.data.city ? ` · ${event.data.city}` : ""}
-  </p>
-  <h3 class="mt-2 font-display text-2xl font-semibold leading-tight">{event.data.title}</h3>
-  <p class="mt-3 text-sm text-muted">{event.data.descriptionShort}</p>
-  <a href={`/events/${event.slug}`} class="focus-outline mt-4 inline-flex text-sm font-semibold text-accent2 transition group-hover:translate-x-0.5">
-    Подробнее →
+<article class="card-surface group overflow-hidden rounded-[24px] p-4 shadow-soft transition hover:-translate-y-1">
+  <div class="relative overflow-hidden rounded-[18px]">
+    <img
+      src={event.data.coverImage}
+      alt={event.data.title}
+      loading="lazy"
+      class="h-48 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+      width="640"
+      height="352"
+    />
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface/55 to-transparent"></div>
+  </div>
+
+  <div class="mt-4 flex items-center justify-between gap-3">
+    <p class="text-xs uppercase tracking-[0.14em] text-muted">
+      {formatDateRange(event.data.dateStart, event.data.dateEnd)}
+    </p>
+    {event.data.city && <span class="chip">{event.data.city}</span>}
+  </div>
+
+  <h3 class="mt-3 font-display text-2xl font-semibold leading-tight">{event.data.title}</h3>
+  <p class="mt-3 text-sm leading-relaxed text-muted">{event.data.descriptionShort}</p>
+
+  <a href={`/events/${event.slug}`} class="focus-outline mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent2 transition group-hover:translate-x-0.5">
+    Подробнее
+    <span aria-hidden="true">→</span>
   </a>
 </article>

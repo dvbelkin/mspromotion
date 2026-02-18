@@ -4,22 +4,30 @@ import type { CollectionEntry } from "astro:content";
 const { promo } = Astro.props as { promo: CollectionEntry<"promos"> };
 ---
 
-<article class="card-surface group rounded-2xl p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-accent2/40">
-  <img
-    src={promo.data.coverImage}
-    alt={promo.data.title}
-    loading="lazy"
-    class="h-48 w-full rounded-xl object-cover"
-    width="640"
-    height="384"
-  />
-  <div class="mt-4 flex items-center justify-between gap-3">
-    <p class="text-xs uppercase tracking-[0.14em] text-muted">Акция</p>
-    {promo.data.discountText && <span class="rounded-full border border-line px-3 py-1 text-xs text-muted">{promo.data.discountText}</span>}
+<article class="card-surface group overflow-hidden rounded-[24px] p-4 shadow-soft transition hover:-translate-y-1">
+  <div class="relative overflow-hidden rounded-[18px]">
+    <img
+      src={promo.data.coverImage}
+      alt={promo.data.title}
+      loading="lazy"
+      class="h-56 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+      width="640"
+      height="384"
+    />
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface/65 via-surface/10 to-transparent"></div>
+    <p class="absolute left-3 top-3 rounded-full border border-white/20 bg-surface/60 px-3 py-1 text-xs uppercase tracking-[0.14em] text-white/90">Promo</p>
   </div>
-  <h3 class="mt-2 font-display text-2xl font-semibold leading-tight">{promo.data.title}</h3>
-  <p class="mt-3 text-sm text-muted">{promo.data.descriptionShort}</p>
-  <a href={`/promos/${promo.slug}`} class="focus-outline mt-4 inline-flex text-sm font-semibold text-accent2 transition group-hover:translate-x-0.5">
-    Открыть акцию →
+
+  <div class="mt-4 flex items-center justify-between gap-3">
+    <p class="text-xs uppercase tracking-[0.14em] text-muted">Магазинная акция</p>
+    {promo.data.discountText && <span class="chip">{promo.data.discountText}</span>}
+  </div>
+
+  <h3 class="mt-3 font-display text-2xl font-semibold leading-tight">{promo.data.title}</h3>
+  <p class="mt-3 text-sm leading-relaxed text-muted">{promo.data.descriptionShort}</p>
+
+  <a href={`/promos/${promo.slug}`} class="focus-outline mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent2 transition group-hover:translate-x-0.5">
+    Открыть акцию
+    <span aria-hidden="true">→</span>
   </a>
 </article>

@@ -24,7 +24,7 @@
   - `/events` и `/events/[slug]`
   - `/promos` и `/promos/[slug]`
   - `/projects` и `/projects/[slug]`
-  - `/history`, `/services`, `/contact`
+  - `/services`, `/contact`, `/legacy`
 - Фильтр по тегам на `/projects`.
 - Темная тема по умолчанию + переключатель на светлую (localStorage).
 - Decap CMS:
@@ -42,7 +42,7 @@
 - `src/pages/events/*`
 - `src/pages/promos/*`
 - `src/pages/projects/*`
-- `src/pages/history.astro`
+- `src/pages/history.astro` (redirects to `/legacy`)
 - `src/pages/services.astro`
 - `src/pages/contact.astro`
 - `src/content/events/*.md`
@@ -184,3 +184,10 @@ dist
    - `backend.repo: dvbelkin/mspromotion`
    - `backend.branch: redesign-modern-ui` (switch to `main` after merge)
 4. If you are not using Netlify Auth Provider, set up an OAuth proxy and configure `base_url` + `auth_endpoint` in `public/admin/config.yml`.
+
+## 2026-02 Indexing and CMS Update
+
+- Pages under /events and /promos are now marked with noindex, nofollow.
+- public/robots.txt disallows /events and /promos.
+- src/pages/sitemap.xml.ts excludes events and promos URLs.
+- Decap CMS now manages only projects and static pages (services/contact).

@@ -4,86 +4,32 @@ import Hero from "@/components/Hero.astro";
 import Metrics from "@/components/Metrics.astro";
 import LogoStrip from "@/components/LogoStrip.astro";
 import SectionTitle from "@/components/SectionTitle.astro";
-import EventCard from "@/components/EventCard.astro";
-import PromoCard from "@/components/PromoCard.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
-import { getPublishedEvents, getPublishedPromos, getPublishedProjects } from "@/lib/content";
+import { getPublishedProjects } from "@/lib/content";
 
-const events = await getPublishedEvents();
-const promos = await getPublishedPromos();
 const projects = await getPublishedProjects();
-
-const today = new Date();
-today.setHours(0, 0, 0, 0);
-
-const upcomingEvents = events.filter((event) => event.data.dateStart >= today);
-const eventsToShow = (upcomingEvents.length ? upcomingEvents : events).slice(0, 6);
-const promosToShow = promos.slice(0, 4);
 const projectsToShow = projects.slice(0, 6);
 ---
 
 <BaseLayout
-  title="MS Promotion - События и магазинные акции"
-  description="Современная платформа MS Promotion: ближайшие события, активные акции, проекты и историческая преемственность агентства."
+  title="MS Promotion - маркетинговые проекты и промо-решения"
+  description="MS Promotion: кейсы и услуги агентства. Обновленный интерфейс без потери исторического контента."
 >
-  <section class="pt-10">
+  <section class="pt-4 md:pt-6">
     <Hero />
     <Metrics />
     <LogoStrip />
   </section>
 
   <section class="section-wrap mt-20">
-    <SectionTitle title="Ближайшие события" description="Сначала показываем то, что актуально сейчас. В карточках: дата, формат и быстрый переход в детальную страницу." />
-    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-      {eventsToShow.map((event) => <EventCard event={event} />)}
-    </div>
-    <a href="/events" class="focus-outline mt-6 inline-flex rounded-full border border-line px-5 py-2 text-sm font-semibold text-text transition hover:border-accent2 hover:text-accent2">
-      Все события
-    </a>
-  </section>
-
-  <section class="section-wrap mt-20">
-    <SectionTitle title="Магазинные акции" description="Плашки с ключевыми промо-механиками: что запускаем, до какой даты и куда перейти за заявкой." />
-    <div class="grid gap-5 md:grid-cols-2">
-      {promosToShow.map((promo) => <PromoCard promo={promo} />)}
-    </div>
-    <a href="/promos" class="focus-outline mt-6 inline-flex rounded-full border border-line px-5 py-2 text-sm font-semibold text-text transition hover:border-accent2 hover:text-accent2">
-      Все акции
-    </a>
-  </section>
-
-  <section class="section-wrap mt-20">
-    <SectionTitle title="Проекты и кейсы" description="Исторические и актуальные кейсы. Легаси-материалы сохранены, структура обновлена под современную навигацию." />
-    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-      {projectsToShow.map((project) => <ProjectCard project={project} />)}
-    </div>
-    <a href="/projects" class="focus-outline mt-6 inline-flex rounded-full border border-line px-5 py-2 text-sm font-semibold text-text transition hover:border-accent2 hover:text-accent2">
-      Перейти к кейсам
-    </a>
-  </section>
-
-  <section class="section-wrap mt-20 grid gap-6 lg:grid-cols-2">
-    <article class="card-surface rounded-2xl p-6">
-      <p class="eyebrow">Услуги</p>
-      <h2 class="mt-3 font-display text-3xl font-semibold">Коротко по направлениям</h2>
-      <ul class="mt-4 space-y-2 text-sm text-muted">
-        <li>Event Marketing: деловые и клиентские мероприятия</li>
-        <li>Trade & Customer Promo: retail-акции и стимулирование продаж</li>
-        <li>Проектная production-поддержка и полевые команды</li>
-      </ul>
-      <a href="/services" class="focus-outline mt-5 inline-flex text-sm font-semibold text-accent2">Открыть услуги →</a>
-    </article>
-
-    <article class="card-surface rounded-2xl p-6">
-      <p class="eyebrow">Преемственность</p>
-      <h2 class="mt-3 font-display text-3xl font-semibold">История и архив</h2>
-      <p class="mt-4 text-sm text-muted">
-        Мы сохранили материалы и страницы старого сайта, добавили совместимые URL и аккуратно обновили визуальную систему без потери контента.
-      </p>
-      <div class="mt-5 flex flex-wrap gap-3">
-        <a href="/history" class="focus-outline rounded-full border border-line px-5 py-2 text-sm font-semibold text-text transition hover:border-accent2 hover:text-accent2">История</a>
-        <a href="/legacy" class="focus-outline rounded-full border border-line px-5 py-2 text-sm font-semibold text-text transition hover:border-accent2 hover:text-accent2">Легаси-архив</a>
+    <div class="section-shell">
+      <SectionTitle title="Проекты и кейсы" description="Ключевые реализованные кампании: ритейл-активации, бренд-проекты и деловые форматы." />
+      <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {projectsToShow.map((project) => <ProjectCard project={project} />)}
       </div>
-    </article>
+      <a href="/projects" class="focus-outline mt-7 inline-flex rounded-full border border-line bg-surface-elevated px-5 py-2 text-sm font-semibold text-text transition hover:border-accent2 hover:text-accent2">
+        Перейти к кейсам
+      </a>
+    </div>
   </section>
 </BaseLayout>

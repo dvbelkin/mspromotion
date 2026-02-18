@@ -10,7 +10,7 @@ const allTags = [...new Set<string>(projects.flatMap((project) => (project.data.
 
 <BaseLayout title="Проекты | MS Promotion" description="Архив и актуальные кейсы MS Promotion с фильтрацией по тегам и отраслям.">
   <section class="section-wrap mt-12">
-    <SectionTitle title="Проекты и кейсы" description="Легко фильтруйте кейсы по тегам, чтобы быстро найти релевантные примеры для брифа." />
+    <SectionTitle tag="h1" title="Проекты и кейсы" description="Легко фильтруйте кейсы по тегам, чтобы быстро найти релевантные примеры для брифа." />
 
     <div class="mt-6 flex flex-wrap gap-2" id="tag-filter" aria-label="Фильтр по тегам">
       <button class="focus-outline tag-button rounded-full border border-line bg-surface-soft px-4 py-2 text-xs font-semibold uppercase tracking-[0.08em] text-text" data-tag="all" type="button">Все</button>

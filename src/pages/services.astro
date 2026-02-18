@@ -1,21 +1,124 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { getPublishedPage } from "@/lib/content";
-import { render } from "astro:content";
+import SectionTitle from "@/components/SectionTitle.astro";
+import { getPublishedPage, getPublishedProjects } from "@/lib/content";
 
 const page = await getPublishedPage("services");
 if (!page) {
   throw new Error("Page services not found");
 }
 
-const { Content } = await render(page);
+const featuredProjects = (await getPublishedProjects()).slice(0, 3);
+
+const serviceCards = [
+  {
+    title: "Event Marketing",
+    subtitle: "Деловые и клиентские мероприятия под KPI",
+    image: "/uploads/event-hansa.png",
+    points: ["Форумы, конференции и презентации", "Сценарий, продюсирование и режиссура", "Работа с площадкой и подрядчиками"]
+  },
+  {
+    title: "Trade & Customer Promo",
+    subtitle: "Магазинные и потребительские активации",
+    image: "/uploads/promo-lenovo.jpg",
+    points: ["Механики стимулирования продаж", "Запуски продуктов в сетях", "Полевой контроль и отчеты"]
+  },
+  {
+    title: "Project & Production",
+    subtitle: "Полный цикл реализации проекта",
+    image: "/uploads/promo-jacobs.jpg",
+    points: ["Брифинг и проектирование этапов", "Команда на площадке и QA", "Пост-аналитика и рекомендации"]
+  }
+];
+
+const workflow = [
+  { step: "01", title: "Бриф", text: "Фиксируем задачи, KPI, бюджет и сроки. Согласуем понятный scope проекта." },
+  { step: "02", title: "Концепт", text: "Собираем рабочую механику, сценарий и продакшн-план под вашу аудиторию." },
+  { step: "03", title: "Запуск", text: "Реализуем проект на площадке, управляем командой и контролируем качество." },
+  { step: "04", title: "Итоги", text: "Готовим отчетность, замеряем результат и формируем план масштабирования." }
+];
 ---
 
 <BaseLayout title="Услуги | MS Promotion" description={page.data.descriptionShort}>
-  <article class="section-wrap mt-12">
-    <h1 class="font-display text-4xl font-semibold md:text-5xl">{page.data.title}</h1>
-    <div class="prose mt-8 max-w-none prose-headings:font-display prose-headings:text-text prose-p:text-muted prose-li:text-muted prose-strong:text-text prose-a:text-accent2">
-      <Content />
+  <section class="section-wrap mt-12">
+    <div class="hero-glow relative overflow-hidden rounded-[32px] border border-line px-6 py-12 md:px-12 md:py-16">
+      <div class="relative z-10 grid gap-8 lg:grid-cols-[1.1fr,0.9fr] lg:items-end">
+        <div>
+          <p class="eyebrow">MS Promotion Services</p>
+          <h1 class="mt-3 max-w-[15ch] font-display text-4xl font-semibold leading-[1.04] md:text-6xl">{page.data.title}</h1>
+          <p class="mt-5 max-w-[56ch] text-base leading-relaxed text-muted md:text-lg">{page.data.descriptionShort}</p>
+          <div class="mt-8 flex flex-wrap gap-2">
+            <span class="chip">Event & Retail</span>
+            <span class="chip">Production cycle</span>
+            <span class="chip">Региональные команды</span>
+          </div>
+        </div>
+        <div class="card-surface rounded-2xl p-5 md:p-6">
+          <p class="text-xs uppercase tracking-[0.16em] text-muted">Быстрый старт</p>
+          <p class="mt-3 text-sm leading-relaxed text-muted">Опишите задачу в двух-трех предложениях. Вернемся с форматом, сроками и оценкой ресурсов.</p>
+          <div class="mt-5 flex flex-wrap gap-3">
+            <a href="/contact" class="focus-outline rounded-full bg-accent px-5 py-2 text-sm font-semibold text-white transition hover:bg-accent/85">Обсудить проект</a>
+            <a href="/projects" class="focus-outline rounded-full border border-line bg-surface px-5 py-2 text-sm font-semibold text-text transition hover:border-accent2 hover:text-accent2">Смотреть кейсы</a>
+          </div>
+        </div>
+      </div>
     </div>
-  </article>
+  </section>
+
+  <section class="section-wrap mt-14">
+    <div class="section-shell">
+      <SectionTitle title="Основные направления" description="Три рабочих блока, которые покрывают запуск, реализацию и контроль качества." />
+      <div class="grid gap-5 lg:grid-cols-3">
+        {serviceCards.map((service) => (
+          <article class="card-surface group overflow-hidden rounded-[22px]">
+            <img src={service.image} alt={service.title} loading="lazy" width="800" height="480" class="h-48 w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
+            <div class="p-5">
+              <h2 class="font-display text-2xl font-semibold leading-tight">{service.title}</h2>
+              <p class="mt-2 text-sm text-muted">{service.subtitle}</p>
+              <ul class="mt-4 space-y-2 text-sm text-muted">
+                {service.points.map((point) => (
+                  <li class="flex items-start gap-2">
+                    <span aria-hidden="true" class="mt-[6px] inline-block h-1.5 w-1.5 rounded-full bg-accent2"></span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-wrap mt-14">
+    <div class="section-shell">
+      <SectionTitle title="Как мы работаем" description="Структурный процесс без хаоса: от брифа до итоговой аналитики." />
+      <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        {workflow.map((item) => (
+          <article class="card-surface rounded-2xl p-5">
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent2">{item.step}</p>
+            <h3 class="mt-2 font-display text-2xl font-semibold">{item.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-muted">{item.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-wrap mt-14">
+    <div class="section-shell">
+      <SectionTitle title="Связанные кейсы" description="Примеры проектов, которые показывают подход в реальной реализации." />
+      <div class="grid gap-5 md:grid-cols-3">
+        {featuredProjects.map((project) => (
+          <a href={`/projects/${project.slug}`} class="card-surface group block overflow-hidden rounded-2xl p-3 transition hover:-translate-y-1">
+            <img src={project.data.coverImage} alt={project.data.title} loading="lazy" width="640" height="420" class="h-40 w-full rounded-xl object-cover transition duration-500 group-hover:scale-[1.03]" />
+            <p class="mt-3 text-xs uppercase tracking-[0.15em] text-muted">{project.data.industry || "Проект"}</p>
+            <h3 class="mt-2 font-display text-xl font-semibold leading-tight">{project.data.title}</h3>
+            <p class="mt-2 text-sm text-muted">{project.data.descriptionShort}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
 </BaseLayout>

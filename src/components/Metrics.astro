@@ -6,20 +6,20 @@ interface MetricItem {
 }
 
 const metrics: MetricItem[] = [
-  { label: "лет в индустрии", value: "20+" },
-  { label: "городов покрытия", value: "18", note: "TODO: уточнить" },
-  { label: "проектов в год", value: "120+", note: "TODO: обновить" },
-  { label: "NPS клиентов", value: "74", note: "TODO: проверить" }
+  { label: "лет в индустрии", value: "28+" },
+  { label: "городов покрытия", value: "4" },
+  { label: "проектов в год", value: "21+" },
+  { label: "NPS клиентов", value: "74"}
 ];
 ---
 
 <section class="section-wrap mt-16">
-  <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+  <div class="section-shell section-shell--plain grid auto-rows-fr gap-3 sm:grid-cols-2 lg:grid-cols-4">
     {metrics.map((metric) => (
-      <article class="card-surface rounded-2xl p-5">
+      <article class="card-surface metric-tile rounded-2xl p-5">
         <p class="text-xs uppercase tracking-[0.14em] text-muted">{metric.label}</p>
-        <p class="mt-3 font-display text-4xl font-semibold">{metric.value}</p>
-        {metric.note && <p class="mt-1 text-xs text-muted">{metric.note}</p>}
+        <p class="mt-3 font-display text-4xl font-semibold md:text-5xl">{metric.value}</p>
+        {metric.note && <p class="mt-2 text-xs text-muted">{metric.note}</p>}
       </article>
     ))}
   </div>

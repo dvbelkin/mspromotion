@@ -1,11 +1,12 @@
 ---
-const { title, description } = Astro.props as { title: string; description?: string };
+const { title, description, tag = "h2" } = Astro.props as { title: string; description?: string; tag?: "h1" | "h2" };
+const HeadingTag = tag;
 ---
 
 <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
   <div>
     <p class="eyebrow">MS Promotion</p>
-    <h2 class="mt-2 font-display text-3xl font-semibold md:text-4xl">{title}</h2>
+    <HeadingTag class="mt-2 max-w-[18ch] font-display text-3xl font-semibold leading-tight md:text-5xl">{title}</HeadingTag>
   </div>
-  {description && <p class="max-w-2xl text-sm text-muted md:text-base">{description}</p>}
+  {description && <p class="max-w-2xl text-sm leading-relaxed text-muted md:text-base">{description}</p>}
 </div>

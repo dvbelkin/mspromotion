@@ -12,7 +12,7 @@ const { promo } = Astro.props as { promo: CollectionEntry<"promos"> };
 const { Content } = await render(promo);
 ---
 
-<BaseLayout title={`${promo.data.title} | MS Promotion`} description={promo.data.descriptionShort}>
+<BaseLayout title={`${promo.data.title} | MS Promotion`} description={promo.data.descriptionShort} image={promo.data.coverImage} type="article" noindex={true}>
   <article class="section-wrap mt-12">
     <a href="/promos" class="focus-outline text-sm text-accent2">← К списку акций</a>
     <h1 class="mt-3 font-display text-4xl font-semibold md:text-5xl">{promo.data.title}</h1>

@@ -4,7 +4,7 @@ dateStart: 2026-04-25
 city: "Новосибирск"
 place: "Площадка клиента"
 descriptionShort: "Открытый маршрут по этапам подготовки проекта: от брифа до пост-аналитики."
-coverImage: "/uploads/event-rostelecom.gif"
+coverImage: "/uploads/event-rostelecom.jpg"
 slug: "production-tour"
 ctaText: "Участвовать"
 ctaUrl: "/contact"

@@ -4,11 +4,11 @@ industry: "Электроника"
 tags: ["Событие", "B2B", "Конференция"]
 year: 2019
 descriptionShort: "Организация конференции и презентации новой техники SONY для продавцов и партнеров."
-coverImage: "/uploads/event-sony.gif"
-slug: "sony-dealer-conference"
+coverImage: "/uploads/projects/sony-01.jpg"
 gallery:
-  - "/uploads/event-sony.gif"
-  - "/uploads/event-hansa.png"
+  - "/uploads/projects/sony-01.jpg"
+  - "/uploads/projects/sony-02.jpg"
+  - "/uploads/projects/sony-03.jpg"
 status: "published"
 ---
 

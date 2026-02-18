@@ -4,11 +4,11 @@ industry: "FMCG"
 tags: ["Акция", "Фестиваль", "Семейное"]
 year: 2021
 descriptionShort: "Городское семейное мероприятие с игровыми зонами и анимационной программой."
-coverImage: "/uploads/promo-domik.jpg"
-slug: "domik-family-event"
+coverImage: "/uploads/projects/domik-01.jpg"
 gallery:
-  - "/uploads/promo-domik.jpg"
-  - "/uploads/promo-icecream.jpg"
+  - "/uploads/projects/domik-01.jpg"
+  - "/uploads/projects/domik-02.jpg"
+  - "/uploads/projects/domik-03.jpg"
 status: "published"
 ---
 

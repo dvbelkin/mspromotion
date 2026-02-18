@@ -41,7 +41,17 @@ const projectCollection = defineCollection({
     descriptionShort: z.string(),
     coverImage: z.string(),
     slug: z.string().optional(),
-    gallery: z.array(z.string()).default([]),
+    gallery: z
+      .array(
+        z.union([
+          z.string(),
+          z.object({
+            image: z.string(),
+            caption: z.string().optional()
+          })
+        ])
+      )
+      .default([]),
     status: z.enum(["draft", "published"]).default("draft")
   })
 });

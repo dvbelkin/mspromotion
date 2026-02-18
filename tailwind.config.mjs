@@ -6,8 +6,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ["Manrope", "Segoe UI", "sans-serif"],
-        body: ["Inter", "Segoe UI", "sans-serif"]
+        display: ["Sora", "Segoe UI", "sans-serif"],
+        body: ["Plus Jakarta Sans", "Segoe UI", "sans-serif"]
       },
       boxShadow: {
         soft: "0 20px 40px rgba(0,0,0,0.22)",
@@ -15,6 +15,8 @@ export default {
       },
       colors: {
         surface: "var(--surface)",
+        "surface-soft": "var(--surface-soft)",
+        "surface-elevated": "var(--surface-elevated)",
         text: "var(--text)",
         muted: "var(--muted)",
         line: "var(--line)",

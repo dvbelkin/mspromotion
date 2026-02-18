@@ -4,7 +4,7 @@ dateStart: 2026-03-21
 city: "Новосибирск"
 place: "Экспоцентр"
 descriptionShort: "Площадка для маркетинговых команд и торговых сетей: рабочие механики промо и аналитика продаж."
-coverImage: "/uploads/event-pyaterochka.png"
+coverImage: "/uploads/event-pyaterochka.jpg"
 slug: "brand-retail-forum"
 ctaText: "Зарегистрироваться"
 ctaUrl: "/contact"

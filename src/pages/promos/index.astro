@@ -7,9 +7,9 @@ import { getPublishedPromos } from "@/lib/content";
 const promos = await getPublishedPromos();
 ---
 
-<BaseLayout title="Акции | MS Promotion" description="Актуальные магазинные акции и механики продвижения брендов в ритейле.">
+<BaseLayout title="Акции | MS Promotion" description="Актуальные магазинные акции и механики продвижения брендов в ритейле." noindex={true}>
   <section class="section-wrap mt-12">
-    <SectionTitle title="Акции" description="Текущие механики стимулирования продаж, бренд-активации и сезонные кампании." />
+    <SectionTitle tag="h1" title="Акции" description="Текущие механики стимулирования продаж, бренд-активации и сезонные кампании." />
     <div class="grid gap-5 md:grid-cols-2">
       {promos.map((promo) => <PromoCard promo={promo} />)}
     </div>

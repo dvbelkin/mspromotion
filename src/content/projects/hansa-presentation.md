@@ -4,11 +4,11 @@ industry: "Бытовая техника"
 tags: ["Событие", "Презентация", "Ритейл"]
 year: 2019
 descriptionShort: "Иммерсивная презентация новой линейки HANSA для торговых сетей и партнеров."
-coverImage: "/uploads/event-hansa.png"
-slug: "hansa-presentation"
+coverImage: "/uploads/projects/hansa-01.jpg"
 gallery:
-  - "/uploads/event-hansa.png"
-  - "/uploads/promo-lenovo.jpg"
+  - "/uploads/projects/hansa-01.jpg"
+  - "/uploads/projects/hansa-02.jpg"
+  - "/uploads/projects/hansa-03.jpg"
 status: "published"
 ---
 

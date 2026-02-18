@@ -9,7 +9,7 @@ export default defineConfig({
     "/promos.html": "/promos",
     "/projects.html": "/projects",
     "/cases.html": "/projects",
-    "/history.html": "/history",
+    "/history.html": "/legacy",
     "/admin.html": "/admin",
     "/app/bussinessevent.html": "/events",
     "/app/eventmarketing.html": "/promos",

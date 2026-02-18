@@ -4,11 +4,11 @@ industry: "Ритейл"
 tags: ["Акция", "Ритейл", "BTL"]
 year: 2020
 descriptionShort: "Монтаж площадки и организация клиентского праздника с брендингом и активациями."
-coverImage: "/uploads/event-pyaterochka.png"
-slug: "pyaterochka-promo-site"
+coverImage: "/uploads/projects/pyaterochka-01.jpg"
 gallery:
-  - "/uploads/event-pyaterochka.png"
-  - "/uploads/promo-domik.jpg"
+  - "/uploads/projects/pyaterochka-01.jpg"
+  - "/uploads/projects/pyaterochka-02.jpg"
+  - "/uploads/projects/pyaterochka-03.jpg"
 status: "published"
 ---
 

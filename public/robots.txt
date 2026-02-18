@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /events
+Disallow: /events/
+Disallow: /promos
+Disallow: /promos/
+Disallow: /history
+Disallow: /history/
+
+Sitemap: https://www.ms-promotion.ru/sitemap.xml

@@ -4,27 +4,35 @@ import type { CollectionEntry } from "astro:content";
 const { project } = Astro.props as { project: CollectionEntry<"projects"> };
 ---
 
-<article class="card-surface project-card group rounded-2xl p-5 shadow-soft transition hover:-translate-y-0.5 hover:border-accent2/40" data-tags={project.data.tags.join(",").toLowerCase()}>
-  <img
-    src={project.data.coverImage}
-    alt={project.data.title}
-    loading="lazy"
-    class="h-48 w-full rounded-xl object-cover"
-    width="640"
-    height="384"
-  />
-  <div class="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted">
-    {project.data.year && <span>{project.data.year}</span>}
-    {project.data.industry && <span>· {project.data.industry}</span>}
+<article class="card-surface project-card group overflow-hidden rounded-[24px] p-4 shadow-soft transition hover:-translate-y-1" data-tags={project.data.tags.join(",").toLowerCase()}>
+  <div class="relative overflow-hidden rounded-[18px]">
+    <img
+      src={project.data.coverImage}
+      alt={project.data.title}
+      loading="lazy"
+      class="h-56 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+      width="640"
+      height="384"
+    />
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface/60 via-surface/10 to-transparent"></div>
   </div>
-  <h3 class="mt-2 font-display text-2xl font-semibold leading-tight">{project.data.title}</h3>
-  <p class="mt-3 text-sm text-muted">{project.data.descriptionShort}</p>
+
+  <div class="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted">
+    {project.data.year && <span class="chip">{project.data.year}</span>}
+    {project.data.industry && <span class="chip">{project.data.industry}</span>}
+  </div>
+
+  <h3 class="mt-3 font-display text-2xl font-semibold leading-tight">{project.data.title}</h3>
+  <p class="mt-3 text-sm leading-relaxed text-muted">{project.data.descriptionShort}</p>
+
   <div class="mt-4 flex flex-wrap gap-2">
     {project.data.tags.map((tag) => (
-      <span class="rounded-full border border-line px-3 py-1 text-xs text-muted">{tag}</span>
+      <span class="rounded-full border border-line bg-surface-elevated px-3 py-1 text-xs text-muted">{tag}</span>
     ))}
   </div>
-  <a href={`/projects/${project.slug}`} class="focus-outline mt-4 inline-flex text-sm font-semibold text-accent2 transition group-hover:translate-x-0.5">
-    Смотреть кейс →
+
+  <a href={`/projects/${project.slug}`} class="focus-outline mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent2 transition group-hover:translate-x-0.5">
+    Смотреть кейс
+    <span aria-hidden="true">→</span>
   </a>
 </article>

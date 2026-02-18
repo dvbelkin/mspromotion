@@ -4,11 +4,11 @@ industry: "FMCG"
 tags: ["Акция", "Consumer", "Парк"]
 year: 2023
 descriptionShort: "Промо-день с фотозонами, розыгрышами и высокой вовлечённостью гостей."
-coverImage: "/uploads/promo-jacobs.jpg"
-slug: "jacobs-friends-day"
+coverImage: "/uploads/projects/jacobs-01.jpg"
 gallery:
-  - "/uploads/promo-jacobs.jpg"
-  - "/uploads/promo-lenovo.jpg"
+  - "/uploads/projects/jacobs-01.jpg"
+  - "/uploads/projects/jacobs-02.jpg"
+  - "/uploads/projects/jacobs-03.jpg"
 status: "published"
 ---
 
