@@ -6,7 +6,7 @@ year: 2021
 descriptionShort: "Городское семейное мероприятие с игровыми зонами и анимационной программой."
 coverImage: "/uploads/projects/domik-02.jpg"
 gallery:
-  - "/uploads/projects/domik-01.jpg"
+  - "/uploads/domik-01.jpg"
   - "/uploads/projects/domik-02.jpg"
   - "/uploads/projects/domik-03.jpg"
 status: "published"

@@ -1,12 +1,1025 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>MS Promotion CMS</title>
+    <meta name="color-scheme" content="dark light" />
+    <title>MS Promotion Admin</title>
+    <style>
+      :root {
+        --bg: #0b1020;
+        --panel: #11182b;
+        --panel-2: #16213a;
+        --line: rgba(255, 255, 255, 0.08);
+        --text: #eef2ff;
+        --muted: #9aa7c7;
+        --accent: #6f8cff;
+        --accent-2: #87d4ff;
+        --danger: #ff6b88;
+        --success: #5dd89c;
+      }
+
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font: 14px/1.5 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(111, 140, 255, 0.18), transparent 40%),
+          radial-gradient(circle at top right, rgba(135, 212, 255, 0.1), transparent 35%),
+          var(--bg);
+      }
+
+      button,
+      input,
+      textarea,
+      select {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .app {
+        min-height: 100%;
+        display: grid;
+        grid-template-columns: 320px minmax(0, 1fr);
+      }
+
+      .sidebar {
+        border-right: 1px solid var(--line);
+        background: rgba(7, 12, 25, 0.64);
+        backdrop-filter: blur(12px);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .main {
+        padding: 20px;
+        min-width: 0;
+      }
+
+      .brand {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+      }
+
+      .subtitle {
+        color: var(--muted);
+        margin-top: 4px;
+        font-size: 12px;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        background: rgba(17, 24, 43, 0.88);
+        border-radius: 18px;
+        padding: 16px;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.26);
+      }
+
+      .panel + .panel {
+        margin-top: 12px;
+      }
+
+      .panel-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+        font-weight: 600;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .collection-list,
+      .entry-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .list-button {
+        width: 100%;
+        text-align: left;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text);
+        transition: 140ms ease;
+      }
+
+      .list-button:hover {
+        border-color: rgba(111, 140, 255, 0.45);
+        transform: translateY(-1px);
+      }
+
+      .list-button.active {
+        background: linear-gradient(135deg, rgba(111, 140, 255, 0.2), rgba(135, 212, 255, 0.1));
+        border-color: rgba(111, 140, 255, 0.6);
+      }
+
+      .entry-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 4px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .status {
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .status.published {
+        color: var(--success);
+        background: rgba(93, 216, 156, 0.12);
+      }
+
+      .status.draft {
+        color: #ffcc7f;
+        background: rgba(255, 204, 127, 0.12);
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .toolbar-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .action {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text);
+        padding: 9px 14px;
+        border-radius: 12px;
+      }
+
+      .action.primary {
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: #07111f;
+        border-color: transparent;
+        font-weight: 700;
+      }
+
+      .action.danger {
+        background: rgba(255, 107, 136, 0.12);
+        color: #ffb7c3;
+      }
+
+      .editor-grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+
+      .field label {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .field input,
+      .field textarea,
+      .field select {
+        width: 100%;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        padding: 10px 12px;
+      }
+
+      .field textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      .field-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .hint {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .login-grid {
+        display: grid;
+        gap: 10px;
+      }
+
+      .login-grid input {
+        width: 100%;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        padding: 10px 12px;
+      }
+
+      .status-line {
+        min-height: 20px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .error {
+        color: #ffb7c3;
+      }
+
+      .success {
+        color: var(--success);
+      }
+
+      .empty {
+        min-height: 60vh;
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+        text-align: center;
+        border: 1px dashed var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      @media (max-width: 980px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+      }
+    </style>
   </head>
   <body>
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <div class="app">
+      <aside class="sidebar">
+        <div>
+          <div class="brand">MS Promotion Admin</div>
+          <div class="subtitle">Small file-based backend for content editing</div>
+        </div>
+
+        <section class="panel" id="login-panel">
+          <div class="panel-title">
+            <span>Login</span>
+            <span class="pill">IP + auth</span>
+          </div>
+          <form id="login-form" class="login-grid">
+            <input id="login-user" name="user" type="text" placeholder="Username" autocomplete="username" required />
+            <input id="login-pass" name="pass" type="password" placeholder="Password" autocomplete="current-password" required />
+            <button class="action primary" type="submit">Sign in</button>
+          </form>
+        </section>
+
+        <section class="panel hidden" id="nav-panel">
+          <div class="panel-title">
+            <span>Collections</span>
+            <button class="action" id="logout-button" type="button">Logout</button>
+          </div>
+          <div id="collections" class="collection-list"></div>
+        </section>
+
+        <section class="panel hidden" id="entries-panel">
+          <div class="panel-title">
+            <span>Entries</span>
+            <button class="action" id="new-button" type="button">New</button>
+          </div>
+          <div id="entries" class="entry-list"></div>
+        </section>
+      </aside>
+
+      <main class="main">
+        <div class="toolbar">
+          <div>
+            <div id="active-title" style="font-size: 22px; font-weight: 700;">Select a collection</div>
+            <div id="active-meta" class="muted">Login and choose an entry to edit content.</div>
+          </div>
+          <div class="toolbar-actions">
+            <button class="action" id="reload-button" type="button">Reload</button>
+            <button class="action primary" id="save-button" type="button">Save</button>
+            <button class="action danger" id="delete-button" type="button">Delete</button>
+          </div>
+        </div>
+
+        <section id="empty-state" class="empty">
+          <div>
+            <div style="font-size: 18px; font-weight: 700; color: var(--text);">No entry selected</div>
+            <div style="margin-top: 6px;">Log in, select a collection, then open an entry or create a new one.</div>
+          </div>
+        </section>
+
+        <section id="editor-panel" class="panel hidden">
+          <div class="panel-title">
+            <span>Editor</span>
+            <span id="editor-path" class="pill"></span>
+          </div>
+          <div id="field-list" class="editor-grid"></div>
+          <div class="field" style="margin-top: 14px;">
+            <label for="body-field">Body markdown</label>
+            <textarea id="body-field" rows="18" spellcheck="true"></textarea>
+          </div>
+        </section>
+
+        <div id="status-line" class="status-line"></div>
+      </main>
+    </div>
+
+    <script>
+      const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+        ? "http://127.0.0.1:8787"
+        : "";
+      const AUTH_KEY = "msp-admin-auth";
+      const state = {
+        auth: sessionStorage.getItem(AUTH_KEY) || "",
+        bootstrap: null,
+        collection: null,
+        entry: null
+      };
+
+      const el = {
+        loginPanel: document.getElementById("login-panel"),
+        navPanel: document.getElementById("nav-panel"),
+        entriesPanel: document.getElementById("entries-panel"),
+        collections: document.getElementById("collections"),
+        entries: document.getElementById("entries"),
+        loginForm: document.getElementById("login-form"),
+        loginUser: document.getElementById("login-user"),
+        loginPass: document.getElementById("login-pass"),
+        logoutButton: document.getElementById("logout-button"),
+        newButton: document.getElementById("new-button"),
+        reloadButton: document.getElementById("reload-button"),
+        saveButton: document.getElementById("save-button"),
+        deleteButton: document.getElementById("delete-button"),
+        activeTitle: document.getElementById("active-title"),
+        activeMeta: document.getElementById("active-meta"),
+        emptyState: document.getElementById("empty-state"),
+        editorPanel: document.getElementById("editor-panel"),
+        editorPath: document.getElementById("editor-path"),
+        fieldList: document.getElementById("field-list"),
+        bodyField: document.getElementById("body-field"),
+        statusLine: document.getElementById("status-line")
+      };
+
+      function encodeCredentials(user, pass) {
+        const raw = `${user}:${pass}`;
+        const bytes = new TextEncoder().encode(raw);
+        let binary = "";
+        bytes.forEach((byte) => {
+          binary += String.fromCharCode(byte);
+        });
+        return btoa(binary);
+      }
+
+      function setStatus(message, type = "") {
+        el.statusLine.textContent = message || "";
+        el.statusLine.className = `status-line ${type}`;
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function normalizeSlug(value) {
+        return String(value || "")
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9-]+/g, "-")
+          .replace(/-+/g, "-")
+          .replace(/^-+|-+$/g, "");
+      }
+
+      function collectionMeta(name) {
+        return state.bootstrap?.collections.find((collection) => collection.name === name) || null;
+      }
+
+      function currentCollection() {
+        return collectionMeta(state.collection);
+      }
+
+      function defaultDataFor(collection) {
+        const data = {};
+
+        collection.fields.forEach((field) => {
+          if (field.kind === "select") {
+            data[field.name] = field.options?.[0] || "";
+            return;
+          }
+
+          if (field.kind === "tags" || field.kind === "gallery") {
+            data[field.name] = [];
+            return;
+          }
+
+          if (field.kind === "number") {
+            data[field.name] = "";
+            return;
+          }
+
+          data[field.name] = "";
+        });
+
+        if (collection.name === "pages") {
+          data.status = "published";
+        }
+
+        return data;
+      }
+
+      function formatEntryLabel(entry) {
+        return entry.data?.title || entry.title || entry.slug;
+      }
+
+      function listCollectionButtons() {
+        return state.bootstrap?.collections
+          .map((collection) => {
+            const active = collection.name === state.collection ? "active" : "";
+            return `<button class="list-button ${active}" data-collection="${escapeHtml(collection.name)}" type="button">
+              <div style="font-weight:700;">${escapeHtml(collection.label)}</div>
+              <div class="entry-meta"><span>${escapeHtml(collection.folder)}</span><span>${collection.entries.length} items</span></div>
+            </button>`;
+          })
+          .join("") || "";
+      }
+
+      function listEntryButtons() {
+        const collection = currentCollection();
+        if (!collection) {
+          return "";
+        }
+
+        return collection.entries
+          .map((entry) => {
+            const active = state.entry?.slug === entry.slug ? "active" : "";
+            return `<button class="list-button ${active}" data-entry="${escapeHtml(entry.slug)}" type="button">
+              <div style="font-weight:700;">${escapeHtml(formatEntryLabel(entry))}</div>
+              <div class="entry-meta">
+                <span>${escapeHtml(entry.slug)}</span>
+                <span class="status ${escapeHtml(entry.status)}">${escapeHtml(entry.status)}</span>
+              </div>
+            </button>`;
+          })
+          .join("");
+      }
+
+      function fieldValueAsText(field, value) {
+        if (field.kind === "tags") {
+          return Array.isArray(value) ? value.join("\n") : "";
+        }
+
+        if (field.kind === "gallery") {
+          if (!Array.isArray(value)) {
+            return "";
+          }
+
+          return value
+            .map((item) => {
+              if (typeof item === "string") {
+                return item;
+              }
+
+              if (item && typeof item === "object") {
+                return item.caption ? `${item.image} | ${item.caption}` : item.image;
+              }
+
+              return "";
+            })
+            .filter(Boolean)
+            .join("\n");
+        }
+
+        if (value === null || value === undefined) {
+          return "";
+        }
+
+        return String(value);
+      }
+
+      function renderField(field, value) {
+        const current = value ?? "";
+        const id = `field-${field.name}`;
+        const label = escapeHtml(field.label);
+
+        if (field.kind === "select") {
+          return `
+            <div class="field">
+              <label for="${id}">${label}</label>
+              <select id="${id}" data-field="${escapeHtml(field.name)}" data-kind="${escapeHtml(field.kind)}">
+                ${(field.options || [])
+                  .map((option) => {
+                    const selected = option === current ? "selected" : "";
+                    return `<option value="${escapeHtml(option)}" ${selected}>${escapeHtml(option)}</option>`;
+                  })
+                  .join("")}
+              </select>
+            </div>`;
+        }
+
+        if (field.kind === "text" || field.kind === "tags" || field.kind === "gallery") {
+          const hint =
+            field.kind === "tags"
+              ? "One tag per line."
+              : field.kind === "gallery"
+                ? "One image per line. Use `image | caption` for captions."
+                : "";
+          return `
+            <div class="field">
+              <label for="${id}">${label}</label>
+              <textarea id="${id}" data-field="${escapeHtml(field.name)}" data-kind="${escapeHtml(field.kind)}">${escapeHtml(fieldValueAsText(field, current))}</textarea>
+              ${hint ? `<div class="hint">${hint}</div>` : ""}
+            </div>`;
+        }
+
+        if (field.kind === "date") {
+          const dateValue = current ? String(current).slice(0, 10) : "";
+          return `
+            <div class="field">
+              <label for="${id}">${label}</label>
+              <input id="${id}" type="date" data-field="${escapeHtml(field.name)}" data-kind="${escapeHtml(field.kind)}" value="${escapeHtml(dateValue)}" />
+            </div>`;
+        }
+
+        if (field.kind === "number") {
+          return `
+            <div class="field">
+              <label for="${id}">${label}</label>
+              <input id="${id}" type="number" data-field="${escapeHtml(field.name)}" data-kind="${escapeHtml(field.kind)}" value="${escapeHtml(current)}" />
+            </div>`;
+        }
+
+        if (field.kind === "image") {
+          return `
+            <div class="field">
+              <label for="${id}">${label}</label>
+              <div class="field-row">
+                <input id="${id}" type="text" data-field="${escapeHtml(field.name)}" data-kind="${escapeHtml(field.kind)}" value="${escapeHtml(current)}" />
+                <button class="action" type="button" data-upload="${escapeHtml(field.name)}">Upload</button>
+              </div>
+              <input type="file" accept="image/*" class="hidden" data-picker="${escapeHtml(field.name)}" />
+              ${current ? `<div class="hint">Current: ${escapeHtml(current)}</div>` : ""}
+            </div>`;
+        }
+
+        return `
+          <div class="field">
+            <label for="${id}">${label}</label>
+            <input id="${id}" type="text" data-field="${escapeHtml(field.name)}" data-kind="${escapeHtml(field.kind)}" value="${escapeHtml(current)}" />
+          </div>`;
+      }
+
+      function renderEditor() {
+        const collection = currentCollection();
+        const entry = state.entry;
+
+        if (!collection || !entry) {
+          el.emptyState.classList.remove("hidden");
+          el.editorPanel.classList.add("hidden");
+          el.editorPath.textContent = "";
+          el.activeTitle.textContent = "Select a collection";
+          el.activeMeta.textContent = "Login and choose an entry to edit content.";
+          return;
+        }
+
+        el.emptyState.classList.add("hidden");
+        el.editorPanel.classList.remove("hidden");
+        el.activeTitle.textContent = `${collection.label} / ${entry.slug}`;
+        el.activeMeta.textContent = `${entry.exists ? "Existing entry" : "New entry"} in ${collection.folder}`;
+        el.editorPath.textContent = `/${collection.name}/${entry.slug}.md`;
+
+        const fields = collection.fields
+          .map((field) => renderField(field, entry.data?.[field.name]))
+          .join("");
+
+        el.fieldList.innerHTML = fields;
+        el.bodyField.value = entry.body || "";
+
+        el.fieldList.querySelectorAll("[data-upload]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const fieldName = button.getAttribute("data-upload");
+            const picker = el.fieldList.querySelector(`[data-picker="${CSS.escape(fieldName)}"]`);
+            picker?.click();
+          });
+        });
+
+        el.fieldList.querySelectorAll("[data-picker]").forEach((picker) => {
+          picker.addEventListener("change", async () => {
+            const fieldName = picker.getAttribute("data-picker");
+            const file = picker.files?.[0];
+            if (!fieldName || !file) {
+              return;
+            }
+
+            try {
+              setStatus(`Uploading ${file.name}...`);
+              const dataUrl = await readFileAsDataUrl(file);
+              const response = await api("/api/upload", {
+                method: "POST",
+                body: JSON.stringify({
+                  filename: file.name,
+                  mimeType: file.type,
+                  base64: dataUrl
+                })
+              });
+              const result = await response.json();
+              const input = el.fieldList.querySelector(`[data-field="${CSS.escape(fieldName)}"]`);
+              if (input) {
+                input.value = result.path;
+              }
+              setStatus(`Uploaded ${result.path}`, "success");
+            } catch (error) {
+              setStatus(error.message || "Upload failed", "error");
+            } finally {
+              picker.value = "";
+            }
+          });
+        });
+      }
+
+      function readFormData() {
+        const collection = currentCollection();
+        const data = defaultDataFor(collection);
+
+        collection.fields.forEach((field) => {
+          const input = el.fieldList.querySelector(`[data-field="${CSS.escape(field.name)}"]`);
+          if (!input) {
+            return;
+          }
+
+          if (field.kind === "tags") {
+            data[field.name] = input.value
+              .split("\n")
+              .map((item) => item.trim())
+              .filter(Boolean);
+            return;
+          }
+
+          if (field.kind === "gallery") {
+            data[field.name] = input.value
+              .split("\n")
+              .map((item) => item.trim())
+              .filter(Boolean)
+              .map((item) => {
+                const [image, caption] = item.split("|").map((part) => part.trim());
+                return caption ? { image, caption } : image;
+              });
+            return;
+          }
+
+          if (field.kind === "number") {
+            const numeric = Number(input.value);
+            if (input.value === "" || Number.isNaN(numeric)) {
+              delete data[field.name];
+            } else {
+              data[field.name] = numeric;
+            }
+            return;
+          }
+
+          if (field.kind === "date") {
+            if (!input.value) {
+              delete data[field.name];
+            } else {
+              data[field.name] = input.value;
+            }
+            return;
+          }
+
+          data[field.name] = input.value.trim();
+        });
+
+        return data;
+      }
+
+      async function readFileAsDataUrl(file) {
+        return await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result || ""));
+          reader.onerror = () => reject(reader.error || new Error("Failed to read file"));
+          reader.readAsDataURL(file);
+        });
+      }
+
+      async function api(url, options = {}) {
+        const headers = new Headers(options.headers || {});
+        if (state.auth) {
+          headers.set("Authorization", `Basic ${state.auth}`);
+        }
+        if (options.body && !headers.has("Content-Type")) {
+          headers.set("Content-Type", "application/json");
+        }
+
+        const response = await fetch(`${API_BASE}${url}`, {
+          ...options,
+          headers
+        });
+
+        if (response.status === 401) {
+          throw new Error("Unauthorized");
+        }
+
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(text || `Request failed with status ${response.status}`);
+        }
+
+        return response;
+      }
+
+      async function loadBootstrap() {
+        try {
+          const response = await api("/api/bootstrap");
+          state.bootstrap = await response.json();
+          renderSidebar();
+          ensureSelection();
+          setStatus("Loaded content.", "success");
+        } catch (error) {
+          if (String(error.message) === "Unauthorized") {
+            state.auth = "";
+            sessionStorage.removeItem(AUTH_KEY);
+            state.bootstrap = null;
+            state.collection = null;
+            state.entry = null;
+            renderAuthState(false);
+            renderEditor();
+            setStatus("Login required.", "");
+            return;
+          }
+
+          setStatus(error.message || "Failed to load bootstrap", "error");
+        }
+      }
+
+      function renderSidebar() {
+        el.collections.innerHTML = listCollectionButtons();
+        el.entries.innerHTML = listEntryButtons();
+
+        el.collections.querySelectorAll("[data-collection]").forEach((button) => {
+          button.addEventListener("click", () => {
+            selectCollection(button.getAttribute("data-collection"));
+          });
+        });
+
+        el.entries.querySelectorAll("[data-entry]").forEach((button) => {
+          button.addEventListener("click", () => {
+            selectEntry(button.getAttribute("data-entry"));
+          });
+        });
+      }
+
+      function renderAuthState(isAuthed) {
+        el.loginPanel.classList.toggle("hidden", isAuthed);
+        el.navPanel.classList.toggle("hidden", !isAuthed);
+        el.entriesPanel.classList.toggle("hidden", !isAuthed);
+      }
+
+      function ensureSelection() {
+        if (!state.collection && state.bootstrap?.collections.length) {
+          selectCollection(state.bootstrap.collections[0].name);
+          return;
+        }
+
+        const collection = currentCollection();
+        if (!collection) {
+          return;
+        }
+
+        if (!state.entry && collection.entries.length) {
+          selectEntry(collection.entries[0].slug);
+        }
+      }
+
+      function selectCollection(name) {
+        state.collection = name;
+        state.entry = null;
+        renderSidebar();
+        renderEditor();
+
+        const collection = currentCollection();
+        if (collection?.entries.length) {
+          selectEntry(collection.entries[0].slug);
+        }
+      }
+
+      async function selectEntry(slug) {
+        const collection = currentCollection();
+        if (!collection) {
+          return;
+        }
+
+        try {
+          const response = await api(`/api/entry?collection=${encodeURIComponent(collection.name)}&slug=${encodeURIComponent(slug)}`);
+          const entry = await response.json();
+          entry.slug = entry.slug || slug;
+          entry.data = entry.data || {};
+          state.entry = entry;
+          renderSidebar();
+          renderEditor();
+          setStatus(`Opened ${entry.slug}.`, "success");
+        } catch (error) {
+          setStatus(error.message || "Failed to open entry", "error");
+        }
+      }
+
+      function createNewEntry() {
+        const collection = currentCollection();
+        if (!collection) {
+          return;
+        }
+
+        const slug = normalizeSlug(prompt("New slug") || "");
+        if (!slug) {
+          return;
+        }
+
+        state.entry = {
+          exists: false,
+          slug,
+          data: defaultDataFor(collection),
+          body: ""
+        };
+        renderSidebar();
+        renderEditor();
+        setStatus(`Created draft entry ${slug}.`, "success");
+      }
+
+      async function saveCurrentEntry() {
+        const collection = currentCollection();
+        if (!collection || !state.entry) {
+          return;
+        }
+
+        const body = el.bodyField.value;
+        const data = readFormData();
+        const nextSlug = normalizeSlug(data.slug || state.entry.slug);
+        if (!nextSlug) {
+          setStatus("Slug is required.", "error");
+          return;
+        }
+
+        if (collection.fields.some((field) => field.name === "slug")) {
+          data.slug = nextSlug;
+        }
+
+        try {
+          setStatus("Saving...");
+          const method = state.entry.exists ? "PUT" : "POST";
+          const payload = {
+            collection: collection.name,
+            originalSlug: state.entry.exists ? state.entry.slug : null,
+            slug: nextSlug,
+            data,
+            body
+          };
+
+          const response = await api("/api/entry", {
+            method,
+            body: JSON.stringify(payload)
+          });
+
+          const result = await response.json();
+          state.entry = {
+            exists: true,
+            slug: result.slug,
+            data,
+            body
+          };
+
+          await loadBootstrap();
+          state.collection = collection.name;
+          await selectEntry(result.slug);
+          setStatus(`Saved ${result.path}.`, "success");
+        } catch (error) {
+          setStatus(error.message || "Save failed", "error");
+        }
+      }
+
+      async function deleteCurrentEntry() {
+        if (!state.entry || !currentCollection()) {
+          return;
+        }
+
+        const collection = currentCollection();
+        if (!confirm(`Delete ${state.entry.slug}?`)) {
+          return;
+        }
+
+        try {
+          setStatus("Deleting...");
+          await api("/api/entry", {
+            method: "DELETE",
+            body: JSON.stringify({
+              collection: collection.name,
+              slug: state.entry.slug
+            })
+          });
+
+          state.entry = null;
+          await loadBootstrap();
+          const refreshed = currentCollection();
+          if (refreshed?.entries.length) {
+            await selectEntry(refreshed.entries[0].slug);
+          } else {
+            renderEditor();
+          }
+
+          setStatus("Entry deleted.", "success");
+        } catch (error) {
+          setStatus(error.message || "Delete failed", "error");
+        }
+      }
+
+      function logout() {
+        state.auth = "";
+        sessionStorage.removeItem(AUTH_KEY);
+        state.bootstrap = null;
+        state.collection = null;
+        state.entry = null;
+        renderAuthState(false);
+        renderEditor();
+        setStatus("Logged out.");
+      }
+
+      el.loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const user = el.loginUser.value.trim();
+        const pass = el.loginPass.value;
+        state.auth = encodeCredentials(user, pass);
+        sessionStorage.setItem(AUTH_KEY, state.auth);
+
+        try {
+          renderAuthState(true);
+          await loadBootstrap();
+        } catch (error) {
+          setStatus(error.message || "Login failed", "error");
+        }
+      });
+
+      el.logoutButton.addEventListener("click", logout);
+      el.newButton.addEventListener("click", createNewEntry);
+      el.reloadButton.addEventListener("click", loadBootstrap);
+      el.saveButton.addEventListener("click", saveCurrentEntry);
+      el.deleteButton.addEventListener("click", deleteCurrentEntry);
+
+      renderAuthState(Boolean(state.auth));
+      if (state.auth) {
+        loadBootstrap();
+      } else {
+        setStatus("Login to edit content.");
+      }
+    </script>
   </body>
 </html>

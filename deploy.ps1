@@ -1,23 +1,23 @@
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory = $true)]
     [Alias("Host")]
-    [string]$Server,
+    [string]$Server = "192.168.1.6",
 
-    [Parameter(Mandatory = $true)]
-    [string]$User,
+    [string]$User = "tahradm",
 
-    [Parameter(Mandatory = $true)]
-    [string]$TargetDir,
+    [string]$TargetDir = "/var/www/mspromotion",
 
     [int]$Port = 2222,
     [string]$SshKeyPath = "",
     [string]$SshConfigPath = "",
     [switch]$IgnoreLocalSshConfig,
     [string]$BuildCommand = "npm run build",
-    [string]$ArtifactDir = "dist",
+    [string]$ArtifactDir = ".",
     [int]$KeepReleases = 5,
     [string]$RemotePostCommand = "",
+    [string]$AdminUser = "admin",
+    [string]$AdminPassword = "suprun3456",
+    [int]$AdminPort = 8787,
     [switch]$AllocateTty,
     [switch]$SkipBuild
 )
@@ -84,7 +84,11 @@ try {
     }
 
     Write-Host "Packing artifact: $artifactPath"
-    tar -czf $localArchive -C $artifactPath .
+    tar -czf $localArchive `
+        --exclude=node_modules `
+        --exclude=.git `
+        --exclude=.astro `
+        -C $artifactPath .
     if ($LASTEXITCODE -ne 0) {
         throw "Failed to create archive"
     }
@@ -121,6 +125,9 @@ if ($LASTEXITCODE -ne 0) {
 $targetDirQ = Quote-Sh -Value $TargetDir
 $remoteArchiveQ = Quote-Sh -Value $remoteArchive
 $releaseQ = Quote-Sh -Value $release
+$adminUserQ = Quote-Sh -Value $AdminUser
+$adminPasswordQ = Quote-Sh -Value $AdminPassword
+$adminPortQ = Quote-Sh -Value $AdminPort
 $postCommandBlock = if ([string]::IsNullOrWhiteSpace($RemotePostCommand)) { ":" } else { $RemotePostCommand }
 
 $remoteScript = @"
@@ -130,6 +137,9 @@ TARGET_DIR=$targetDirQ
 REMOTE_ARCHIVE=$remoteArchiveQ
 RELEASE=$releaseQ
 KEEP_RELEASES=$KeepReleases
+ADMIN_USER=$adminUserQ
+ADMIN_PASSWORD=$adminPasswordQ
+ADMIN_PORT=$adminPortQ
 
 RELEASES_DIR=`$TARGET_DIR/releases
 CURRENT_LINK=`$TARGET_DIR/current
@@ -138,6 +148,11 @@ RELEASE_DIR=`$RELEASES_DIR/`$RELEASE
 mkdir -p "`$RELEASES_DIR" "`$RELEASE_DIR"
 tar -xzf "`$REMOTE_ARCHIVE" -C "`$RELEASE_DIR"
 ln -sfn "`$RELEASE_DIR" "`$CURRENT_LINK"
+
+cd "`$CURRENT_LINK"
+npm ci --include=dev
+pkill -f "scripts/admin-server.mjs" || true
+nohup env ADMIN_USER="`$ADMIN_USER" ADMIN_PASSWORD="`$ADMIN_PASSWORD" ADMIN_PORT="`$ADMIN_PORT" npm run admin >/tmp/mspromotion-admin.log 2>&1 &
 
 $postCommandBlock
 

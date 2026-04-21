@@ -8,11 +8,13 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "admin": "node scripts/admin-server.mjs",
     "migrate:legacy": "node scripts/import-legacy-json.mjs"
   },
   "dependencies": {
     "@astrojs/tailwind": "^6.0.0",
     "astro": "^5.0.0",
+    "gray-matter": "^4.0.3",
     "zod": "^3.23.8"
   },
   "devDependencies": {
