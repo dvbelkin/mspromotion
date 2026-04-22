@@ -5,10 +5,16 @@ import Metrics from "@/components/Metrics.astro";
 import LogoStrip from "@/components/LogoStrip.astro";
 import SectionTitle from "@/components/SectionTitle.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
-import { getPublishedProjects } from "@/lib/content";
+import EventCard from "@/components/EventCard.astro";
+import PromoCard from "@/components/PromoCard.astro";
+import { getPublishedEvents, getPublishedPromos, getPublishedProjects } from "@/lib/content";
 
+const events = await getPublishedEvents();
+const promos = await getPublishedPromos();
 const projects = await getPublishedProjects();
 const projectsToShow = projects.slice(0, 6);
+const eventsToShow = events.slice(0, 3);
+const promosToShow = promos.slice(0, 3);
 ---
 
 <BaseLayout
@@ -29,6 +35,30 @@ const projectsToShow = projects.slice(0, 6);
       </div>
       <a href="/projects" class="focus-outline mt-7 inline-flex rounded-full border border-line bg-surface-elevated px-5 py-2 text-sm font-semibold text-text transition hover:border-accent2 hover:text-accent2">
         Перейти к кейсам
+      </a>
+    </div>
+  </section>
+
+  <section class="section-wrap mt-20">
+    <div class="section-shell">
+      <SectionTitle title="События" description="Ближайшие и недавние деловые, клиентские и отраслевые мероприятия." />
+      <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {eventsToShow.map((event) => <EventCard event={event} />)}
+      </div>
+      <a href="/events" class="focus-outline mt-7 inline-flex rounded-full border border-line bg-surface-elevated px-5 py-2 text-sm font-semibold text-text transition hover:border-accent2 hover:text-accent2">
+        Перейти к событиям
+      </a>
+    </div>
+  </section>
+
+  <section class="section-wrap mt-20">
+    <div class="section-shell">
+      <SectionTitle title="Акции" description="Текущие промо-механики, сезонные кампании и бренд-активации." />
+      <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {promosToShow.map((promo) => <PromoCard promo={promo} />)}
+      </div>
+      <a href="/promos" class="focus-outline mt-7 inline-flex rounded-full border border-line bg-surface-elevated px-5 py-2 text-sm font-semibold text-text transition hover:border-accent2 hover:text-accent2">
+        Перейти к акциям
       </a>
     </div>
   </section>

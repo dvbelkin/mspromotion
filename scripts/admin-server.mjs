@@ -4,6 +4,7 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
+import sharp from "sharp";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -339,6 +340,43 @@ function safeFilename(filename) {
     .toLowerCase() || "upload";
 }
 
+function isResizeableImage(mimeType) {
+  const normalized = String(mimeType || "").toLowerCase();
+  return normalized === "image/jpeg" || normalized === "image/jpg" || normalized === "image/png" || normalized === "image/webp";
+}
+
+async function optimizeImageBuffer(buffer, mimeType) {
+  const image = sharp(buffer, { failOn: "none" }).rotate().resize({
+    width: 1600,
+    withoutEnlargement: true,
+    fit: "inside"
+  });
+
+  switch (String(mimeType || "").toLowerCase()) {
+    case "image/jpeg":
+    case "image/jpg":
+      return {
+        buffer: await image.jpeg({ quality: 82, mozjpeg: true }).toBuffer(),
+        extension: "jpg",
+        mimeType: "image/jpeg"
+      };
+    case "image/png":
+      return {
+        buffer: await image.png({ compressionLevel: 9, adaptiveFiltering: true }).toBuffer(),
+        extension: "png",
+        mimeType: "image/png"
+      };
+    case "image/webp":
+      return {
+        buffer: await image.webp({ quality: 82 }).toBuffer(),
+        extension: "webp",
+        mimeType: "image/webp"
+      };
+    default:
+      return null;
+  }
+}
+
 async function saveUpload({ filename, mimeType, base64 }) {
   if (typeof base64 !== "string" || !base64) {
     throw new Error("Upload payload is missing file data.");
@@ -350,12 +388,24 @@ async function saveUpload({ filename, mimeType, base64 }) {
   }
 
   const data = Buffer.from(match[2], "base64");
-  const extension = inferUploadExtension(filename, mimeType || match[1]);
-  const outputName = `${Date.now()}-${safeFilename(filename).replace(/\.[^.]+$/, "")}.${extension}`;
+  const detectedMimeType = (mimeType || match[1] || "").toLowerCase();
+  const originalName = safeFilename(filename).replace(/\.[^.]+$/, "");
+  let outputBuffer = data;
+  let extension = inferUploadExtension(filename, detectedMimeType);
+
+  if (isResizeableImage(detectedMimeType)) {
+    const optimized = await optimizeImageBuffer(data, detectedMimeType);
+    if (optimized) {
+      outputBuffer = optimized.buffer;
+      extension = optimized.extension;
+    }
+  }
+
+  const outputName = `${Date.now()}-${originalName}.${extension}`;
   const outputPath = path.join(uploadsRoot, outputName);
 
   await ensureDir(uploadsRoot);
-  await fs.writeFile(outputPath, data);
+  await fs.writeFile(outputPath, outputBuffer);
 
   return {
     path: `/uploads/admin/${outputName}`,

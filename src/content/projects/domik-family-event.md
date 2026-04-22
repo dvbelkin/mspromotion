@@ -1,15 +1,19 @@
-﻿---
-title: "MilkуWay для бренда Домик в деревне"
-industry: "FMCG"
-tags: ["Акция", "Фестиваль", "Семейное"]
+---
+title: MilkуWay для бренда Домик в деревне
+industry: FMCG
+tags:
+  - Акция
+  - Фестиваль
+  - Семейное
 year: 2021
-descriptionShort: "Городское семейное мероприятие с игровыми зонами и анимационной программой."
-coverImage: "/uploads/projects/domik-02.jpg"
+descriptionShort: Городское семейное мероприятие с игровыми зонами и анимационной программой.
+coverImage: /uploads/projects/domik-02.jpg
+slug: domik-family-event
 gallery:
-  - "/uploads/domik-01.jpg"
-  - "/uploads/projects/domik-02.jpg"
-  - "/uploads/projects/domik-03.jpg"
-status: "published"
+  - /uploads/domik-01.jpg
+  - /uploads/projects/domik-02.jpg
+  - /uploads/projects/domik-03.jpg
+status: published
 ---
 
 ## Задача
