@@ -144,9 +144,57 @@ ADMIN_PORT=$adminPortQ
 RELEASES_DIR=`$TARGET_DIR/releases
 CURRENT_LINK=`$TARGET_DIR/current
 RELEASE_DIR=`$RELEASES_DIR/`$RELEASE
+SHARED_DIR=`$TARGET_DIR/shared
 
-mkdir -p "`$RELEASES_DIR" "`$RELEASE_DIR"
+mkdir -p "`$RELEASES_DIR" "`$RELEASE_DIR" "`$SHARED_DIR"
 tar -xzf "`$REMOTE_ARCHIVE" -C "`$RELEASE_DIR"
+
+has_files() {
+  [ -d "`$1" ] && find "`$1" -mindepth 1 -print -quit | grep -q .
+}
+
+seed_shared_dir() {
+  local source_dir="`$1"
+  local shared_dir="`$2"
+
+  if has_files "`$shared_dir"; then
+    return 0
+  fi
+
+  mkdir -p "`$shared_dir"
+
+  if has_files "`$source_dir"; then
+    cp -a "`$source_dir"/. "`$shared_dir"/
+  fi
+}
+
+link_shared_dir() {
+  local shared_dir="`$1"
+  local link_dir="`$2"
+
+  rm -rf "`$link_dir"
+  mkdir -p "`$(dirname "`$link_dir")"
+  ln -s "`$shared_dir" "`$link_dir"
+}
+
+seed_shared_dir "`$CURRENT_LINK/src/content/events" "`$SHARED_DIR/src/content/events"
+seed_shared_dir "`$CURRENT_LINK/src/content/pages" "`$SHARED_DIR/src/content/pages"
+seed_shared_dir "`$CURRENT_LINK/src/content/projects" "`$SHARED_DIR/src/content/projects"
+seed_shared_dir "`$CURRENT_LINK/src/content/promos" "`$SHARED_DIR/src/content/promos"
+seed_shared_dir "`$CURRENT_LINK/public/uploads" "`$SHARED_DIR/public/uploads"
+
+seed_shared_dir "`$RELEASE_DIR/src/content/events" "`$SHARED_DIR/src/content/events"
+seed_shared_dir "`$RELEASE_DIR/src/content/pages" "`$SHARED_DIR/src/content/pages"
+seed_shared_dir "`$RELEASE_DIR/src/content/projects" "`$SHARED_DIR/src/content/projects"
+seed_shared_dir "`$RELEASE_DIR/src/content/promos" "`$SHARED_DIR/src/content/promos"
+seed_shared_dir "`$RELEASE_DIR/public/uploads" "`$SHARED_DIR/public/uploads"
+
+link_shared_dir "`$SHARED_DIR/src/content/events" "`$RELEASE_DIR/src/content/events"
+link_shared_dir "`$SHARED_DIR/src/content/pages" "`$RELEASE_DIR/src/content/pages"
+link_shared_dir "`$SHARED_DIR/src/content/projects" "`$RELEASE_DIR/src/content/projects"
+link_shared_dir "`$SHARED_DIR/src/content/promos" "`$RELEASE_DIR/src/content/promos"
+link_shared_dir "`$SHARED_DIR/public/uploads" "`$RELEASE_DIR/public/uploads"
+
 ln -sfn "`$RELEASE_DIR" "`$CURRENT_LINK"
 
 cd "`$CURRENT_LINK"

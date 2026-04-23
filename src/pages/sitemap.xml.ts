@@ -16,6 +16,8 @@ const toXmlUrl = (path: string, lastmod?: string) => {
 };
 
 export const GET: APIRoute = async () => {
+  const events = await getCollection("events", ({ data }) => data.status === "published");
+  const promos = await getCollection("promos", ({ data }) => data.status === "published");
   const projects = await getCollection("projects", ({ data }) => data.status === "published");
 
   const urls: string[] = [];
@@ -27,6 +29,15 @@ export const GET: APIRoute = async () => {
   projects.forEach((entry) => {
     const lastmod = entry.data.year ? new Date(`${entry.data.year}-12-31T00:00:00.000Z`).toISOString() : undefined;
     urls.push(toXmlUrl(`/projects/${entry.slug}`, lastmod));
+  });
+
+  events.forEach((entry) => {
+    urls.push(toXmlUrl(`/events/${entry.slug}`, entry.data.dateStart.toISOString()));
+  });
+
+  promos.forEach((entry) => {
+    const lastmod = entry.data.dateTo ? entry.data.dateTo.toISOString() : undefined;
+    urls.push(toXmlUrl(`/promos/${entry.slug}`, lastmod));
   });
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.join("")}</urlset>`;

@@ -13,7 +13,9 @@ const events = await getPublishedEvents();
 const promos = await getPublishedPromos();
 const projects = await getPublishedProjects();
 const projectsToShow = projects.slice(0, 6);
-const eventsToShow = events.slice(0, 3);
+const eventsToShow = [...events]
+  .sort((a, b) => b.data.dateStart.getTime() - a.data.dateStart.getTime())
+  .slice(0, 3);
 const promosToShow = promos.slice(0, 3);
 ---
 
