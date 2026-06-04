@@ -1,4 +1,4 @@
-﻿---
+---
 title: "День бренда в парке"
 dateTo: 2026-07-15
 discountText: "Consumer engagement"

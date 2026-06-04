@@ -25,6 +25,7 @@ const COLLECTIONS = {
       { name: "place", label: "Place", kind: "string" },
       { name: "descriptionShort", label: "Short description", kind: "text" },
       { name: "coverImage", label: "Cover image", kind: "image" },
+      { name: "gallery", label: "Gallery", kind: "gallery" },
       { name: "slug", label: "Slug", kind: "slug" },
       { name: "ctaText", label: "CTA text", kind: "string" },
       { name: "ctaUrl", label: "CTA URL", kind: "string" },
@@ -40,6 +41,7 @@ const COLLECTIONS = {
       { name: "discountText", label: "Discount text", kind: "string" },
       { name: "descriptionShort", label: "Short description", kind: "text" },
       { name: "coverImage", label: "Cover image", kind: "image" },
+      { name: "gallery", label: "Gallery", kind: "gallery" },
       { name: "slug", label: "Slug", kind: "slug" },
       { name: "ctaUrl", label: "CTA URL", kind: "string" },
       { name: "status", label: "Status", kind: "select", options: ["draft", "published"] }
@@ -72,38 +74,65 @@ const COLLECTIONS = {
 };
 
 const uploadsRoot = path.join(repoRoot, "public", "uploads", "admin");
+const UPLOAD_PRESETS = {
+  "events:coverImage": { width: 1280, height: 704, quality: 82 },
+  "projects:coverImage": { width: 1280, height: 768, quality: 82 },
+  "promos:coverImage": { width: 1280, height: 768, quality: 82 },
+  "events:gallery": { width: 1120, height: 720, quality: 82 },
+  "projects:gallery": { width: 1120, height: 720, quality: 82 },
+  "promos:gallery": { width: 1120, height: 720, quality: 82 }
+};
 
 let buildChain = Promise.resolve();
 let sharpLoader = null;
 let sharpUnavailableLogged = false;
 
-function json(res, status, payload) {
+function corsHeaders(req) {
+  const origin = String(req?.headers?.origin || "");
+  const isLocalAdminOrigin = origin === "http://127.0.0.1:4321" || origin === "http://localhost:4321";
+  if (!isLocalAdminOrigin) {
+    return {};
+  }
+
+  return {
+    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+    "Access-Control-Allow-Headers": "Authorization,Content-Type",
+    "Access-Control-Allow-Credentials": "false",
+    Vary: "Origin"
+  };
+}
+
+function json(req, res, status, payload) {
   const body = JSON.stringify(payload);
   res.writeHead(status, {
     "Content-Type": "application/json; charset=utf-8",
-    "Content-Length": Buffer.byteLength(body)
+    "Content-Length": Buffer.byteLength(body),
+    ...corsHeaders(req)
   });
   res.end(body);
 }
 
-function text(res, status, body, headers = {}) {
+function text(req, res, status, body, headers = {}) {
   res.writeHead(status, {
     "Content-Type": "text/plain; charset=utf-8",
+    ...corsHeaders(req),
     ...headers
   });
   res.end(body);
 }
 
-function unauthorized(res) {
+function unauthorized(req, res) {
   res.writeHead(401, {
     "WWW-Authenticate": 'Basic realm="MS Promotion Admin", charset="UTF-8"',
-    "Content-Type": "application/json; charset=utf-8"
+    "Content-Type": "application/json; charset=utf-8",
+    ...corsHeaders(req)
   });
   res.end(JSON.stringify({ error: "Unauthorized" }));
 }
 
-function notFound(res) {
-  json(res, 404, { error: "Not found" });
+function notFound(req, res) {
+  json(req, res, 404, { error: "Not found" });
 }
 
 function parseBasicAuth(header) {
@@ -130,7 +159,7 @@ function isAuthorized(req) {
 
 function requireAuthorized(req, res) {
   if (!isAuthorized(req)) {
-    unauthorized(res);
+    unauthorized(req, res);
     return false;
   }
 
@@ -345,6 +374,45 @@ function isResizeableImage(mimeType) {
   return normalized === "image/jpeg" || normalized === "image/jpg" || normalized === "image/png" || normalized === "image/webp";
 }
 
+function resolveUploadPreset(context) {
+  const collection = String(context?.collection || "").trim();
+  const field = String(context?.field || "").trim();
+  const preset = UPLOAD_PRESETS[`${collection}:${field}`];
+  if (!preset) {
+    return null;
+  }
+
+  return preset;
+}
+
+function clampCropRect(cropRect, metadata) {
+  const imageWidth = Number(metadata?.width || 0);
+  const imageHeight = Number(metadata?.height || 0);
+  if (!imageWidth || !imageHeight || !cropRect || typeof cropRect !== "object") {
+    return null;
+  }
+
+  const x = Number(cropRect.x);
+  const y = Number(cropRect.y);
+  const width = Number(cropRect.width);
+  const height = Number(cropRect.height);
+  if (![x, y, width, height].every(Number.isFinite) || width <= 0 || height <= 0) {
+    return null;
+  }
+
+  const left = Math.max(0, Math.min(imageWidth - 1, Math.round(x)));
+  const top = Math.max(0, Math.min(imageHeight - 1, Math.round(y)));
+  const maxWidth = imageWidth - left;
+  const maxHeight = imageHeight - top;
+
+  return {
+    left,
+    top,
+    width: Math.max(1, Math.min(maxWidth, Math.round(width))),
+    height: Math.max(1, Math.min(maxHeight, Math.round(height)))
+  };
+}
+
 async function getSharp() {
   if (!sharpLoader) {
     sharpLoader = import("sharp")
@@ -398,7 +466,47 @@ async function optimizeImageBuffer(buffer, mimeType) {
   }
 }
 
-async function saveUpload({ filename, mimeType, base64 }) {
+async function processPhotoUpload(buffer, preset, cropRect) {
+  const sharp = await getSharp();
+  if (!sharp) {
+    throw new Error("Image processing is unavailable on the server.");
+  }
+
+  const normalizedBuffer = await sharp(buffer, { failOn: "none" }).rotate().toBuffer();
+  let image = sharp(normalizedBuffer, { failOn: "none" });
+  const metadata = await image.metadata();
+  const extract = clampCropRect(cropRect, metadata);
+
+  if (extract) {
+    image = image.extract(extract);
+  }
+
+  const outputBuffer = await image
+    .resize({
+      width: preset.width,
+      height: preset.height,
+      fit: "cover",
+      position: "centre",
+      withoutEnlargement: false
+    })
+    .jpeg({
+      quality: preset.quality,
+      mozjpeg: true
+    })
+    .toBuffer();
+
+  const optimizedMetadata = await sharp(outputBuffer).metadata();
+  return {
+    buffer: outputBuffer,
+    extension: "jpg",
+    mimeType: "image/jpeg",
+    width: Number(optimizedMetadata.width || preset.width),
+    height: Number(optimizedMetadata.height || preset.height),
+    sizeBytes: outputBuffer.byteLength
+  };
+}
+
+async function saveUpload({ filename, mimeType, base64, context }) {
   if (typeof base64 !== "string" || !base64) {
     throw new Error("Upload payload is missing file data.");
   }
@@ -413,12 +521,33 @@ async function saveUpload({ filename, mimeType, base64 }) {
   const originalName = safeFilename(filename).replace(/\.[^.]+$/, "");
   let outputBuffer = data;
   let extension = inferUploadExtension(filename, detectedMimeType);
+  let outputMimeType = detectedMimeType || match[1] || "application/octet-stream";
+  let width = null;
+  let height = null;
+  let sizeBytes = data.byteLength;
+  const preset = resolveUploadPreset(context);
 
-  if (isResizeableImage(detectedMimeType)) {
+  if (preset) {
+    if (!isResizeableImage(detectedMimeType)) {
+      throw new Error("Only JPEG, PNG, and WebP photos can be uploaded here.");
+    }
+
+    const processed = await processPhotoUpload(data, preset, context?.cropRect);
+    outputBuffer = processed.buffer;
+    extension = processed.extension;
+    outputMimeType = processed.mimeType;
+    width = processed.width;
+    height = processed.height;
+    sizeBytes = processed.sizeBytes;
+  }
+
+  if (!preset && isResizeableImage(detectedMimeType)) {
     const optimized = await optimizeImageBuffer(data, detectedMimeType);
     if (optimized) {
       outputBuffer = optimized.buffer;
       extension = optimized.extension;
+      outputMimeType = optimized.mimeType;
+      sizeBytes = optimized.buffer.byteLength;
     }
   }
 
@@ -430,7 +559,79 @@ async function saveUpload({ filename, mimeType, base64 }) {
 
   return {
     path: `/uploads/admin/${outputName}`,
-    fileName: outputName
+    fileName: outputName,
+    mimeType: outputMimeType,
+    width,
+    height,
+    sizeBytes
+  };
+}
+
+function normalizeGalleryValue(value) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((item) => {
+      if (typeof item === "string") {
+        return item.trim() ? item : null;
+      }
+
+      if (item && typeof item === "object" && typeof item.image === "string" && item.image.trim()) {
+        return item.caption ? { image: item.image.trim(), caption: String(item.caption).trim() } : item.image.trim();
+      }
+
+      return null;
+    })
+    .filter(Boolean);
+}
+
+async function attachUploadToEntry(result, context) {
+  const collectionName = String(context?.collection || "").trim();
+  const fieldName = String(context?.field || "").trim();
+  const entrySlug = String(context?.entrySlug || "").trim();
+  const persistMode = String(context?.persistMode || "").trim();
+
+  if (!collectionName || !fieldName || !entrySlug || !persistMode) {
+    return null;
+  }
+
+  const entry = await loadEntry(collectionName, entrySlug);
+  if (!entry.exists) {
+    throw new Error(`Entry not found for upload attach: ${collectionName}/${entrySlug}`);
+  }
+
+  const nextData = { ...(entry.data || {}) };
+
+  if (persistMode === "replaceField") {
+    nextData[fieldName] = result.path;
+  } else if (persistMode === "appendGallery") {
+    const currentItems = normalizeGalleryValue(nextData[fieldName]);
+    currentItems.push(result.path);
+    nextData[fieldName] = currentItems;
+  } else if (persistMode === "replaceGalleryItem") {
+    const currentItems = normalizeGalleryValue(nextData[fieldName]);
+    const index = Number(context?.galleryIndex);
+    if (!Number.isInteger(index) || index < 0 || index >= currentItems.length) {
+      throw new Error("Gallery item index is invalid.");
+    }
+
+    const existing = currentItems[index];
+    if (existing && typeof existing === "object" && typeof existing.caption === "string" && existing.caption.trim()) {
+      currentItems[index] = { image: result.path, caption: existing.caption.trim() };
+    } else {
+      currentItems[index] = result.path;
+    }
+    nextData[fieldName] = currentItems;
+  } else {
+    return null;
+  }
+
+  const saved = await saveEntry(collectionName, entrySlug, entrySlug, nextData, entry.body || "");
+  return {
+    ...saved,
+    data: nextData
   };
 }
 
@@ -483,8 +684,17 @@ async function bootstrap() {
 async function handleRequest(req, res) {
   const url = new URL(req.url || "/", `http://${req.headers.host || "localhost"}`);
 
+  if (req.method === "OPTIONS" && url.pathname.startsWith("/api/")) {
+    res.writeHead(204, {
+      ...corsHeaders(req),
+      "Content-Length": "0"
+    });
+    res.end();
+    return;
+  }
+
   if (url.pathname === "/health") {
-    json(res, 200, { ok: true });
+    json(req, res, 200, { ok: true });
     return;
   }
 
@@ -495,7 +705,7 @@ async function handleRequest(req, res) {
 
     try {
       if (req.method === "GET" && url.pathname === "/api/bootstrap") {
-        json(res, 200, await bootstrap());
+        json(req, res, 200, await bootstrap());
         return;
       }
 
@@ -503,11 +713,11 @@ async function handleRequest(req, res) {
         const collection = url.searchParams.get("collection");
         const slug = url.searchParams.get("slug");
         if (!collection || !slug) {
-          json(res, 400, { error: "collection and slug are required" });
+          json(req, res, 400, { error: "collection and slug are required" });
           return;
         }
 
-        json(res, 200, await loadEntry(collection, slug));
+        json(req, res, 200, await loadEntry(collection, slug));
         return;
       }
 
@@ -518,7 +728,7 @@ async function handleRequest(req, res) {
         const nextSlug = payload.slug || originalSlug;
         const result = await saveEntry(collection, originalSlug, nextSlug, payload.data || {}, payload.body || "");
         await enqueueBuild();
-        json(res, 200, { ok: true, ...result });
+        json(req, res, 200, { ok: true, ...result });
         return;
       }
 
@@ -528,7 +738,7 @@ async function handleRequest(req, res) {
         const nextSlug = payload.slug;
         const result = await saveEntry(collection, null, nextSlug, payload.data || {}, payload.body || "");
         await enqueueBuild();
-        json(res, 201, { ok: true, ...result });
+        json(req, res, 201, { ok: true, ...result });
         return;
       }
 
@@ -538,34 +748,41 @@ async function handleRequest(req, res) {
         const slug = payload.slug;
         const result = await deleteEntry(collection, slug);
         await enqueueBuild();
-        json(res, 200, { ok: true, ...result });
+        json(req, res, 200, { ok: true, ...result });
         return;
       }
 
       if (req.method === "POST" && url.pathname === "/api/upload") {
         const payload = await readJson(req);
         const result = await saveUpload(payload);
+        const attached = await attachUploadToEntry(result, payload.context);
         await enqueueBuild();
-        json(res, 200, { ok: true, ...result });
+        json(req, res, 200, {
+          ok: true,
+          ...result,
+          entryUpdated: Boolean(attached),
+          entryPath: attached?.path || null,
+          entryData: attached?.data || null
+        });
         return;
       }
 
-      notFound(res);
+      notFound(req, res);
     } catch (error) {
       console.error("[admin] request failed:", error);
-      json(res, 500, { error: error?.message || "Internal server error" });
+      json(req, res, 500, { error: error?.message || "Internal server error" });
     }
 
     return;
   }
 
-  notFound(res);
+  notFound(req, res);
 }
 
 const server = createServer((req, res) => {
   handleRequest(req, res).catch((error) => {
     console.error("[admin] fatal error:", error);
-    text(res, 500, "Internal server error");
+    text(req, res, 500, "Internal server error");
   });
 });
 

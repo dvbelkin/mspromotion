@@ -1,0 +1,35 @@
+---
+const { items, title } = Astro.props as {
+  items: Array<string | { image: string; caption?: string }>;
+  title: string;
+};
+
+const galleryItems = (items || []).map((entry, index) => {
+  if (typeof entry === "string") {
+    return {
+      image: entry,
+      caption: `${title}: кадр ${index + 1}`
+    };
+  }
+
+  return {
+    image: entry.image,
+    caption: entry.caption || `${title}: кадр ${index + 1}`
+  };
+});
+---
+
+{
+  galleryItems.length > 0 && (
+    <section class="mt-8">
+      <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        {galleryItems.map((item) => (
+          <figure class="card-surface overflow-hidden rounded-2xl p-3">
+            <img src={item.image} alt={item.caption} class="h-52 w-full rounded-xl object-cover" loading="lazy" width="560" height="360" />
+            <figcaption class="mt-3 text-sm text-muted">{item.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  )
+}

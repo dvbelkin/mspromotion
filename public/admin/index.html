@@ -10,8 +10,8 @@
       :root {
         --bg: #0b1020;
         --panel: #11182b;
-        --panel-2: #16213a;
         --line: rgba(255, 255, 255, 0.08);
+        --line-strong: rgba(111, 140, 255, 0.45);
         --text: #eef2ff;
         --muted: #9aa7c7;
         --accent: #6f8cff;
@@ -28,7 +28,7 @@
         color: var(--text);
         background:
           radial-gradient(circle at top left, rgba(111, 140, 255, 0.18), transparent 40%),
-          radial-gradient(circle at top right, rgba(135, 212, 255, 0.1), transparent 35%),
+          radial-gradient(circle at top right, rgba(135, 212, 255, 0.10), transparent 35%),
           var(--bg);
       }
 
@@ -131,7 +131,7 @@
       }
 
       .list-button:hover {
-        border-color: rgba(111, 140, 255, 0.45);
+        border-color: var(--line-strong);
         transform: translateY(-1px);
       }
 
@@ -210,7 +210,7 @@
 
       .field {
         display: grid;
-        gap: 6px;
+        gap: 8px;
       }
 
       .field label {
@@ -255,13 +255,15 @@
         gap: 10px;
       }
 
-      .login-grid input {
-        width: 100%;
-        border-radius: 12px;
-        border: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.04);
-        color: var(--text);
-        padding: 10px 12px;
+      .empty {
+        min-height: 60vh;
+        display: grid;
+        place-items: center;
+        color: var(--muted);
+        text-align: center;
+        border: 1px dashed var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.02);
       }
 
       .status-line {
@@ -278,15 +280,172 @@
         color: var(--success);
       }
 
-      .empty {
-        min-height: 60vh;
+      .image-preview {
+        display: grid;
+        gap: 8px;
+      }
+
+      .image-preview-card,
+      .gallery-card {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.03);
+        overflow: hidden;
+      }
+
+      .image-preview-card img,
+      .gallery-card img {
+        display: block;
+        width: 100%;
+        object-fit: cover;
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .image-preview-card img {
+        aspect-ratio: 16 / 10;
+      }
+
+      .preview-meta,
+      .gallery-card-body {
+        padding: 10px 12px;
+      }
+
+      .preview-meta code,
+      .gallery-card-body code {
+        display: block;
+        word-break: break-all;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .gallery-grid {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      }
+
+      .gallery-card img {
+        aspect-ratio: 14 / 9;
+      }
+
+      .gallery-card-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        align-items: center;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      .link-button {
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: #ffb7c3;
+      }
+
+      .link-button:hover {
+        color: #ffd3dc;
+      }
+
+      .upload-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .crop-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(4, 7, 14, 0.82);
         display: grid;
         place-items: center;
-        color: var(--muted);
-        text-align: center;
-        border: 1px dashed var(--line);
+        padding: 20px;
+        z-index: 50;
+      }
+
+      .crop-dialog {
+        width: min(1040px, 100%);
+        border: 1px solid var(--line);
+        background: rgba(10, 15, 27, 0.96);
+        border-radius: 24px;
+        padding: 20px;
+        box-shadow: 0 40px 140px rgba(0, 0, 0, 0.45);
+      }
+
+      .crop-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+        gap: 18px;
+        align-items: start;
+      }
+
+      .crop-stage {
         border-radius: 18px;
-        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--line);
+        background:
+          linear-gradient(45deg, rgba(255, 255, 255, 0.02) 25%, transparent 25%),
+          linear-gradient(-45deg, rgba(255, 255, 255, 0.02) 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.02) 75%),
+          linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.02) 75%);
+        background-size: 24px 24px;
+        background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+        padding: 18px;
+      }
+
+      .crop-frame {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        aspect-ratio: var(--crop-ratio, 16 / 9);
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(0, 0, 0, 0.32);
+        margin: 0 auto;
+      }
+
+      .crop-frame::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 16px;
+        pointer-events: none;
+      }
+
+      .crop-image {
+        position: absolute;
+        left: 0;
+        top: 0;
+        max-width: none;
+        user-select: none;
+        -webkit-user-drag: none;
+        transform-origin: top left;
+      }
+
+      .crop-panel {
+        display: grid;
+        gap: 14px;
+      }
+
+      .crop-control {
+        display: grid;
+        gap: 6px;
+      }
+
+      .crop-control input[type="range"] {
+        width: 100%;
+        padding: 0;
+      }
+
+      .crop-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 16px;
       }
 
       @media (max-width: 980px) {
@@ -298,6 +457,10 @@
           border-right: 0;
           border-bottom: 1px solid var(--line);
         }
+
+        .crop-layout {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
@@ -306,7 +469,7 @@
       <aside class="sidebar">
         <div>
           <div class="brand">MS Promotion Admin</div>
-          <div class="subtitle">Small file-based backend for content editing</div>
+          <div class="subtitle">Crop, optimize, and publish content safely</div>
         </div>
 
         <section class="panel" id="login-panel">
@@ -374,16 +537,107 @@
       </main>
     </div>
 
+    <div id="crop-modal" class="crop-backdrop hidden" aria-hidden="true">
+      <div class="crop-dialog">
+        <div class="panel-title">
+          <div>
+            <div id="crop-title">Prepare image</div>
+            <div id="crop-subtitle" class="hint"></div>
+          </div>
+          <button class="action" id="crop-cancel-top" type="button">Close</button>
+        </div>
+
+        <div class="crop-layout">
+          <div class="crop-stage">
+            <div id="crop-frame" class="crop-frame">
+              <img id="crop-image" class="crop-image" alt="" />
+            </div>
+          </div>
+
+          <div class="crop-panel">
+            <div class="crop-control">
+              <label for="crop-zoom">Zoom</label>
+              <input id="crop-zoom" type="range" min="100" max="320" step="1" value="100" />
+            </div>
+
+            <div class="crop-control">
+              <label for="crop-pan-x">Horizontal crop position</label>
+              <input id="crop-pan-x" type="range" min="0" max="100" step="1" value="50" />
+            </div>
+
+            <div class="crop-control">
+              <label for="crop-pan-y">Vertical crop position</label>
+              <input id="crop-pan-y" type="range" min="0" max="100" step="1" value="50" />
+            </div>
+
+            <div id="crop-summary" class="hint"></div>
+            <div class="hint">The editor preview matches the final card ratio on the site. The server will crop and compress the uploaded photo automatically.</div>
+          </div>
+        </div>
+
+        <div class="crop-actions">
+          <button class="action" id="crop-cancel" type="button">Cancel</button>
+          <button class="action primary" id="crop-confirm" type="button">Use this crop</button>
+        </div>
+      </div>
+    </div>
+
     <script>
       const API_BASE = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
         ? "http://127.0.0.1:8787"
         : "";
       const AUTH_KEY = "msp-admin-auth";
+      const UPLOAD_PRESETS = {
+        "events:coverImage": {
+          id: "events:coverImage",
+          label: "Event cover",
+          subtitle: "Rendered as the event card and article cover.",
+          width: 1280,
+          height: 704
+        },
+        "projects:coverImage": {
+          id: "projects:coverImage",
+          label: "Project cover",
+          subtitle: "Rendered as the project card cover.",
+          width: 1280,
+          height: 768
+        },
+        "promos:coverImage": {
+          id: "promos:coverImage",
+          label: "Promo cover",
+          subtitle: "Rendered as the promo card cover.",
+          width: 1280,
+          height: 768
+        },
+        "events:gallery": {
+          id: "events:gallery",
+          label: "Gallery image",
+          subtitle: "Rendered in the gallery grid on the detail page.",
+          width: 1120,
+          height: 720
+        },
+        "projects:gallery": {
+          id: "projects:gallery",
+          label: "Gallery image",
+          subtitle: "Rendered in the gallery grid on the detail page.",
+          width: 1120,
+          height: 720
+        },
+        "promos:gallery": {
+          id: "promos:gallery",
+          label: "Gallery image",
+          subtitle: "Rendered in the gallery grid on the detail page.",
+          width: 1120,
+          height: 720
+        }
+      };
+
       const state = {
         auth: sessionStorage.getItem(AUTH_KEY) || "",
         bootstrap: null,
         collection: null,
-        entry: null
+        entry: null,
+        cropSession: null
       };
 
       const el = {
@@ -407,7 +661,19 @@
         editorPath: document.getElementById("editor-path"),
         fieldList: document.getElementById("field-list"),
         bodyField: document.getElementById("body-field"),
-        statusLine: document.getElementById("status-line")
+        statusLine: document.getElementById("status-line"),
+        cropModal: document.getElementById("crop-modal"),
+        cropFrame: document.getElementById("crop-frame"),
+        cropImage: document.getElementById("crop-image"),
+        cropTitle: document.getElementById("crop-title"),
+        cropSubtitle: document.getElementById("crop-subtitle"),
+        cropSummary: document.getElementById("crop-summary"),
+        cropZoom: document.getElementById("crop-zoom"),
+        cropPanX: document.getElementById("crop-pan-x"),
+        cropPanY: document.getElementById("crop-pan-y"),
+        cropCancelTop: document.getElementById("crop-cancel-top"),
+        cropCancel: document.getElementById("crop-cancel"),
+        cropConfirm: document.getElementById("crop-confirm")
       };
 
       function encodeCredentials(user, pass) {
@@ -516,6 +782,34 @@
           .join("");
       }
 
+      function galleryItemToLine(item) {
+        if (typeof item === "string") {
+          return item;
+        }
+
+        if (item && typeof item === "object") {
+          return item.caption ? `${item.image} | ${item.caption}` : item.image;
+        }
+
+        return "";
+      }
+
+      function parseGalleryLines(value) {
+        return String(value || "")
+          .split("\n")
+          .map((item) => item.trim())
+          .filter(Boolean)
+          .map((item) => {
+            const [image, ...captionParts] = item.split("|");
+            const caption = captionParts.join("|").trim();
+            return {
+              image: image.trim(),
+              caption
+            };
+          })
+          .filter((item) => item.image);
+      }
+
       function fieldValueAsText(field, value) {
         if (field.kind === "tags") {
           return Array.isArray(value) ? value.join("\n") : "";
@@ -526,20 +820,7 @@
             return "";
           }
 
-          return value
-            .map((item) => {
-              if (typeof item === "string") {
-                return item;
-              }
-
-              if (item && typeof item === "object") {
-                return item.caption ? `${item.image} | ${item.caption}` : item.image;
-              }
-
-              return "";
-            })
-            .filter(Boolean)
-            .join("\n");
+          return value.map(galleryItemToLine).filter(Boolean).join("\n");
         }
 
         if (value === null || value === undefined) {
@@ -547,6 +828,63 @@
         }
 
         return String(value);
+      }
+
+      function getUploadPreset(collectionName, fieldName) {
+        return UPLOAD_PRESETS[`${collectionName}:${fieldName}`] || null;
+      }
+
+      function renderImagePreview(current) {
+        if (!current) {
+          return `<div class="hint">Upload a photo to generate a cropped and compressed site-ready image.</div>`;
+        }
+
+        return `
+          <div class="image-preview">
+            <div class="image-preview-card">
+              <img src="${escapeHtml(current)}" alt="" loading="lazy" />
+              <div class="preview-meta">
+                <div class="gallery-card-header">
+                  <span>Current image</span>
+                  <button class="link-button" type="button" data-image-recrop="coverImage">Recrop</button>
+                </div>
+                <code>${escapeHtml(current)}</code>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      function renderGalleryPreview(value, fieldName) {
+        const items = Array.isArray(value) ? value.map((item) => {
+          if (typeof item === "string") {
+            return { image: item, caption: "" };
+          }
+          return { image: item.image || "", caption: item.caption || "" };
+        }) : parseGalleryLines(value);
+
+        if (!items.length) {
+          return `<div class="hint">Upload gallery photos to append them here. Each photo will be cropped to the detail page gallery ratio.</div>`;
+        }
+
+        return `
+          <div class="gallery-grid">
+            ${items.map((item, index) => `
+              <article class="gallery-card">
+                <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.caption || `Gallery image ${index + 1}`)}" loading="lazy" />
+                <div class="gallery-card-body">
+                  <div class="gallery-card-header">
+                    <span>Item ${index + 1}</span>
+                    <div style="display:flex; gap:8px;">
+                      <button class="link-button" type="button" data-gallery-recrop="${escapeHtml(fieldName)}" data-index="${index}">Recrop</button>
+                      <button class="link-button" type="button" data-gallery-remove="${escapeHtml(fieldName)}" data-index="${index}">Remove</button>
+                    </div>
+                  </div>
+                  ${item.caption ? `<div class="hint">${escapeHtml(item.caption)}</div>` : ""}
+                  <code>${escapeHtml(item.image)}</code>
+                </div>
+              </article>
+            `).join("")}
+          </div>`;
       }
 
       function renderField(field, value) {
@@ -569,18 +907,28 @@
             </div>`;
         }
 
-        if (field.kind === "text" || field.kind === "tags" || field.kind === "gallery") {
-          const hint =
-            field.kind === "tags"
-              ? "One tag per line."
-              : field.kind === "gallery"
-                ? "One image per line. Use `image | caption` for captions."
-                : "";
+        if (field.kind === "text" || field.kind === "tags") {
+          const hint = field.kind === "tags" ? "One tag per line." : "";
           return `
             <div class="field">
               <label for="${id}">${label}</label>
               <textarea id="${id}" data-field="${escapeHtml(field.name)}" data-kind="${escapeHtml(field.kind)}">${escapeHtml(fieldValueAsText(field, current))}</textarea>
               ${hint ? `<div class="hint">${hint}</div>` : ""}
+            </div>`;
+        }
+
+        if (field.kind === "gallery") {
+          const currentText = fieldValueAsText(field, current);
+          return `
+            <div class="field">
+              <label for="${id}">${label}</label>
+              <div class="upload-toolbar">
+                <button class="action" type="button" data-upload="${escapeHtml(field.name)}">Upload to gallery</button>
+                <span class="hint">Upload photos one by one. Use \`image | caption\` if you want captions.</span>
+              </div>
+              <div data-gallery-preview="${escapeHtml(field.name)}">${renderGalleryPreview(current, field.name)}</div>
+              <textarea id="${id}" data-field="${escapeHtml(field.name)}" data-kind="${escapeHtml(field.kind)}">${escapeHtml(currentText)}</textarea>
+              <input type="file" accept="image/jpeg,image/png,image/webp" class="hidden" data-picker="${escapeHtml(field.name)}" />
             </div>`;
         }
 
@@ -609,8 +957,8 @@
                 <input id="${id}" type="text" data-field="${escapeHtml(field.name)}" data-kind="${escapeHtml(field.kind)}" value="${escapeHtml(current)}" />
                 <button class="action" type="button" data-upload="${escapeHtml(field.name)}">Upload</button>
               </div>
-              <input type="file" accept="image/*" class="hidden" data-picker="${escapeHtml(field.name)}" />
-              ${current ? `<div class="hint">Current: ${escapeHtml(current)}</div>` : ""}
+              <div data-image-preview="${escapeHtml(field.name)}">${renderImagePreview(current)}</div>
+              <input type="file" accept="image/jpeg,image/png,image/webp" class="hidden" data-picker="${escapeHtml(field.name)}" />
             </div>`;
         }
 
@@ -640,13 +988,13 @@
         el.activeMeta.textContent = `${entry.exists ? "Existing entry" : "New entry"} in ${collection.folder}`;
         el.editorPath.textContent = `/${collection.name}/${entry.slug}.md`;
 
-        const fields = collection.fields
-          .map((field) => renderField(field, entry.data?.[field.name]))
-          .join("");
-
-        el.fieldList.innerHTML = fields;
+        el.fieldList.innerHTML = collection.fields.map((field) => renderField(field, entry.data?.[field.name])).join("");
         el.bodyField.value = entry.body || "";
 
+        bindEditorEvents();
+      }
+
+      function bindEditorEvents() {
         el.fieldList.querySelectorAll("[data-upload]").forEach((button) => {
           button.addEventListener("click", () => {
             const fieldName = button.getAttribute("data-upload");
@@ -664,29 +1012,462 @@
             }
 
             try {
-              setStatus(`Uploading ${file.name}...`);
-              const dataUrl = await readFileAsDataUrl(file);
-              const response = await api("/api/upload", {
-                method: "POST",
-                body: JSON.stringify({
-                  filename: file.name,
-                  mimeType: file.type,
-                  base64: dataUrl
-                })
-              });
-              const result = await response.json();
-              const input = el.fieldList.querySelector(`[data-field="${CSS.escape(fieldName)}"]`);
-              if (input) {
-                input.value = result.path;
-              }
-              setStatus(`Uploaded ${result.path}`, "success");
-            } catch (error) {
-              setStatus(error.message || "Upload failed", "error");
+              await handlePickedFile(fieldName, file);
             } finally {
               picker.value = "";
             }
           });
         });
+
+        el.fieldList.querySelectorAll("[data-gallery-remove]").forEach((button) => {
+          button.addEventListener("click", async () => {
+            const fieldName = button.getAttribute("data-gallery-remove");
+            const index = Number(button.getAttribute("data-index"));
+            await removeGalleryItem(fieldName, index);
+          });
+        });
+
+        el.fieldList.querySelectorAll("[data-gallery-recrop]").forEach((button) => {
+          button.addEventListener("click", async () => {
+            const fieldName = button.getAttribute("data-gallery-recrop");
+            const index = Number(button.getAttribute("data-index"));
+            await recropGalleryItem(fieldName, index);
+          });
+        });
+
+        el.fieldList.querySelectorAll("[data-image-recrop]").forEach((button) => {
+          button.addEventListener("click", async () => {
+            const fieldName = button.getAttribute("data-image-recrop");
+            await recropImageField(fieldName);
+          });
+        });
+
+        el.fieldList.querySelectorAll('[data-kind="gallery"]').forEach((textarea) => {
+          textarea.addEventListener("input", () => {
+            updateGalleryPreview(textarea.getAttribute("data-field"));
+          });
+        });
+      }
+
+      function updateGalleryPreview(fieldName) {
+        const preview = el.fieldList.querySelector(`[data-gallery-preview="${CSS.escape(fieldName)}"]`);
+        const input = el.fieldList.querySelector(`[data-field="${CSS.escape(fieldName)}"]`);
+        if (!preview || !input) {
+          return;
+        }
+
+        preview.innerHTML = renderGalleryPreview(input.value, fieldName);
+        preview.querySelectorAll("[data-gallery-remove]").forEach((button) => {
+          button.addEventListener("click", async () => {
+            const index = Number(button.getAttribute("data-index"));
+            await removeGalleryItem(fieldName, index);
+          });
+        });
+        preview.querySelectorAll("[data-gallery-recrop]").forEach((button) => {
+          button.addEventListener("click", async () => {
+            const index = Number(button.getAttribute("data-index"));
+            await recropGalleryItem(fieldName, index);
+          });
+        });
+      }
+
+      function updateImagePreview(fieldName) {
+        const preview = el.fieldList.querySelector(`[data-image-preview="${CSS.escape(fieldName)}"]`);
+        const input = el.fieldList.querySelector(`[data-field="${CSS.escape(fieldName)}"]`);
+        if (!preview || !input) {
+          return;
+        }
+
+        preview.innerHTML = renderImagePreview(input.value.trim());
+        preview.querySelectorAll("[data-image-recrop]").forEach((button) => {
+          button.addEventListener("click", async () => {
+            const recropFieldName = button.getAttribute("data-image-recrop");
+            await recropImageField(recropFieldName);
+          });
+        });
+      }
+
+      function appendGalleryItem(fieldName, pathValue) {
+        const input = el.fieldList.querySelector(`[data-field="${CSS.escape(fieldName)}"]`);
+        if (!input) {
+          return;
+        }
+
+        const currentLines = input.value
+          .split("\n")
+          .map((item) => item.trim())
+          .filter(Boolean);
+        currentLines.push(pathValue);
+        input.value = currentLines.join("\n");
+        updateGalleryPreview(fieldName);
+      }
+
+      async function persistMediaChange(actionLabel) {
+        if (!state.entry) {
+          return;
+        }
+
+        if (!state.entry.exists) {
+          setStatus(`${actionLabel} applied locally. Click Save to persist.`, "success");
+          return;
+        }
+
+        await saveCurrentEntry({
+          loadingMessage: "Saving media changes...",
+          successMessage: `${actionLabel} saved.`
+        });
+      }
+
+      async function removeGalleryItem(fieldName, index) {
+        const input = el.fieldList.querySelector(`[data-field="${CSS.escape(fieldName)}"]`);
+        if (!input) {
+          return;
+        }
+
+        const currentLines = input.value
+          .split("\n")
+          .map((item) => item.trim())
+          .filter(Boolean);
+        currentLines.splice(index, 1);
+        input.value = currentLines.join("\n");
+        updateGalleryPreview(fieldName);
+        await persistMediaChange("Gallery updated");
+      }
+
+      function getCurrentImagePath(fieldName) {
+        const input = el.fieldList.querySelector(`[data-field="${CSS.escape(fieldName)}"]`);
+        return input ? input.value.trim() : "";
+      }
+
+      function replaceGalleryItem(fieldName, index, nextValue) {
+        const input = el.fieldList.querySelector(`[data-field="${CSS.escape(fieldName)}"]`);
+        if (!input) {
+          return;
+        }
+
+        const currentLines = input.value
+          .split("\n")
+          .map((item) => item.trim())
+          .filter(Boolean);
+        const existing = currentLines[index] || "";
+        const existingParts = existing.split("|");
+        const existingCaption = existingParts.slice(1).join("|").trim();
+        currentLines[index] = existingCaption ? `${nextValue} | ${existingCaption}` : nextValue;
+        input.value = currentLines.join("\n");
+        updateGalleryPreview(fieldName);
+      }
+
+      async function loadCurrentImageAsDataUrl(imagePath) {
+        if (!imagePath) {
+          throw new Error("Image path is empty.");
+        }
+
+        const absoluteUrl = new URL(imagePath, window.location.origin).toString();
+        const response = await fetch(absoluteUrl, { credentials: "same-origin" });
+        if (!response.ok) {
+          throw new Error(`Failed to load current image: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        return await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve({
+            dataUrl: String(reader.result || ""),
+            mimeType: blob.type || "image/jpeg",
+            fileName: imagePath.split("/").pop() || "image.jpg"
+          });
+          reader.onerror = () => reject(reader.error || new Error("Failed to read current image"));
+          reader.readAsDataURL(blob);
+        });
+      }
+
+      async function uploadPreparedImage(fieldName, preparedImage, persistOptions = null) {
+        const collection = currentCollection();
+        if (!collection) {
+          return null;
+        }
+
+        const preset = getUploadPreset(collection.name, fieldName);
+        if (!preset) {
+          throw new Error(`Upload preset is missing for ${collection.name}/${fieldName}.`);
+        }
+
+        const crop = await openCropModal({
+          preset,
+          dataUrl: preparedImage.dataUrl,
+          fileName: preparedImage.fileName
+        });
+        if (!crop) {
+          return null;
+        }
+
+        const response = await api("/api/upload", {
+          method: "POST",
+          body: JSON.stringify({
+            filename: preparedImage.fileName,
+            mimeType: preparedImage.mimeType,
+            base64: preparedImage.dataUrl,
+            context: {
+              collection: collection.name,
+              field: fieldName,
+              preset: preset.id,
+              cropRect: crop.cropRect,
+              zoom: crop.zoom,
+              entrySlug: state.entry?.exists ? state.entry.slug : null,
+              persistMode: persistOptions?.persistMode || null,
+              galleryIndex: Number.isInteger(persistOptions?.galleryIndex) ? persistOptions.galleryIndex : null
+            }
+          })
+        });
+
+        return await response.json();
+      }
+
+      async function recropImageField(fieldName) {
+        const imagePath = getCurrentImagePath(fieldName);
+        if (!imagePath) {
+          setStatus("Nothing to recrop for this field.", "error");
+          return;
+        }
+
+        try {
+          setStatus("Loading current image...");
+          const preparedImage = await loadCurrentImageAsDataUrl(imagePath);
+          setStatus("Preparing crop...");
+          const result = await uploadPreparedImage(fieldName, preparedImage, {
+            persistMode: state.entry?.exists ? "replaceField" : null
+          });
+          if (!result) {
+            setStatus("Recrop cancelled.");
+            return;
+          }
+
+          const input = el.fieldList.querySelector(`[data-field="${CSS.escape(fieldName)}"]`);
+          if (input) {
+            input.value = result.path;
+            updateImagePreview(fieldName);
+          }
+          if (result.entryUpdated) {
+            state.entry.data = result.entryData || state.entry.data;
+            setStatus(`Updated ${result.path}.`, "success");
+            return;
+          }
+
+          await persistMediaChange("Cover image updated");
+        } catch (error) {
+          setStatus(error.message || "Failed to recrop image", "error");
+        }
+      }
+
+      async function recropGalleryItem(fieldName, index) {
+        const input = el.fieldList.querySelector(`[data-field="${CSS.escape(fieldName)}"]`);
+        if (!input) {
+          return;
+        }
+
+        const items = parseGalleryLines(input.value);
+        const current = items[index];
+        if (!current?.image) {
+          setStatus("Gallery item not found.", "error");
+          return;
+        }
+
+        try {
+          setStatus("Loading current gallery image...");
+          const preparedImage = await loadCurrentImageAsDataUrl(current.image);
+          setStatus("Preparing crop...");
+          const result = await uploadPreparedImage(fieldName, preparedImage, {
+            persistMode: state.entry?.exists ? "replaceGalleryItem" : null,
+            galleryIndex: index
+          });
+          if (!result) {
+            setStatus("Recrop cancelled.");
+            return;
+          }
+
+          replaceGalleryItem(fieldName, index, result.path);
+          if (result.entryUpdated) {
+            state.entry.data = result.entryData || state.entry.data;
+            setStatus(`Updated ${result.path}.`, "success");
+            return;
+          }
+
+          await persistMediaChange("Gallery image updated");
+        } catch (error) {
+          setStatus(error.message || "Failed to recrop gallery image", "error");
+        }
+      }
+
+      async function handlePickedFile(fieldName, file) {
+        const collection = currentCollection();
+        if (!collection) {
+          return;
+        }
+
+        const preset = getUploadPreset(collection.name, fieldName);
+        if (!preset) {
+          setStatus(`Upload preset is missing for ${collection.name}/${fieldName}.`, "error");
+          return;
+        }
+
+        setStatus(`Preparing ${file.name}...`);
+        const dataUrl = await readFileAsDataUrl(file);
+        const result = await uploadPreparedImage(fieldName, {
+          dataUrl,
+          mimeType: file.type,
+          fileName: file.name
+        }, {
+          persistMode: state.entry?.exists
+            ? (fieldName === "gallery" ? "appendGallery" : "replaceField")
+            : null
+        });
+        if (!result) {
+          setStatus("Upload cancelled.");
+          return;
+        }
+        if (fieldName === "gallery") {
+          appendGalleryItem(fieldName, result.path);
+        } else {
+          const input = el.fieldList.querySelector(`[data-field="${CSS.escape(fieldName)}"]`);
+          if (input) {
+            input.value = result.path;
+            updateImagePreview(fieldName);
+          }
+        }
+
+        const sizeKb = result.sizeBytes ? `${Math.round(result.sizeBytes / 1024)} KB` : "";
+        const dims = result.width && result.height ? `${result.width}x${result.height}` : "";
+        const uploadSummary = `Uploaded ${result.path}${dims ? ` (${dims})` : ""}${sizeKb ? `, ${sizeKb}` : ""}.`;
+        if (result.entryUpdated) {
+          state.entry.data = result.entryData || state.entry.data;
+          setStatus(uploadSummary, "success");
+          return;
+        }
+
+        if (state.entry?.exists) {
+          await saveCurrentEntry({
+            loadingMessage: "Saving media changes...",
+            successMessage: uploadSummary
+          });
+          return;
+        }
+
+        setStatus(`${uploadSummary} Click Save to persist.`, "success");
+      }
+
+      async function openCropModal({ preset, dataUrl, fileName }) {
+        return await new Promise((resolve) => {
+          const session = {
+            resolve,
+            preset,
+            dataUrl,
+            fileName,
+            zoom: 1,
+            panX: 0.5,
+            panY: 0.5,
+            naturalWidth: 0,
+            naturalHeight: 0,
+            frameWidth: 0,
+            frameHeight: 0
+          };
+
+          state.cropSession = session;
+          el.cropTitle.textContent = preset.label;
+          el.cropSubtitle.textContent = `${preset.subtitle} Final export: ${preset.width}x${preset.height}px JPEG.`;
+          el.cropZoom.value = "100";
+          el.cropPanX.value = "50";
+          el.cropPanY.value = "50";
+          el.cropFrame.style.setProperty("--crop-ratio", `${preset.width} / ${preset.height}`);
+          el.cropModal.classList.remove("hidden");
+          el.cropModal.setAttribute("aria-hidden", "false");
+
+          const finish = (result) => {
+            if (state.cropSession !== session) {
+              return;
+            }
+            state.cropSession = null;
+            el.cropModal.classList.add("hidden");
+            el.cropModal.setAttribute("aria-hidden", "true");
+            el.cropImage.removeAttribute("src");
+            resolve(result);
+          };
+
+          session.finish = finish;
+
+          el.cropImage.onload = () => {
+            if (state.cropSession !== session) {
+              return;
+            }
+            session.naturalWidth = el.cropImage.naturalWidth;
+            session.naturalHeight = el.cropImage.naturalHeight;
+            requestAnimationFrame(renderCropSession);
+          };
+
+          el.cropImage.src = dataUrl;
+        });
+      }
+
+      function renderCropSession() {
+        const session = state.cropSession;
+        if (!session || !session.naturalWidth || !session.naturalHeight) {
+          return;
+        }
+
+        const frameRect = el.cropFrame.getBoundingClientRect();
+        const frameWidth = frameRect.width;
+        const frameHeight = frameRect.height;
+        if (!frameWidth || !frameHeight) {
+          requestAnimationFrame(renderCropSession);
+          return;
+        }
+
+        session.frameWidth = frameWidth;
+        session.frameHeight = frameHeight;
+
+        const baseScale = Math.max(frameWidth / session.naturalWidth, frameHeight / session.naturalHeight);
+        const scale = baseScale * session.zoom;
+        const renderWidth = session.naturalWidth * scale;
+        const renderHeight = session.naturalHeight * scale;
+        const extraX = Math.max(0, renderWidth - frameWidth);
+        const extraY = Math.max(0, renderHeight - frameHeight);
+        const offsetX = -extraX * session.panX;
+        const offsetY = -extraY * session.panY;
+
+        el.cropImage.style.width = `${renderWidth}px`;
+        el.cropImage.style.height = `${renderHeight}px`;
+        el.cropImage.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+
+        const cropRect = {
+          x: Math.max(0, -offsetX / scale),
+          y: Math.max(0, -offsetY / scale),
+          width: frameWidth / scale,
+          height: frameHeight / scale
+        };
+
+        session.cropRect = cropRect;
+        session.scale = scale;
+        el.cropSummary.textContent = `Source crop: ${Math.round(cropRect.width)}x${Math.round(cropRect.height)}px from ${session.naturalWidth}x${session.naturalHeight}px.`;
+      }
+
+      function confirmCropSession() {
+        const session = state.cropSession;
+        if (!session || !session.cropRect) {
+          return;
+        }
+
+        session.finish({
+          cropRect: session.cropRect,
+          zoom: session.zoom
+        });
+      }
+
+      function cancelCropSession() {
+        const session = state.cropSession;
+        if (!session) {
+          return;
+        }
+
+        session.finish(null);
       }
 
       function readFormData() {
@@ -708,14 +1489,7 @@
           }
 
           if (field.kind === "gallery") {
-            data[field.name] = input.value
-              .split("\n")
-              .map((item) => item.trim())
-              .filter(Boolean)
-              .map((item) => {
-                const [image, caption] = item.split("|").map((part) => part.trim());
-                return caption ? { image, caption } : image;
-              });
+            data[field.name] = parseGalleryLines(input.value).map((item) => item.caption ? { image: item.image, caption: item.caption } : item.image);
             return;
           }
 
@@ -795,7 +1569,7 @@
             state.entry = null;
             renderAuthState(false);
             renderEditor();
-            setStatus("Login required.", "");
+            setStatus("Login required.");
             return;
           }
 
@@ -896,7 +1670,7 @@
         setStatus(`Created draft entry ${slug}.`, "success");
       }
 
-      async function saveCurrentEntry() {
+      async function saveCurrentEntry(options = {}) {
         const collection = currentCollection();
         if (!collection || !state.entry) {
           return;
@@ -915,7 +1689,7 @@
         }
 
         try {
-          setStatus("Saving...");
+          setStatus(options.loadingMessage || "Saving...");
           const method = state.entry.exists ? "PUT" : "POST";
           const payload = {
             collection: collection.name,
@@ -941,7 +1715,7 @@
           await loadBootstrap();
           state.collection = collection.name;
           await selectEntry(result.slug);
-          setStatus(`Saved ${result.path}.`, "success");
+          setStatus(options.successMessage || `Saved ${result.path}.`, "success");
         } catch (error) {
           setStatus(error.message || "Save failed", "error");
         }
@@ -1000,12 +1774,8 @@
         state.auth = encodeCredentials(user, pass);
         sessionStorage.setItem(AUTH_KEY, state.auth);
 
-        try {
-          renderAuthState(true);
-          await loadBootstrap();
-        } catch (error) {
-          setStatus(error.message || "Login failed", "error");
-        }
+        renderAuthState(true);
+        await loadBootstrap();
       });
 
       el.logoutButton.addEventListener("click", logout);
@@ -1013,6 +1783,40 @@
       el.reloadButton.addEventListener("click", loadBootstrap);
       el.saveButton.addEventListener("click", saveCurrentEntry);
       el.deleteButton.addEventListener("click", deleteCurrentEntry);
+
+      el.cropZoom.addEventListener("input", () => {
+        if (!state.cropSession) {
+          return;
+        }
+        state.cropSession.zoom = Number(el.cropZoom.value) / 100;
+        renderCropSession();
+      });
+
+      el.cropPanX.addEventListener("input", () => {
+        if (!state.cropSession) {
+          return;
+        }
+        state.cropSession.panX = Number(el.cropPanX.value) / 100;
+        renderCropSession();
+      });
+
+      el.cropPanY.addEventListener("input", () => {
+        if (!state.cropSession) {
+          return;
+        }
+        state.cropSession.panY = Number(el.cropPanY.value) / 100;
+        renderCropSession();
+      });
+
+      el.cropCancelTop.addEventListener("click", cancelCropSession);
+      el.cropCancel.addEventListener("click", cancelCropSession);
+      el.cropConfirm.addEventListener("click", confirmCropSession);
+
+      window.addEventListener("resize", () => {
+        if (state.cropSession) {
+          renderCropSession();
+        }
+      });
 
       renderAuthState(Boolean(state.auth));
       if (state.auth) {

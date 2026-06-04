@@ -1,7 +1,8 @@
 ---
 title: Контакты
-descriptionShort: "Связаться с MS Promotion по проекту: контакты, адрес и
-  базовый бриф для старта."
+descriptionShort: >-
+  Связаться с MS Promotion по проекту: контакты, адрес и базовый бриф для
+  старта.
 status: published
 ---
 

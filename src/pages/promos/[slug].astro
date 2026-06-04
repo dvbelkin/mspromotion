@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ContentGallery from "@/components/ContentGallery.astro";
 import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
@@ -19,6 +20,8 @@ const { Content } = await render(promo);
     {promo.data.discountText && <p class="mt-3 text-sm text-muted">Условия: {promo.data.discountText}</p>}
 
     <img src={promo.data.coverImage} alt={promo.data.title} class="mt-6 h-[380px] w-full rounded-2xl object-cover" width="1280" height="760" />
+
+    <ContentGallery items={promo.data.gallery} title={promo.data.title} />
 
     <div class="prose mt-8 max-w-none prose-headings:font-display prose-headings:text-text prose-p:text-muted prose-li:text-muted prose-strong:text-text prose-a:text-accent2">
       <Content />

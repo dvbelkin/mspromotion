@@ -2,15 +2,15 @@ import { getCollection, getEntry } from "astro:content";
 
 export async function getPublishedEvents() {
   const events = await getCollection("events", ({ data }) => data.status === "published");
-  return events.sort((a, b) => a.data.dateStart.getTime() - b.data.dateStart.getTime());
+  return events.sort((a, b) => b.data.dateStart.getTime() - a.data.dateStart.getTime());
 }
 
 export async function getPublishedPromos() {
   const promos = await getCollection("promos", ({ data }) => data.status === "published");
   return promos.sort((a, b) => {
-    const aDate = a.data.dateTo ? a.data.dateTo.getTime() : Number.MAX_SAFE_INTEGER;
-    const bDate = b.data.dateTo ? b.data.dateTo.getTime() : Number.MAX_SAFE_INTEGER;
-    return aDate - bDate;
+    const aDate = a.data.dateTo ? a.data.dateTo.getTime() : Number.MIN_SAFE_INTEGER;
+    const bDate = b.data.dateTo ? b.data.dateTo.getTime() : Number.MIN_SAFE_INTEGER;
+    return bDate - aDate;
   });
 }
 

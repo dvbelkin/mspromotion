@@ -88,6 +88,12 @@ try {
         --exclude=node_modules `
         --exclude=.git `
         --exclude=.astro `
+        --exclude=dist `
+        --exclude=src/content/events `
+        --exclude=src/content/pages `
+        --exclude=src/content/projects `
+        --exclude=src/content/promos `
+        --exclude=public/uploads `
         -C $artifactPath .
     if ($LASTEXITCODE -ne 0) {
         throw "Failed to create archive"
@@ -149,6 +155,8 @@ SHARED_DIR=`$TARGET_DIR/shared
 mkdir -p "`$RELEASES_DIR" "`$RELEASE_DIR" "`$SHARED_DIR"
 tar -xzf "`$REMOTE_ARCHIVE" -C "`$RELEASE_DIR"
 
+mkdir -p "`$RELEASE_DIR/src/content" "`$RELEASE_DIR/public"
+
 has_files() {
   [ -d "`$1" ] && find "`$1" -mindepth 1 -print -quit | grep -q .
 }
@@ -177,23 +185,11 @@ link_shared_dir() {
   ln -s "`$shared_dir" "`$link_dir"
 }
 
-seed_shared_dir "`$CURRENT_LINK/src/content/events" "`$SHARED_DIR/src/content/events"
-seed_shared_dir "`$CURRENT_LINK/src/content/pages" "`$SHARED_DIR/src/content/pages"
-seed_shared_dir "`$CURRENT_LINK/src/content/projects" "`$SHARED_DIR/src/content/projects"
-seed_shared_dir "`$CURRENT_LINK/src/content/promos" "`$SHARED_DIR/src/content/promos"
-seed_shared_dir "`$CURRENT_LINK/public/uploads" "`$SHARED_DIR/public/uploads"
-
-seed_shared_dir "`$RELEASE_DIR/src/content/events" "`$SHARED_DIR/src/content/events"
-seed_shared_dir "`$RELEASE_DIR/src/content/pages" "`$SHARED_DIR/src/content/pages"
-seed_shared_dir "`$RELEASE_DIR/src/content/projects" "`$SHARED_DIR/src/content/projects"
-seed_shared_dir "`$RELEASE_DIR/src/content/promos" "`$SHARED_DIR/src/content/promos"
-seed_shared_dir "`$RELEASE_DIR/public/uploads" "`$SHARED_DIR/public/uploads"
-
-link_shared_dir "`$SHARED_DIR/src/content/events" "`$RELEASE_DIR/src/content/events"
-link_shared_dir "`$SHARED_DIR/src/content/pages" "`$RELEASE_DIR/src/content/pages"
-link_shared_dir "`$SHARED_DIR/src/content/projects" "`$RELEASE_DIR/src/content/projects"
-link_shared_dir "`$SHARED_DIR/src/content/promos" "`$RELEASE_DIR/src/content/promos"
-link_shared_dir "`$SHARED_DIR/public/uploads" "`$RELEASE_DIR/public/uploads"
+for shared_path in src/content/events src/content/pages src/content/projects src/content/promos public/uploads; do
+  seed_shared_dir "`$CURRENT_LINK/`$shared_path" "`$SHARED_DIR/`$shared_path"
+  seed_shared_dir "`$RELEASE_DIR/`$shared_path" "`$SHARED_DIR/`$shared_path"
+  link_shared_dir "`$SHARED_DIR/`$shared_path" "`$RELEASE_DIR/`$shared_path"
+done
 
 ln -sfn "`$RELEASE_DIR" "`$CURRENT_LINK"
 
