@@ -202,6 +202,20 @@ npm ci --include=dev
 pkill -f "scripts/admin-server.mjs" || true
 nohup env ADMIN_USER="`$ADMIN_USER" ADMIN_PASSWORD="`$ADMIN_PASSWORD" ADMIN_PORT="`$ADMIN_PORT" npm run admin >/tmp/mspromotion-admin.log 2>&1 &
 
+for attempt in 1 2 3 4 5 6 7 8 9 10; do
+  if curl -fsS "http://127.0.0.1:`$ADMIN_PORT/health" >/dev/null; then
+    break
+  fi
+
+  if [ "`$attempt" -eq 10 ]; then
+    echo "Admin backend failed to start on port `$ADMIN_PORT"
+    tail -n 100 /tmp/mspromotion-admin.log || true
+    exit 1
+  fi
+
+  sleep 2
+done
+
 $postCommandBlock
 
 rm -f "`$REMOTE_ARCHIVE"

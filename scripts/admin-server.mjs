@@ -4,8 +4,6 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
-import sharp from "sharp";
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, "..");
@@ -76,6 +74,8 @@ const COLLECTIONS = {
 const uploadsRoot = path.join(repoRoot, "public", "uploads", "admin");
 
 let buildChain = Promise.resolve();
+let sharpLoader = null;
+let sharpUnavailableLogged = false;
 
 function json(res, status, payload) {
   const body = JSON.stringify(payload);
@@ -345,7 +345,28 @@ function isResizeableImage(mimeType) {
   return normalized === "image/jpeg" || normalized === "image/jpg" || normalized === "image/png" || normalized === "image/webp";
 }
 
+async function getSharp() {
+  if (!sharpLoader) {
+    sharpLoader = import("sharp")
+      .then((module) => module.default || module)
+      .catch((error) => {
+        if (!sharpUnavailableLogged) {
+          sharpUnavailableLogged = true;
+          console.warn("[admin] sharp is unavailable, uploads will be saved without optimization:", error?.message || error);
+        }
+        return null;
+      });
+  }
+
+  return sharpLoader;
+}
+
 async function optimizeImageBuffer(buffer, mimeType) {
+  const sharp = await getSharp();
+  if (!sharp) {
+    return null;
+  }
+
   const image = sharp(buffer, { failOn: "none" }).rotate().resize({
     width: 1600,
     withoutEnlargement: true,
