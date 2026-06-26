@@ -8,7 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "admin": "node scripts/admin-server.mjs",
+    "admin": "node --env-file=.env scripts/admin-server.mjs",
     "migrate:legacy": "node scripts/import-legacy-json.mjs"
   },
   "dependencies": {
