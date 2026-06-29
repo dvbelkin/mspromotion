@@ -1,18 +1,20 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
+import { contentSlug } from "@/lib/content-slug";
+import { SITE_URL } from "@/lib/site";
 
-const SITE = "https://www.ms-promotion.ru";
-
-const staticRoutes = ["/", "/projects", "/services", "/contact", "/legacy"];
+const staticRoutes = ["/", "/projects", "/events", "/promos", "/services", "/contact", "/legacy"];
 
 const toXmlUrl = (path: string, lastmod?: string) => {
-  const loc = `${SITE}${path === "/" ? "/" : path}`;
+  const loc = `${SITE_URL}${path === "/" ? "/" : path}`;
   return [
-    "<url>",
-    `<loc>${loc}</loc>`,
-    lastmod ? `<lastmod>${lastmod}</lastmod>` : "",
-    "</url>"
-  ].join("");
+    "  <url>",
+    `    <loc>${loc}</loc>`,
+    lastmod ? `    <lastmod>${lastmod}</lastmod>` : "",
+    "  </url>"
+  ]
+    .filter(Boolean)
+    .join("\n");
 };
 
 export const GET: APIRoute = async () => {
@@ -26,21 +28,27 @@ export const GET: APIRoute = async () => {
     urls.push(toXmlUrl(route));
   });
 
-  projects.forEach((entry) => {
-    const lastmod = entry.data.year ? new Date(`${entry.data.year}-12-31T00:00:00.000Z`).toISOString() : undefined;
-    urls.push(toXmlUrl(`/projects/${entry.slug}`, lastmod));
-  });
+  for (const entry of projects) {
+    const lastmod = entry.data.updatedAt?.toISOString() || (entry.data.year ? new Date(`${entry.data.year}-12-31T00:00:00.000Z`).toISOString() : undefined);
+    urls.push(toXmlUrl(`/projects/${contentSlug(entry)}`, lastmod));
+  }
 
-  events.forEach((entry) => {
-    urls.push(toXmlUrl(`/events/${entry.slug}`, entry.data.dateStart.toISOString()));
-  });
+  for (const entry of events) {
+    urls.push(toXmlUrl(`/events/${contentSlug(entry)}`, entry.data.updatedAt?.toISOString() || entry.data.dateStart.toISOString()));
+  }
 
-  promos.forEach((entry) => {
-    const lastmod = entry.data.dateTo ? entry.data.dateTo.toISOString() : undefined;
-    urls.push(toXmlUrl(`/promos/${entry.slug}`, lastmod));
-  });
+  for (const entry of promos) {
+    const lastmod = entry.data.updatedAt?.toISOString() || entry.data.dateTo?.toISOString();
+    urls.push(toXmlUrl(`/promos/${contentSlug(entry)}`, lastmod));
+  }
 
-  const body = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.join("")}</urlset>`;
+  const body = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    urls.join("\n"),
+    "</urlset>",
+    ""
+  ].join("\n");
 
   return new Response(body, {
     headers: {

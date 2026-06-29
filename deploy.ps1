@@ -394,13 +394,32 @@ if ($AllocateTty -or $autoNeedsTty) {
     $sshDeployArgs += "-tt"
 }
 
-$remoteScript | & ssh @sshDeployArgs $remote "bash -s"
-if ($LASTEXITCODE -ne 0) {
-    throw "Remote deploy script failed"
+$sshLogPath = [System.IO.Path]::GetTempFileName()
+try {
+    $remoteScript | & ssh @sshDeployArgs $remote "bash -s" 2>&1 | Tee-Object -FilePath $sshLogPath
+    $sshExitCode = $LASTEXITCODE
+}
+finally {
+    if (-not (Test-Path -LiteralPath $sshLogPath)) {
+        $sshLogPath = $null
+    }
+}
+
+if ($sshExitCode -ne 0) {
+    $tail = if ($sshLogPath) {
+        (Get-Content -LiteralPath $sshLogPath -Tail 40) -join [Environment]::NewLine
+    } else {
+        ""
+    }
+    throw "Remote deploy script failed (ssh exit code $sshExitCode).`nLast remote output:`n$tail"
 }
 
 if (Test-Path -LiteralPath $localArchive) {
     Remove-Item -LiteralPath $localArchive -Force
+}
+
+if ($sshLogPath -and (Test-Path -LiteralPath $sshLogPath)) {
+    Remove-Item -LiteralPath $sshLogPath -Force
 }
 
 Write-Host "Done. Active release: $TargetDir/current"

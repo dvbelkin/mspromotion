@@ -3,16 +3,19 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import ContentGallery from "@/components/ContentGallery.astro";
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import { contentSlug } from "@/lib/content-slug";
+import { resolveSeo } from "@/lib/seo";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects", ({ data }) => data.status === "published");
-  return projects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+  return projects.map((project) => ({ params: { slug: contentSlug(project) }, props: { project } }));
 }
 
 const { project } = Astro.props as { project: CollectionEntry<"projects"> };
+const seo = resolveSeo(project.data);
 ---
 
-<BaseLayout title={`${project.data.title} | MS Promotion`} description={project.data.descriptionShort} image={project.data.coverImage} type="article">
+<BaseLayout title={seo.title} description={seo.description} image={seo.image} type="article">
   <article class="section-wrap mt-12">
     <a href="/projects" class="focus-outline text-sm text-accent2">← К списку проектов</a>
     <h1 class="mt-3 font-display text-4xl font-semibold md:text-5xl">{project.data.title}</h1>

@@ -3,6 +3,7 @@ title: "Дилерская конференция SONY"
 industry: "Электроника"
 tags: ["Событие", "B2B", "Конференция"]
 year: 2019
+updatedAt: 2026-02-18T04:42:41.000Z
 descriptionShort: "Организация конференции и презентации новой техники SONY для продавцов и партнеров."
 coverImage: "/uploads/projects/sony-01.jpg"
 gallery:

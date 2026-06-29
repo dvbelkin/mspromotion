@@ -6,6 +6,7 @@ tags:
   - Фестиваль
   - Семейное
 year: 2021
+updatedAt: 2026-04-21T09:43:38.000Z
 descriptionShort: Городское семейное мероприятие с игровыми зонами и анимационной программой.
 coverImage: /uploads/projects/domik-02.jpg
 slug: domik-family-event

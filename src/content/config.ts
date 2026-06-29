@@ -1,5 +1,12 @@
 import { z, defineCollection } from "astro:content";
 
+const seoFields = {
+  seoTitle: z.string().optional(),
+  seoDescription: z.string().optional(),
+  seoImage: z.string().optional(),
+  updatedAt: z.coerce.date().optional()
+};
+
 const eventCollection = defineCollection({
   type: "content",
   schema: z.object({
@@ -13,7 +20,8 @@ const eventCollection = defineCollection({
     slug: z.string().optional(),
     ctaText: z.string().optional(),
     ctaUrl: z.string().optional(),
-    status: z.enum(["draft", "published"]).default("draft")
+    status: z.enum(["draft", "published"]).default("draft"),
+    ...seoFields
   })
 });
 
@@ -27,7 +35,8 @@ const promoCollection = defineCollection({
     coverImage: z.string(),
     slug: z.string().optional(),
     ctaUrl: z.string().default("/contact"),
-    status: z.enum(["draft", "published"]).default("draft")
+    status: z.enum(["draft", "published"]).default("draft"),
+    ...seoFields
   })
 });
 
@@ -52,7 +61,8 @@ const projectCollection = defineCollection({
         ])
       )
       .default([]),
-    status: z.enum(["draft", "published"]).default("draft")
+    status: z.enum(["draft", "published"]).default("draft"),
+    ...seoFields
   })
 });
 
@@ -61,7 +71,8 @@ const pageCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     descriptionShort: z.string(),
-    status: z.enum(["draft", "published"]).default("draft")
+    status: z.enum(["draft", "published"]).default("draft"),
+    ...seoFields
   })
 });
 

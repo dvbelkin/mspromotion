@@ -3,6 +3,7 @@ title: "ПЯТЁРОЧКА: промо-площадка"
 industry: "Ритейл"
 tags: ["Акция", "Ритейл", "BTL"]
 year: 2020
+updatedAt: 2026-02-18T04:42:41.000Z
 descriptionShort: "Монтаж площадки и организация клиентского праздника с брендингом и активациями."
 coverImage: "/uploads/projects/pyaterochka-01.jpg"
 gallery:

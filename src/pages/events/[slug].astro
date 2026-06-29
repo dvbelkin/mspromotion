@@ -4,17 +4,20 @@ import ContentGallery from "@/components/ContentGallery.astro";
 import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import { formatDateRange } from "@/lib/content";
+import { contentSlug } from "@/lib/content-slug";
+import { resolveSeo } from "@/lib/seo";
 
 export async function getStaticPaths() {
   const events = await getCollection("events", ({ data }) => data.status === "published");
-  return events.map((event) => ({ params: { slug: event.slug }, props: { event } }));
+  return events.map((event) => ({ params: { slug: contentSlug(event) }, props: { event } }));
 }
 
 const { event } = Astro.props as { event: CollectionEntry<"events"> };
 const { Content } = await render(event);
+const seo = resolveSeo(event.data);
 ---
 
-<BaseLayout title={`${event.data.title} | MS Promotion`} description={event.data.descriptionShort} image={event.data.coverImage} type="article" noindex={true}>
+<BaseLayout title={seo.title} description={seo.description} image={seo.image} type="article">
   <article class="section-wrap mt-12">
     <a href="/events" class="focus-outline text-sm text-accent2">← К списку событий</a>
     <h1 class="mt-3 font-display text-4xl font-semibold md:text-5xl">{event.data.title}</h1>

@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getPublishedPage } from "@/lib/content";
 import { render } from "astro:content";
+import { resolveSeo } from "@/lib/seo";
 
 const page = await getPublishedPage("contact");
 if (!page) {
@@ -9,9 +10,10 @@ if (!page) {
 }
 
 const { Content } = await render(page);
+const seo = resolveSeo(page.data);
 ---
 
-<BaseLayout title="Контакты | MS Promotion" description={page.data.descriptionShort}>
+<BaseLayout title={seo.title} description={seo.description} image={seo.image}>
   <article class="section-wrap mt-12">
     <h1 class="font-display text-4xl font-semibold md:text-5xl">{page.data.title}</h1>
     <div class="prose mt-8 max-w-none prose-headings:font-display prose-headings:text-text prose-p:text-muted prose-li:text-muted prose-strong:text-text prose-a:text-accent2">

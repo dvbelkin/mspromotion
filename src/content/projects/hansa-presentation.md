@@ -3,6 +3,7 @@ title: "Презентация техники HANSA"
 industry: "Бытовая техника"
 tags: ["Событие", "Презентация", "Ритейл"]
 year: 2019
+updatedAt: 2026-02-18T04:42:41.000Z
 descriptionShort: "Иммерсивная презентация новой линейки HANSA для торговых сетей и партнеров."
 coverImage: "/uploads/projects/hansa-01.jpg"
 gallery:

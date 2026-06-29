@@ -25,6 +25,9 @@ const COLLECTIONS = {
       { name: "place", label: "Place", kind: "string" },
       { name: "descriptionShort", label: "Short description", kind: "text" },
       { name: "coverImage", label: "Cover image", kind: "image" },
+      { name: "seoTitle", label: "SEO title", kind: "string" },
+      { name: "seoDescription", label: "SEO description", kind: "text" },
+      { name: "seoImage", label: "SEO image", kind: "image" },
       { name: "gallery", label: "Gallery", kind: "gallery" },
       { name: "slug", label: "Slug", kind: "slug" },
       { name: "ctaText", label: "CTA text", kind: "string" },
@@ -41,6 +44,9 @@ const COLLECTIONS = {
       { name: "discountText", label: "Discount text", kind: "string" },
       { name: "descriptionShort", label: "Short description", kind: "text" },
       { name: "coverImage", label: "Cover image", kind: "image" },
+      { name: "seoTitle", label: "SEO title", kind: "string" },
+      { name: "seoDescription", label: "SEO description", kind: "text" },
+      { name: "seoImage", label: "SEO image", kind: "image" },
       { name: "gallery", label: "Gallery", kind: "gallery" },
       { name: "slug", label: "Slug", kind: "slug" },
       { name: "ctaUrl", label: "CTA URL", kind: "string" },
@@ -57,6 +63,9 @@ const COLLECTIONS = {
       { name: "year", label: "Year", kind: "number" },
       { name: "descriptionShort", label: "Short description", kind: "text" },
       { name: "coverImage", label: "Cover image", kind: "image" },
+      { name: "seoTitle", label: "SEO title", kind: "string" },
+      { name: "seoDescription", label: "SEO description", kind: "text" },
+      { name: "seoImage", label: "SEO image", kind: "image" },
       { name: "slug", label: "Slug", kind: "slug" },
       { name: "gallery", label: "Gallery", kind: "gallery" },
       { name: "status", label: "Status", kind: "select", options: ["draft", "published"] }
@@ -68,6 +77,9 @@ const COLLECTIONS = {
     fields: [
       { name: "title", label: "Title", kind: "string" },
       { name: "descriptionShort", label: "Short description", kind: "text" },
+      { name: "seoTitle", label: "SEO title", kind: "string" },
+      { name: "seoDescription", label: "SEO description", kind: "text" },
+      { name: "seoImage", label: "SEO image", kind: "image" },
       { name: "status", label: "Status", kind: "select", options: ["draft", "published"] }
     ]
   }
@@ -310,7 +322,11 @@ async function saveEntry(collectionName, originalSlug, nextSlug, data, body) {
   const safeOriginalSlug = originalSlug ? ensureSlug(originalSlug) : safeNextSlug;
   const currentPath = path.join(dir, `${safeOriginalSlug}.md`);
   const nextPath = path.join(dir, `${safeNextSlug}.md`);
-  const markdown = serializeEntry(collectionName, safeNextSlug, data, body);
+  const nextData = {
+    ...data,
+    updatedAt: new Date().toISOString()
+  };
+  const markdown = serializeEntry(collectionName, safeNextSlug, nextData, body);
 
   if (currentPath !== nextPath && originalSlug) {
     try {
