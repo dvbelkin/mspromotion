@@ -5,7 +5,7 @@ discountText: флэш-макияж
 descriptionShort: >-
   Проведение флэш-макияжей и консультирование по продукту в сети "Золотое
   Яблоко"
-coverImage: /uploads/admin/1777270063568-img_20260301_145136.jpg
+coverImage: /uploads/admin/1777270063568-img_20260301_145136.webp
 slug: make-up-for-ever
 ctaUrl: ''
 status: published

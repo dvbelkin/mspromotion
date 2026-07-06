@@ -3,13 +3,12 @@ title: "Деловая встреча клиентов Ростелеком"
 industry: "Телеком"
 tags: ["Событие", "B2B", "Форум"]
 year: 2019
-updatedAt: 2026-02-18T04:42:41.000Z
 descriptionShort: "Конференция для малого и среднего бизнеса с участием до 1000 гостей."
-coverImage: "/uploads/projects/rostelecom-01.jpg"
+coverImage: "/uploads/projects/rostelecom-01.webp"
 gallery:
-  - "/uploads/projects/rostelecom-01.jpg"
-  - "/uploads/projects/rostelecom-02.jpg"
-  - "/uploads/projects/rostelecom-03.jpg"
+  - "/uploads/projects/rostelecom-01.webp"
+  - "/uploads/projects/rostelecom-02.webp"
+  - "/uploads/projects/rostelecom-03.webp"
 status: "published"
 ---
 

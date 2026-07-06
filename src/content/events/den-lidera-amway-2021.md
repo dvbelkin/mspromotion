@@ -5,7 +5,7 @@ dateEnd: '2021-12-21'
 city: Новосибирск
 place: 'DoubleTree by Hilton Hotel Novosibirsk, ул. Каменская, 7/1'
 descriptionShort: Организация регионального дня Платинового лидера Основателя бизнеса Amway
-coverImage: /uploads/admin/1776849155708-dsc07676.jpg
+coverImage: /uploads/admin/1776849155708-dsc07676.webp
 slug: den-lidera-amway-2021
 ctaText: ''
 ctaUrl: ''

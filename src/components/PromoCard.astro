@@ -1,18 +1,21 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import ResponsiveImage from "@/components/ResponsiveImage.astro";
 
 const { promo } = Astro.props as { promo: CollectionEntry<"promos"> };
 ---
 
 <article class="card-surface group overflow-hidden rounded-[24px] p-4 shadow-soft transition hover:-translate-y-1">
   <div class="relative overflow-hidden rounded-[18px]">
-    <img
+    <ResponsiveImage
       src={promo.data.coverImage}
       alt={promo.data.title}
-      loading="lazy"
       class="h-56 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
       width="640"
       height="384"
+      widths={[360, 640]}
+      baseWidth={1280}
+      sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 360px"
     />
     <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface/65 via-surface/10 to-transparent"></div>
     <p class="absolute left-3 top-3 rounded-full border border-white/20 bg-surface/60 px-3 py-1 text-xs uppercase tracking-[0.14em] text-white/90">Promo</p>

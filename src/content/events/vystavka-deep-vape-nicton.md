@@ -7,7 +7,7 @@ place: Экспоцентр
 descriptionShort: >-
   Организация и проведение рекламного мероприятия на выставке HOOKAH CLUB SHOW
   Новосибирск 2022.
-coverImage: /uploads/admin/1776835328175-deep-vape-nicton3.jpg
+coverImage: /uploads/admin/1776835328175-deep-vape-nicton3.webp
 slug: vystavka-deep-vape-nicton
 ctaText: Зарегистрироваться
 ctaUrl: /contact

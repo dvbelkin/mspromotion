@@ -7,7 +7,7 @@ place: >-
   Gorskiy City Hotel, ул. Немировича-Данченко,144а (Новосибирск); Hilton Garden
   Inn Krasnoyarsk, Молокова, 37
 descriptionShort: Организация и проведение Тренинг Road Show для Hansa.
-coverImage: /uploads/admin/1776854750667-_-_1.jpg
+coverImage: /uploads/admin/1776854750667-_-_1.webp
 slug: rening-road-rhow-hansa
 ctaText: ''
 ctaUrl: ''

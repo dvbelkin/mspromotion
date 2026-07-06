@@ -5,7 +5,7 @@ dateEnd: '2025-08-22'
 city: Новосибирск
 place: 'Новосибирская обл., п. Юный Ленинец, ул. Ишимская, 18'
 descriptionShort: Организация и проведение торжественного открытия магазина "ОКОЛО"
-coverImage: /uploads/admin/1776840377626-otkrytie-okolo_3.jpg
+coverImage: /uploads/admin/1776840377626-otkrytie-okolo_3.webp
 slug: otkrytie-magazina-okolo
 ctaText: ''
 ctaUrl: ''

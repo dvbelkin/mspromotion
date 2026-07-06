@@ -7,7 +7,7 @@ place: Соборная площадь
 descriptionShort: >-
   Организация интеграции торговой сети «Пятерочка» в Сибирский Международный
   Марафон
-coverImage: /uploads/admin/1776837061120-sim_2024.jpg
+coverImage: /uploads/admin/1776837061120-sim_2024.webp
 slug: siberian-international-marathon
 ctaText: Подключиться
 ctaUrl: /contact

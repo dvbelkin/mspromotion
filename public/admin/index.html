@@ -571,7 +571,7 @@
             </div>
 
             <div id="crop-summary" class="hint"></div>
-            <div class="hint">The editor preview matches the final card ratio on the site. The server will crop and compress the uploaded photo automatically.</div>
+            <div class="hint">The editor preview matches the site ratio. The server will crop, convert to WebP, and generate smaller responsive files automatically.</div>
           </div>
         </div>
 
@@ -629,6 +629,34 @@
           subtitle: "Rendered in the gallery grid on the detail page.",
           width: 1120,
           height: 720
+        },
+        "events:seoImage": {
+          id: "events:seoImage",
+          label: "SEO image",
+          subtitle: "Rendered in social previews and metadata cards.",
+          width: 1200,
+          height: 630
+        },
+        "projects:seoImage": {
+          id: "projects:seoImage",
+          label: "SEO image",
+          subtitle: "Rendered in social previews and metadata cards.",
+          width: 1200,
+          height: 630
+        },
+        "promos:seoImage": {
+          id: "promos:seoImage",
+          label: "SEO image",
+          subtitle: "Rendered in social previews and metadata cards.",
+          width: 1200,
+          height: 630
+        },
+        "pages:seoImage": {
+          id: "pages:seoImage",
+          label: "SEO image",
+          subtitle: "Rendered in social previews and metadata cards.",
+          width: 1200,
+          height: 630
         }
       };
 
@@ -834,19 +862,19 @@
         return UPLOAD_PRESETS[`${collectionName}:${fieldName}`] || null;
       }
 
-      function renderImagePreview(current) {
+      function renderImagePreview(current, fieldName) {
         if (!current) {
-          return `<div class="hint">Upload a photo to generate a cropped and compressed site-ready image.</div>`;
+          return `<div class="hint">Upload a photo to generate a WebP image and smaller responsive versions for the site.</div>`;
         }
 
         return `
           <div class="image-preview">
             <div class="image-preview-card">
-              <img src="${escapeHtml(current)}" alt="" loading="lazy" />
+              <img src="${escapeHtml(current)}" alt="" loading="lazy" decoding="async" />
               <div class="preview-meta">
                 <div class="gallery-card-header">
                   <span>Current image</span>
-                  <button class="link-button" type="button" data-image-recrop="coverImage">Recrop</button>
+                  <button class="link-button" type="button" data-image-recrop="${escapeHtml(fieldName)}">Recrop</button>
                 </div>
                 <code>${escapeHtml(current)}</code>
               </div>
@@ -870,7 +898,7 @@
           <div class="gallery-grid">
             ${items.map((item, index) => `
               <article class="gallery-card">
-                <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.caption || `Gallery image ${index + 1}`)}" loading="lazy" />
+                 <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.caption || `Gallery image ${index + 1}`)}" loading="lazy" decoding="async" />
                 <div class="gallery-card-body">
                   <div class="gallery-card-header">
                     <span>Item ${index + 1}</span>
@@ -928,7 +956,7 @@
               </div>
               <div data-gallery-preview="${escapeHtml(field.name)}">${renderGalleryPreview(current, field.name)}</div>
               <textarea id="${id}" data-field="${escapeHtml(field.name)}" data-kind="${escapeHtml(field.kind)}">${escapeHtml(currentText)}</textarea>
-              <input type="file" accept="image/jpeg,image/png,image/webp" class="hidden" data-picker="${escapeHtml(field.name)}" />
+              <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="hidden" data-picker="${escapeHtml(field.name)}" />
             </div>`;
         }
 
@@ -957,8 +985,8 @@
                 <input id="${id}" type="text" data-field="${escapeHtml(field.name)}" data-kind="${escapeHtml(field.kind)}" value="${escapeHtml(current)}" />
                 <button class="action" type="button" data-upload="${escapeHtml(field.name)}">Upload</button>
               </div>
-              <div data-image-preview="${escapeHtml(field.name)}">${renderImagePreview(current)}</div>
-              <input type="file" accept="image/jpeg,image/png,image/webp" class="hidden" data-picker="${escapeHtml(field.name)}" />
+              <div data-image-preview="${escapeHtml(field.name)}">${renderImagePreview(current, field.name)}</div>
+              <input type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="hidden" data-picker="${escapeHtml(field.name)}" />
             </div>`;
         }
 
@@ -1078,7 +1106,7 @@
           return;
         }
 
-        preview.innerHTML = renderImagePreview(input.value.trim());
+        preview.innerHTML = renderImagePreview(input.value.trim(), fieldName);
         preview.querySelectorAll("[data-image-recrop]").forEach((button) => {
           button.addEventListener("click", async () => {
             const recropFieldName = button.getAttribute("data-image-recrop");
@@ -1173,8 +1201,8 @@
           const reader = new FileReader();
           reader.onload = () => resolve({
             dataUrl: String(reader.result || ""),
-            mimeType: blob.type || "image/jpeg",
-            fileName: imagePath.split("/").pop() || "image.jpg"
+            mimeType: blob.type || "image/webp",
+            fileName: imagePath.split("/").pop() || "image.webp"
           });
           reader.onerror = () => reject(reader.error || new Error("Failed to read current image"));
           reader.readAsDataURL(blob);
@@ -1373,7 +1401,7 @@
 
           state.cropSession = session;
           el.cropTitle.textContent = preset.label;
-          el.cropSubtitle.textContent = `${preset.subtitle} Final export: ${preset.width}x${preset.height}px JPEG.`;
+          el.cropSubtitle.textContent = `${preset.subtitle} Final export: ${preset.width}x${preset.height}px WebP with responsive variants.`;
           el.cropZoom.value = "100";
           el.cropPanX.value = "50";
           el.cropPanY.value = "50";

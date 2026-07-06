@@ -3,7 +3,7 @@ title: Dremies
 dateTo: '2018-05-01'
 discountText: сэмплинг
 descriptionShort: Сэмплинг лакомства Dremies от компании MARS для владельцев кошек.
-coverImage: /uploads/admin/1777268337335-dreamies-sampling_1w-2018_-2-.jpg
+coverImage: /uploads/admin/1777268337335-dreamies-sampling_1w-2018_-2-.webp
 slug: sampling-dremies
 ctaUrl: /contact
 status: published

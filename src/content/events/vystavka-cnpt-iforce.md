@@ -7,7 +7,7 @@ place: Экспоцентр
 descriptionShort: >-
   Организация и проведение рекламного мероприятия на выставке Vape Club Show
   2025
-coverImage: /uploads/admin/1776835959997-cnpt-iforce2.jpg
+coverImage: /uploads/admin/1776835959997-cnpt-iforce2.webp
 slug: vystavka-cnpt-iforce
 ctaText: Записаться
 ctaUrl: /contact

@@ -11,6 +11,6 @@ export function resolveSeo(data: SeoLikeData, titleSuffix = " | MS Promotion") {
   return {
     title: data.seoTitle?.trim() || `${data.title}${titleSuffix}`,
     description: data.seoDescription?.trim() || data.descriptionShort,
-    image: data.seoImage?.trim() || data.coverImage || "/uploads/og-default.jpg"
+    image: data.seoImage?.trim() || data.coverImage || "/uploads/og-default.webp"
   };
 }

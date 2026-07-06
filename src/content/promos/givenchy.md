@@ -3,7 +3,7 @@ title: Givenchy
 dateTo: '2026-03-08'
 discountText: спреинг
 descriptionShort: Спреинг и консультирование продукции ТМ "Givenchy" в сети "Золотое Яблоко".
-coverImage: /uploads/admin/1777270487246-img_20260301_144417.jpg
+coverImage: /uploads/admin/1782451969272-1777270487246-img_20260301_144417.webp
 slug: givenchy
 ctaUrl: ''
 status: published

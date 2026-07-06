@@ -1,19 +1,22 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { formatDateRange } from "@/lib/content";
+import ResponsiveImage from "@/components/ResponsiveImage.astro";
 
 const { event } = Astro.props as { event: CollectionEntry<"events"> };
 ---
 
 <article class="card-surface group overflow-hidden rounded-[24px] p-4 shadow-soft transition hover:-translate-y-1">
   <div class="relative overflow-hidden rounded-[18px]">
-    <img
+    <ResponsiveImage
       src={event.data.coverImage}
       alt={event.data.title}
-      loading="lazy"
       class="h-48 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
       width="640"
       height="352"
+      widths={[360, 640]}
+      baseWidth={1280}
+      sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 360px"
     />
     <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface/55 to-transparent"></div>
   </div>

@@ -3,7 +3,7 @@ title: "Запуск новой линейки в ритейле"
 dateTo: 2026-05-20
 discountText: "Сэмплинг + демонстрация"
 descriptionShort: "Промо для вывода новой линейки с полевыми командами и digital-поддержкой."
-coverImage: "/uploads/promo-lenovo.jpg"
+coverImage: "/uploads/promo-lenovo.webp"
 slug: "new-line-launch"
 ctaUrl: "/contact"
 status: "published"

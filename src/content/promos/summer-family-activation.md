@@ -3,7 +3,7 @@ title: "Семейная городская активация"
 dateTo: 2026-06-30
 discountText: "Outdoor format"
 descriptionShort: "Летний городской формат с интерактивными зонами и брендированными активностями."
-coverImage: "/uploads/promo-icecream.jpg"
+coverImage: "/uploads/promo-icecream.webp"
 slug: "summer-family-activation"
 ctaUrl: "/contact"
 status: "published"

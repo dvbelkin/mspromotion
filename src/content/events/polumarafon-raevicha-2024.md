@@ -5,7 +5,7 @@ dateEnd: '2024-09-14'
 city: Новосибирск
 place: Площадь Ленина
 descriptionShort: Организация интеграции торговой сети «Пятерочка» в Полумарафон Раевича.
-coverImage: /uploads/admin/1776837714968-polumarafon-raevicha2024_2.jpg
+coverImage: /uploads/admin/1776837714968-polumarafon-raevicha2024_2.webp
 slug: polumarafon-raevicha-2024
 ctaText: Оставить заявку
 ctaUrl: /contact

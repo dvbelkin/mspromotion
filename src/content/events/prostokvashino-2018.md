@@ -7,7 +7,7 @@ place: 'Центральный парк, ул. Мичурина, 8,'
 descriptionShort: >-
   Организация и проведение рекламного мероприятия "Живем по-простоквашински" для
   компании DANONE
-coverImage: /uploads/admin/1776844995669-_24.06.2018_1.jpg
+coverImage: /uploads/admin/1776844995669-_24.06.2018_1.webp
 slug: prostokvashino-2018
 ctaText: ''
 ctaUrl: ''

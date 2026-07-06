@@ -3,7 +3,7 @@ title: AXE Serfcrew
 dateTo: '2023-11-05'
 discountText: поддержка лонча нового продукта
 descriptionShort: Серферские команды AXE в ТРЦ
-coverImage: /uploads/admin/1777266825938-fqc.jpg
+coverImage: /uploads/admin/1777266825938-fqc.webp
 slug: serferskie-komandy-axe
 ctaUrl: /contact
 status: published

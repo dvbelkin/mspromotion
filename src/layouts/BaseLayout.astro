@@ -1,6 +1,7 @@
 ---
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import { toModernImagePath } from "@/lib/images";
 import { SITE_URL } from "@/lib/site";
 import "@/styles/global.css";
 
@@ -12,11 +13,11 @@ interface Props {
   noindex?: boolean;
 }
 
-const { title, description, image = "/uploads/og-default.jpg", type = "website", noindex = false } = Astro.props;
+const { title, description, image = "/uploads/og-default.webp", type = "website", noindex = false } = Astro.props;
 const currentPath = Astro.url.pathname;
 const siteUrl = Astro.site ?? new URL(SITE_URL);
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
-const ogImageUrl = new URL(image, siteUrl).toString();
+const ogImageUrl = new URL(toModernImagePath(image), siteUrl).toString();
 const robotsContent = noindex ? "noindex, nofollow" : "index, follow";
 const ga4MeasurementId = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID?.trim() || "G-TS7GW8GZSG";
 const organizationJsonLd = {
@@ -24,7 +25,7 @@ const organizationJsonLd = {
   "@type": "Organization",
   name: "MS Promotion",
   url: new URL("/", siteUrl).toString(),
-  logo: new URL("/uploads/logo-blue.png", siteUrl).toString(),
+  logo: new URL("/uploads/logo-blue.webp", siteUrl).toString(),
   email: "promotion@mediasoft.ru",
   telephone: "+7-903-906-67-87",
   address: {
@@ -46,8 +47,8 @@ const organizationJsonLd = {
     <meta name="robots" content={robotsContent} />
     <meta name="theme-color" content="#070b16" />
     <link rel="canonical" href={canonicalUrl} />
-    <link rel="icon" type="image/png" href="/uploads/logo-blue.png" />
-    <link rel="apple-touch-icon" href="/uploads/logo-blue.png" />
+    <link rel="icon" type="image/webp" href="/uploads/logo-blue.webp" />
+    <link rel="apple-touch-icon" href="/uploads/logo-blue.webp" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
@@ -62,30 +63,85 @@ const organizationJsonLd = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
-    <script is:inline>
-      (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-      m[i].l=1*new Date();
-      for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-      (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    <script is:inline define:vars={{ ga4MeasurementId }}>
+      (function () {
+        var hasLoadedMetrics = false;
+        var yandexTagUrl = "https://mc.yandex.ru/metrika/tag.js";
+        var yandexCounterId = 47108043;
+        var triggerEvents = ["scroll", "mousemove", "touchstart", "keydown"];
 
-      ym(47108043, "init", {
-          clickmap:true,
-          trackLinks:true,
-          accurateTrackBounce:true
-      });
-    </script>
-    {ga4MeasurementId && (
-      <>
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${ga4MeasurementId}`}></script>
-        <script is:inline define:vars={{ ga4MeasurementId }}>
+        function appendScript(src, onload) {
+          if (document.querySelector('script[src="' + src + '"]')) return;
+          var script = document.createElement("script");
+          script.async = true;
+          script.src = src;
+          if (onload) script.onload = onload;
+          document.head.appendChild(script);
+        }
+
+        function cleanupTriggers() {
+          triggerEvents.forEach(function (eventName) {
+            window.removeEventListener(eventName, loadMetrics, { passive: true });
+          });
+          window.removeEventListener("load", scheduleIdleLoad);
+        }
+
+        function initYandex() {
+          window.ym =
+            window.ym ||
+            function () {
+              (window.ym.a = window.ym.a || []).push(arguments);
+            };
+          window.ym.l = window.ym.l || Date.now();
+
+          appendScript(yandexTagUrl, function () {
+            window.ym(yandexCounterId, "init", {
+              clickmap: true,
+              trackLinks: true,
+              accurateTrackBounce: true
+            });
+          });
+        }
+
+        function initGoogle() {
+          if (!ga4MeasurementId) return;
+
           window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag("js", new Date());
-          gtag("config", ga4MeasurementId);
-        </script>
-      </>
-    )}
+          window.gtag =
+            window.gtag ||
+            function () {
+              window.dataLayer.push(arguments);
+            };
+
+          appendScript("https://www.googletagmanager.com/gtag/js?id=" + ga4MeasurementId, function () {
+            window.gtag("js", new Date());
+            window.gtag("config", ga4MeasurementId);
+          });
+        }
+
+        function loadMetrics() {
+          if (hasLoadedMetrics) return;
+          hasLoadedMetrics = true;
+          cleanupTriggers();
+          initYandex();
+          initGoogle();
+        }
+
+        function scheduleIdleLoad() {
+          if ("requestIdleCallback" in window) {
+            window.requestIdleCallback(loadMetrics, { timeout: 4000 });
+            return;
+          }
+
+          window.setTimeout(loadMetrics, 4000);
+        }
+
+        triggerEvents.forEach(function (eventName) {
+          window.addEventListener(eventName, loadMetrics, { passive: true, once: true });
+        });
+        window.addEventListener("load", scheduleIdleLoad, { once: true });
+      })();
+    </script>
     <script type="application/ld+json" set:html={JSON.stringify(organizationJsonLd)} />
   </head>
   <body>

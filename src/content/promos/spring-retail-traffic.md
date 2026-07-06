@@ -3,7 +3,7 @@ title: "Весенний трафик в сети"
 dateTo: 2026-04-30
 discountText: "+18% к среднему чеку"
 descriptionShort: "Серия мотивационных механик для роста трафика и повторных покупок в сетях."
-coverImage: "/uploads/promo-domik.jpg"
+coverImage: "/uploads/promo-domik.webp"
 slug: "spring-retail-traffic"
 ctaUrl: "/contact"
 status: "published"

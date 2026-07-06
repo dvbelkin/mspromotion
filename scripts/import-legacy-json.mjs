@@ -31,7 +31,7 @@ dateStart: ${event.date || "2026-01-01"}
 city: "${escapeQuotes(event.city || "")}" 
 place: "${escapeQuotes(event.location || event.place || "")}"
 descriptionShort: "${escapeQuotes(event.description || "")}" 
-coverImage: "${escapeQuotes(event.image || "/uploads/event-pyaterochka.png")}" 
+coverImage: "${escapeQuotes(event.image || "/uploads/event-pyaterochka.webp")}" 
 slug: "${slug}"
 ctaText: "${escapeQuotes(event.cta || "Подробнее")}" 
 ctaUrl: "${escapeQuotes(event.link || "/contact")}" 
@@ -49,7 +49,7 @@ title: "${escapeQuotes(promo.title)}"
 dateTo: ${promo.dateTo || "2026-12-31"}
 discountText: "${escapeQuotes(promo.badge || "")}" 
 descriptionShort: "${escapeQuotes(promo.description || "")}" 
-coverImage: "${escapeQuotes(promo.image || "/uploads/promo-domik.jpg")}" 
+coverImage: "${escapeQuotes(promo.image || "/uploads/promo-domik.webp")}" 
 slug: "${slug}"
 ctaUrl: "${escapeQuotes(promo.link || "/contact")}" 
 status: "published"
@@ -68,7 +68,7 @@ industry: "${escapeQuotes(project.industry || "")}"
 tags: [${tags}]
 year: ${project.year || Number(String(project.date || "").slice(0, 4)) || 2026}
 descriptionShort: "${escapeQuotes(project.summary || project.descriptionShort || "")}" 
-coverImage: "${escapeQuotes(project.image || "/uploads/event-pyaterochka.png")}" 
+coverImage: "${escapeQuotes(project.image || "/uploads/event-pyaterochka.webp")}" 
 slug: "${slug}"
 gallery: []
 status: "published"

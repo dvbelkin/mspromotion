@@ -5,7 +5,7 @@ dateEnd: '2018-06-23'
 city: Новосибирск
 place: 'Парк Березовая Роща, Планетная, 53'
 descriptionShort: Организация и проведение рекламного мероприятия "Праздник мороженого"
-coverImage: /uploads/admin/1776853187276-new-1-.jpg
+coverImage: /uploads/admin/1776853187276-new-1-.webp
 slug: prazdnik-morozhenogo-2018
 ctaText: ''
 ctaUrl: ''

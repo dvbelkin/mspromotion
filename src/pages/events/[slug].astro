@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import ContentGallery from "@/components/ContentGallery.astro";
+import ResponsiveImage from "@/components/ResponsiveImage.astro";
 import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import { formatDateRange } from "@/lib/content";
@@ -27,7 +28,16 @@ const seo = resolveSeo(event.data);
       {event.data.place ? ` · ${event.data.place}` : ""}
     </p>
 
-    <img src={event.data.coverImage} alt={event.data.title} class="mt-6 h-[380px] w-full rounded-2xl object-cover" width="1280" height="760" />
+    <ResponsiveImage
+      src={event.data.coverImage}
+      alt={event.data.title}
+      class="mt-6 h-[380px] w-full rounded-2xl object-cover"
+      width="1280"
+      height="760"
+      widths={[640, 960]}
+      baseWidth={1280}
+      sizes="(max-width: 767px) 100vw, 1280px"
+    />
 
     <ContentGallery items={event.data.gallery} title={event.data.title} />
 

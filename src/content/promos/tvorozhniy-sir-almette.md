@@ -6,7 +6,7 @@ descriptionShort: >-
   Организация серии дегустаций в торговых точках города с целью ознакомления
   потребителей с вкусовыми качествами продукции ТМ «Хохланд», стимулирование
   покупки.
-coverImage: /uploads/admin/1777267540432-102_6.03-17-.jpg
+coverImage: /uploads/admin/1777267540432-102_6.03-17-.webp
 slug: tvorozhniy-sir-almette
 ctaUrl: /contact
 status: published

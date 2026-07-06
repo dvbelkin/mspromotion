@@ -87,12 +87,16 @@ const COLLECTIONS = {
 
 const uploadsRoot = path.join(repoRoot, "public", "uploads", "admin");
 const UPLOAD_PRESETS = {
-  "events:coverImage": { width: 1280, height: 704, quality: 82 },
-  "projects:coverImage": { width: 1280, height: 768, quality: 82 },
-  "promos:coverImage": { width: 1280, height: 768, quality: 82 },
-  "events:gallery": { width: 1120, height: 720, quality: 82 },
-  "projects:gallery": { width: 1120, height: 720, quality: 82 },
-  "promos:gallery": { width: 1120, height: 720, quality: 82 }
+  "events:coverImage": { width: 1280, height: 704, quality: 82, variantWidths: [360, 640, 960] },
+  "projects:coverImage": { width: 1280, height: 768, quality: 82, variantWidths: [360, 640, 960] },
+  "promos:coverImage": { width: 1280, height: 768, quality: 82, variantWidths: [360, 640, 960] },
+  "events:gallery": { width: 1120, height: 720, quality: 82, variantWidths: [360, 560, 840] },
+  "projects:gallery": { width: 1120, height: 720, quality: 82, variantWidths: [360, 560, 840] },
+  "promos:gallery": { width: 1120, height: 720, quality: 82, variantWidths: [360, 560, 840] },
+  "events:seoImage": { width: 1200, height: 630, quality: 82, variantWidths: [600] },
+  "projects:seoImage": { width: 1200, height: 630, quality: 82, variantWidths: [600] },
+  "promos:seoImage": { width: 1200, height: 630, quality: 82, variantWidths: [600] },
+  "pages:seoImage": { width: 1200, height: 630, quality: 82, variantWidths: [600] }
 };
 
 let buildChain = Promise.resolve();
@@ -387,7 +391,7 @@ function safeFilename(filename) {
 
 function isResizeableImage(mimeType) {
   const normalized = String(mimeType || "").toLowerCase();
-  return normalized === "image/jpeg" || normalized === "image/jpg" || normalized === "image/png" || normalized === "image/webp";
+  return normalized === "image/jpeg" || normalized === "image/jpg" || normalized === "image/png" || normalized === "image/webp" || normalized === "image/gif";
 }
 
 function resolveUploadPreset(context) {
@@ -451,35 +455,25 @@ async function optimizeImageBuffer(buffer, mimeType) {
     return null;
   }
 
-  const image = sharp(buffer, { failOn: "none" }).rotate().resize({
+  const image = sharp(buffer, { failOn: "none", animated: true }).rotate().resize({
     width: 1600,
     withoutEnlargement: true,
     fit: "inside"
   });
 
-  switch (String(mimeType || "").toLowerCase()) {
-    case "image/jpeg":
-    case "image/jpg":
-      return {
-        buffer: await image.jpeg({ quality: 82, mozjpeg: true }).toBuffer(),
-        extension: "jpg",
-        mimeType: "image/jpeg"
-      };
-    case "image/png":
-      return {
-        buffer: await image.png({ compressionLevel: 9, adaptiveFiltering: true }).toBuffer(),
-        extension: "png",
-        mimeType: "image/png"
-      };
-    case "image/webp":
-      return {
-        buffer: await image.webp({ quality: 82 }).toBuffer(),
-        extension: "webp",
-        mimeType: "image/webp"
-      };
-    default:
-      return null;
+  if (!isResizeableImage(mimeType)) {
+    return null;
   }
+
+  const optimizedBuffer = await image.webp({ quality: 82 }).toBuffer();
+  const metadata = await sharp(optimizedBuffer).metadata();
+  return {
+    buffer: optimizedBuffer,
+    extension: "webp",
+    mimeType: "image/webp",
+    width: Number(metadata.width || 0) || null,
+    height: Number(metadata.height || 0) || null
+  };
 }
 
 async function processPhotoUpload(buffer, preset, cropRect) {
@@ -488,7 +482,7 @@ async function processPhotoUpload(buffer, preset, cropRect) {
     throw new Error("Image processing is unavailable on the server.");
   }
 
-  const normalizedBuffer = await sharp(buffer, { failOn: "none" }).rotate().toBuffer();
+  const normalizedBuffer = await sharp(buffer, { failOn: "none", animated: true }).rotate().toBuffer();
   let image = sharp(normalizedBuffer, { failOn: "none" });
   const metadata = await image.metadata();
   const extract = clampCropRect(cropRect, metadata);
@@ -505,21 +499,47 @@ async function processPhotoUpload(buffer, preset, cropRect) {
       position: "centre",
       withoutEnlargement: false
     })
-    .jpeg({
-      quality: preset.quality,
-      mozjpeg: true
-    })
+    .webp({ quality: preset.quality })
     .toBuffer();
 
   const optimizedMetadata = await sharp(outputBuffer).metadata();
   return {
     buffer: outputBuffer,
-    extension: "jpg",
-    mimeType: "image/jpeg",
+    extension: "webp",
+    mimeType: "image/webp",
     width: Number(optimizedMetadata.width || preset.width),
     height: Number(optimizedMetadata.height || preset.height),
-    sizeBytes: outputBuffer.byteLength
+    sizeBytes: outputBuffer.byteLength,
+    variantWidths: Array.isArray(preset.variantWidths) ? preset.variantWidths : []
   };
+}
+
+async function writeImageVariants(basePath, baseBuffer, variantWidths = []) {
+  const sharp = await getSharp();
+  if (!sharp || !variantWidths.length) {
+    return;
+  }
+
+  const metadata = await sharp(baseBuffer).metadata();
+  const sourceWidth = Number(metadata.width || 0);
+  if (!sourceWidth) {
+    return;
+  }
+
+  const basePathWithoutExtension = basePath.replace(/\.webp$/i, "");
+  const widths = [...new Set(variantWidths.map((width) => Number(width)).filter((width) => Number.isFinite(width) && width > 0 && width < sourceWidth))];
+  for (const width of widths) {
+    const variantPath = `${basePathWithoutExtension}-${width}w.webp`;
+    const variantBuffer = await sharp(baseBuffer)
+      .resize({
+        width,
+        fit: "inside",
+        withoutEnlargement: true
+      })
+      .webp({ quality: 82 })
+      .toBuffer();
+    await fs.writeFile(variantPath, variantBuffer);
+  }
 }
 
 async function saveUpload({ filename, mimeType, base64, context }) {
@@ -545,7 +565,7 @@ async function saveUpload({ filename, mimeType, base64, context }) {
 
   if (preset) {
     if (!isResizeableImage(detectedMimeType)) {
-      throw new Error("Only JPEG, PNG, and WebP photos can be uploaded here.");
+      throw new Error("Only JPEG, PNG, GIF, and WebP photos can be uploaded here.");
     }
 
     const processed = await processPhotoUpload(data, preset, context?.cropRect);
@@ -563,6 +583,8 @@ async function saveUpload({ filename, mimeType, base64, context }) {
       outputBuffer = optimized.buffer;
       extension = optimized.extension;
       outputMimeType = optimized.mimeType;
+      width = optimized.width;
+      height = optimized.height;
       sizeBytes = optimized.buffer.byteLength;
     }
   }
@@ -572,6 +594,7 @@ async function saveUpload({ filename, mimeType, base64, context }) {
 
   await ensureDir(uploadsRoot);
   await fs.writeFile(outputPath, outputBuffer);
+  await writeImageVariants(outputPath, outputBuffer, preset?.variantWidths || []);
 
   return {
     path: `/uploads/admin/${outputName}`,

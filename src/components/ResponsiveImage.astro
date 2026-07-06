@@ -1,0 +1,43 @@
+---
+import { buildResponsiveImage } from "@/lib/images";
+
+interface Props {
+  src: string;
+  alt: string;
+  width: number | string;
+  height: number | string;
+  class?: string;
+  sizes?: string;
+  widths?: number[];
+  baseWidth?: number;
+  loading?: "eager" | "lazy";
+  decoding?: "async" | "auto" | "sync";
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  class: className,
+  sizes,
+  widths = [],
+  baseWidth,
+  loading = "lazy",
+  decoding = "async"
+} = Astro.props as Props;
+
+const image = buildResponsiveImage(src, widths, baseWidth ?? Number(width));
+---
+
+<img
+  src={image.src}
+  srcset={image.srcset}
+  sizes={sizes}
+  alt={alt}
+  loading={loading}
+  decoding={decoding}
+  width={width}
+  height={height}
+  class={className}
+/>

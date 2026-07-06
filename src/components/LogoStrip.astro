@@ -1,28 +1,30 @@
 ---
+import ResponsiveImage from "@/components/ResponsiveImage.astro";
+
 const logos = [
-  { name: "Пятёрочка", src: "/uploads/brands/pyaterochka.jpg" },
-  { name: "SONY", src: "/uploads/brands/sony.gif" },
-  { name: "Ростелеком", src: "/uploads/brands/rostelecom.gif" },
-  { name: "Lenovo", src: "/uploads/brands/lenovo.jpg" },
-  { name: "Mondelez International", src: "/uploads/brands/mondelez.jpg" },
-  { name: "Global Functional Drinks", src: "/uploads/brands/global-functional-drinks.jpg" },
-  { name: "Hochland", src: "/uploads/brands/hochland.jpg" },
-  { name: "EFES", src: "/uploads/brands/efes.jpg" },
-  { name: "Ford", src: "/uploads/brands/ford.jpg" },
-  { name: "Johnson & Johnson", src: "/uploads/brands/johnson-johnson.jpg" },
-  { name: "PepsiCo", src: "/uploads/brands/pepsico.jpg" },
-  { name: "MAC", src: "/uploads/brands/mac.jpg" },
-  { name: "Nestle", src: "/uploads/brands/nestle-blue.jpg" },
-  { name: "Mars", src: "/uploads/brands/mars.jpg" },
-  { name: "Heineken", src: "/uploads/brands/heineken.jpg" },
-  { name: "Levi's", src: "/uploads/brands/levis.jpg" },
-  { name: "SCA", src: "/uploads/brands/sca.jpg" },
-  { name: "Мегафон", src: "/uploads/brands/megafon.jpg" },
-  { name: "Эльдорадо", src: "/uploads/brands/eldorado.jpg" },
-  { name: "BBOSW", src: "/uploads/brands/bbosw.jpg" },
-  { name: "Unilever", src: "/uploads/brands/unilever.jpg" },
-  { name: "KIA", src: "/uploads/brands/kia.jpg" },
-  { name: "Danone", src: "/uploads/brands/danone.jpg" }
+  { name: "Пятерочка", src: "/uploads/brands/pyaterochka.webp" },
+  { name: "SONY", src: "/uploads/brands/sony.webp" },
+  { name: "Ростелеком", src: "/uploads/brands/rostelecom.webp" },
+  { name: "Lenovo", src: "/uploads/brands/lenovo.webp" },
+  { name: "Mondelez International", src: "/uploads/brands/mondelez.webp" },
+  { name: "Global Functional Drinks", src: "/uploads/brands/global-functional-drinks.webp" },
+  { name: "Hochland", src: "/uploads/brands/hochland.webp" },
+  { name: "EFES", src: "/uploads/brands/efes.webp" },
+  { name: "Ford", src: "/uploads/brands/ford.webp" },
+  { name: "Johnson & Johnson", src: "/uploads/brands/johnson-johnson.webp" },
+  { name: "PepsiCo", src: "/uploads/brands/pepsico.webp" },
+  { name: "MAC", src: "/uploads/brands/mac.webp" },
+  { name: "Nestle", src: "/uploads/brands/nestle-blue.webp" },
+  { name: "Mars", src: "/uploads/brands/mars.webp" },
+  { name: "Heineken", src: "/uploads/brands/heineken.webp" },
+  { name: "Levi's", src: "/uploads/brands/levis.webp" },
+  { name: "SCA", src: "/uploads/brands/sca.webp" },
+  { name: "Megafon", src: "/uploads/brands/megafon.webp" },
+  { name: "Эльдорадо", src: "/uploads/brands/eldorado.webp" },
+  { name: "BBOSW", src: "/uploads/brands/bbosw.webp" },
+  { name: "Unilever", src: "/uploads/brands/unilever.webp" },
+  { name: "KIA", src: "/uploads/brands/kia.webp" },
+  { name: "Danone", src: "/uploads/brands/danone.webp" }
 ];
 ---
 
@@ -31,14 +33,15 @@ const logos = [
   <div class="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4 xl:grid-cols-6">
     {logos.map((logo) => (
       <article class="card-surface logo-tile">
-        <img
+        <ResponsiveImage
           src={logo.src}
           alt={logo.name}
-          loading="lazy"
-          decoding="async"
           width="220"
           height="96"
           class="logo-tile__image"
+          widths={[110, 220]}
+          baseWidth={440}
+          sizes="(max-width: 639px) 50vw, (max-width: 1023px) 33vw, 220px"
         />
       </article>
     ))}

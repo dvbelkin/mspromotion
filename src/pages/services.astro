@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ResponsiveImage from "@/components/ResponsiveImage.astro";
 import SectionTitle from "@/components/SectionTitle.astro";
 import { getPublishedPage, getPublishedProjects } from "@/lib/content";
 import { resolveSeo } from "@/lib/seo";
@@ -16,19 +17,19 @@ const serviceCards = [
   {
     title: "Event Marketing",
     subtitle: "Деловые и клиентские мероприятия под KPI",
-    image: "/uploads/event-hansa.png",
+    image: "/uploads/event-hansa.webp",
     points: ["Форумы, конференции и презентации", "Сценарий, продюсирование и режиссура", "Работа с площадкой и подрядчиками"]
   },
   {
     title: "Trade & Customer Promo",
     subtitle: "Магазинные и потребительские активации",
-    image: "/uploads/promo-lenovo.jpg",
+    image: "/uploads/promo-lenovo.webp",
     points: ["Механики стимулирования продаж", "Запуски продуктов в сетях", "Полевой контроль и отчеты"]
   },
   {
     title: "Project & Production",
     subtitle: "Полный цикл реализации проекта",
-    image: "/uploads/promo-jacobs.jpg",
+    image: "/uploads/promo-jacobs.webp",
     points: ["Брифинг и проектирование этапов", "Команда на площадке и QA", "Пост-аналитика и рекомендации"]
   }
 ];
@@ -73,7 +74,16 @@ const workflow = [
       <div class="grid gap-5 lg:grid-cols-3">
         {serviceCards.map((service) => (
           <article class="card-surface group overflow-hidden rounded-[22px]">
-            <img src={service.image} alt={service.title} loading="lazy" width="800" height="480" class="h-48 w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
+            <ResponsiveImage
+              src={service.image}
+              alt={service.title}
+              width="800"
+              height="480"
+              class="h-48 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+              widths={[360, 640]}
+              baseWidth={1280}
+              sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 360px"
+            />
             <div class="p-5">
               <h2 class="font-display text-2xl font-semibold leading-tight">{service.title}</h2>
               <p class="mt-2 text-sm text-muted">{service.subtitle}</p>
@@ -113,7 +123,16 @@ const workflow = [
       <div class="grid gap-5 md:grid-cols-3">
         {featuredProjects.map((project) => (
           <a href={`/projects/${project.slug}`} class="card-surface group block overflow-hidden rounded-2xl p-3 transition hover:-translate-y-1">
-            <img src={project.data.coverImage} alt={project.data.title} loading="lazy" width="640" height="420" class="h-40 w-full rounded-xl object-cover transition duration-500 group-hover:scale-[1.03]" />
+            <ResponsiveImage
+              src={project.data.coverImage}
+              alt={project.data.title}
+              width="640"
+              height="420"
+              class="h-40 w-full rounded-xl object-cover transition duration-500 group-hover:scale-[1.03]"
+              widths={[360, 640]}
+              baseWidth={1280}
+              sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 360px"
+            />
             <p class="mt-3 text-xs uppercase tracking-[0.15em] text-muted">{project.data.industry || "Проект"}</p>
             <h3 class="mt-2 font-display text-xl font-semibold leading-tight">{project.data.title}</h3>
             <p class="mt-2 text-sm text-muted">{project.data.descriptionShort}</p>

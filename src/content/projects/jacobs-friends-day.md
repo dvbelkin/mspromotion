@@ -3,13 +3,12 @@ title: "JACOBS MONARCH: день друзей"
 industry: "FMCG"
 tags: ["Акция", "Consumer", "Парк"]
 year: 2023
-updatedAt: 2026-02-24T09:28:23.000Z
 descriptionShort: "Промо-день с фотозонами, розыгрышами и высокой вовлечённостью гостей."
-coverImage: "/uploads/projects/jacobs-02.jpg"
+coverImage: "/uploads/projects/jacobs-01.webp"
 gallery:
-  - "/uploads/projects/jacobs-01.jpg"
-  - "/uploads/projects/jacobs-02.jpg"
-  - "/uploads/projects/jacobs-03.jpg"
+  - "/uploads/projects/jacobs-01.webp"
+  - "/uploads/projects/jacobs-02.webp"
+  - "/uploads/projects/jacobs-03.webp"
 status: "published"
 ---
 

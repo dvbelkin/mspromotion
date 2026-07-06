@@ -5,7 +5,7 @@ dateEnd: '2025-05-24'
 city: 'Новосибирск, Омск'
 place: 'Площадь Ленина (Новосибирск), Соборная Площадь (Омск)'
 descriptionShort: Организация рекламной интеграции сети "Пятерочка" в мероприятие Забег.РФ
-coverImage: /uploads/admin/1776838825645-zabeg.rf-2025_2.jpg
+coverImage: /uploads/admin/1776838825645-zabeg.rf-2025_2.webp
 slug: zabeg-rf-2025
 ctaText: Подать идею
 ctaUrl: /contact
