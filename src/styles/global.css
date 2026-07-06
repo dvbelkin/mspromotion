@@ -82,9 +82,8 @@ body::before {
   pointer-events: none;
   background: conic-gradient(from 30deg at 62% 42%, rgba(255, 100, 43, 0.33), rgba(212, 42, 255, 0.3), rgba(58, 222, 255, 0.24), rgba(255, 100, 43, 0.33));
   filter: blur(42px) saturate(136%);
-  opacity: 0.88;
+  opacity: 0;
   mix-blend-mode: screen;
-  animation: ambient-shift 26s ease-in-out infinite alternate;
 }
 
 body::after {
@@ -117,9 +116,8 @@ body::after {
   pointer-events: none;
   background: var(--hero-ring);
   filter: blur(32px) saturate(132%);
-  opacity: 0.9;
+  opacity: 0;
   transform: translate3d(0, 0, 0);
-  animation: hero-ring-flow 18s ease-in-out infinite alternate;
   -webkit-mask: radial-gradient(circle at 50% 51%, transparent 29%, #000 44%, #000 56%, transparent 73%);
   mask: radial-gradient(circle at 50% 51%, transparent 29%, #000 44%, #000 56%, transparent 73%);
 }
@@ -259,6 +257,16 @@ html[data-theme="light"] .brand-logo--light {
 .chip {
   @apply rounded-full border border-line px-3 py-1 text-xs text-muted;
   background: color-mix(in srgb, var(--surface-soft) 58%, transparent);
+}
+
+html.fx-ready body::before {
+  opacity: 0.88;
+  animation: ambient-shift 26s ease-in-out infinite alternate;
+}
+
+html.fx-ready .hero-glow::before {
+  opacity: 0.9;
+  animation: hero-ring-flow 18s ease-in-out infinite alternate;
 }
 
 @keyframes hero-flow {

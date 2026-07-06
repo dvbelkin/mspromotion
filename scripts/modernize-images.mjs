@@ -34,6 +34,15 @@ async function ensureResponsiveVariants(baseWebpPath, baseBuffer) {
   }
 
   const basePathWithoutExtension = baseWebpPath.replace(/\.webp$/i, "");
+  const baseName = path.basename(basePathWithoutExtension);
+  const variantsDir = path.dirname(baseWebpPath);
+  const existingEntries = await fs.readdir(variantsDir, { withFileTypes: true });
+  await Promise.all(
+    existingEntries
+      .filter((entry) => entry.isFile() && new RegExp(`^${baseName}-\\d+w\\.webp$`, "i").test(entry.name))
+      .map((entry) => fs.unlink(path.join(variantsDir, entry.name)).catch(() => {}))
+  );
+
   for (const width of variantWidths) {
     if (width >= sourceWidth) {
       continue;

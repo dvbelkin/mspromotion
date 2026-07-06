@@ -527,6 +527,14 @@ async function writeImageVariants(basePath, baseBuffer, variantWidths = []) {
   }
 
   const basePathWithoutExtension = basePath.replace(/\.webp$/i, "");
+  const baseName = path.basename(basePathWithoutExtension);
+  const variantsDir = path.dirname(basePath);
+  const existingEntries = await fs.readdir(variantsDir, { withFileTypes: true });
+  await Promise.all(
+    existingEntries
+      .filter((entry) => entry.isFile() && new RegExp(`^${baseName}-\\d+w\\.webp$`, "i").test(entry.name))
+      .map((entry) => fs.unlink(path.join(variantsDir, entry.name)).catch(() => {}))
+  );
   const widths = [...new Set(variantWidths.map((width) => Number(width)).filter((width) => Number.isFinite(width) && width > 0 && width < sourceWidth))];
   for (const width of widths) {
     const variantPath = `${basePathWithoutExtension}-${width}w.webp`;
